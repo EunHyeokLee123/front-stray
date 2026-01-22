@@ -18,12 +18,6 @@ export function getDeviceType() {
   return /Mobi|Android|iPhone|iPad|iPod/i.test(ua) ? "mobile" : "desktop";
 }
 
-// 3) 로그인 여부 (예시, 실제 구현에 맞게 교체)
-export function isUserLoggedIn() {
-  // 예: 토큰 존재 여부 체크
-  return Boolean(localStorage.getItem("token"));
-}
-
 // 4) 공통 속성 자동 추가
 export function getCommonEventParams() {
   return {

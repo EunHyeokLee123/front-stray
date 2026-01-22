@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../configs/axios-config.js";
 import "./StrayAnimalList.css";
 import { API_BASE_URL, PET } from "../../configs/host-config.js";
+import { logUserEvent } from "./utils/analyticsUtils";
 
 const StrayAnimalList = () => {
   const navigate = useNavigate();
@@ -131,6 +132,10 @@ const StrayAnimalList = () => {
     setCurrentPage(page);
     fetchStrayAnimals(page);
   };
+
+  useEffect(() => {
+    logUserEvent("page_view", { page_name: "stray_animal" });
+  }, []);
 
   // 컴포넌트 마운트 시 데이터 로드
   useEffect(() => {

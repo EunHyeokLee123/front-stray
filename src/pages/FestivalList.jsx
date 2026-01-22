@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../configs/axios-config.js";
 import "./FestivalList.css";
 import { FESTIVAL } from "../../configs/host-config.js";
+import { logUserEvent } from "./utils/analyticsUtils";
 
 const FestivalList = () => {
   const navigate = useNavigate();
@@ -48,6 +49,10 @@ const FestivalList = () => {
     setCurrentPage(page);
     fetchFestivals(page);
   };
+
+  useEffect(() => {
+    logUserEvent("page_view", { page_name: "festival" });
+  }, []);
 
   // 상세 페이지로 이동
   const handleDetailClick = (festivalId) => {
@@ -151,11 +156,11 @@ const FestivalList = () => {
                     const maxVisiblePages = 7;
                     const startPage = Math.max(
                       0,
-                      currentPage - Math.floor(maxVisiblePages / 2)
+                      currentPage - Math.floor(maxVisiblePages / 2),
                     );
                     const endPage = Math.min(
                       totalPages - 1,
-                      startPage + maxVisiblePages - 1
+                      startPage + maxVisiblePages - 1,
                     );
 
                     return (
@@ -178,7 +183,7 @@ const FestivalList = () => {
                         {/* 현재 페이지 범위 */}
                         {Array.from(
                           { length: endPage - startPage + 1 },
-                          (_, i) => startPage + i
+                          (_, i) => startPage + i,
                         ).map((page) => (
                           <button
                             key={page}
