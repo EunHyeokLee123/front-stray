@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../configs/axios-config.js";
 import "./FestivalList.css";
 import { FESTIVAL } from "../../configs/host-config.js";
-import { logUserEvent } from "./utils/analyticsUtils";
+import { logUserEvent } from "../hooks/user-log-hook.jsx";
 
 const FestivalList = () => {
   const navigate = useNavigate();
