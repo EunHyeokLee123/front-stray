@@ -39,7 +39,7 @@ export function useFingerprint() {
         const encoder = new TextEncoder();
         const hashBuffer = await crypto.subtle.digest(
           "SHA-256",
-          encoder.encode(raw)
+          encoder.encode(raw),
         );
 
         const hashArray = Array.from(new Uint8Array(hashBuffer));
