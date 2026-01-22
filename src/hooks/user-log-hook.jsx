@@ -23,7 +23,6 @@ export function getCommonEventParams() {
   return {
     user_uuid: getOrCreateUserUUID(),
     device_type: getDeviceType(),
-    logged_in: isUserLoggedIn(),
     session_id:
       sessionStorage.getItem("session_id") || generateAndStoreSessionId(),
   };
