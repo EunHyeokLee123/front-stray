@@ -1,0 +1,33 @@
+.footer {
+  background: linear-gradient(135deg, #FFB6C1 0%, #FFA8B5 50%, #FF9AA2 100%);
+  padding: 2.5rem 2rem;
+  margin-top: auto;
+  box-shadow: 0 -2px 12px rgba(255, 182, 193, 0.2);
+  border-top: 1px solid rgba(255, 182, 193, 0.3);
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.footer-text {
+  color: #6B5B4F;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin: 0.5rem 0;
+  font-weight: 400;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 2rem 1.5rem;
+  }
+
+  .footer-text {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}

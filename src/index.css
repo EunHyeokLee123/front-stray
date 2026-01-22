@@ -1,0 +1,61 @@
+:root {
+  /* 귀여운 폰트 설정 */
+  font-family: 'Gowun Dodum', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+
+  /* 파스텔 색상 팔레트 */
+  --pastel-beige-1: #F5E6D3;
+  --pastel-beige-2: #F0DCC4;
+  --pastel-beige-3: #E8D5B7;
+  --pastel-orange-1: #FFD4A3;
+  --pastel-orange-2: #FFC896;
+  --pastel-orange-3: #FFB380;
+  --pastel-pink-1: #FFB6C1;
+  --pastel-pink-2: #FFA8B5;
+  --pastel-pink-3: #FF9AA2;
+  --pastel-bg-1: #FFF8F0;
+  --pastel-bg-2: #FFF5E6;
+  --pastel-bg-3: #FFEFD5;
+  --pastel-text-dark: #6B5B4F;
+  --pastel-text-medium: #8B7A6F;
+  --pastel-text-light: #A89A8F;
+  --pastel-accent: #FFB6C1;
+  --pastel-accent-dark: #FF9AA2;
+
+  color-scheme: light;
+  color: var(--pastel-text-medium);
+  background-color: var(--pastel-bg-1);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-size: 1.1rem;
+}
+
+h1 {
+  font-size: 3.5em;
+  line-height: 1.1;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 2px solid var(--pastel-pink-2);
+  outline-offset: 2px;
+}

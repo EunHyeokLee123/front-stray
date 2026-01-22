@@ -1,0 +1,596 @@
+.facility-map-page {
+  min-height: calc(100vh - 200px);
+  background: linear-gradient(135deg, #FFF8F0 0%, #FFF5E6 30%, #FFEFD5 60%, #FFD4A3 100%);
+  padding: 2rem 0;
+}
+
+.facility-map-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 2.75rem;
+  font-weight: 600;
+  color: #6B5B4F;
+  margin: 0 0 0.5rem 0;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  font-size: 1.25rem;
+  color: #8B7A6F;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* 필터 영역 (상단) */
+.filter-section {
+  background: rgba(255, 248, 240, 0.95);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 16px rgba(255, 182, 193, 0.15);
+  border: 1px solid rgba(255, 182, 193, 0.2);
+}
+
+.category-filter {
+  margin-bottom: 1.5rem;
+}
+
+.category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.category-button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #8B7A6F;
+  background-color: rgba(255, 248, 240, 0.9);
+  border: 2px solid transparent;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+.category-button:hover {
+  background-color: rgba(255, 255, 255, 1);
+  border-color: #FFB6C1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.2);
+}
+
+.category-button.active {
+  background: linear-gradient(135deg, #FFB6C1 0%, #FFA8B5 100%);
+  color: #6B5B4F;
+  border-color: #FF9AA2;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(255, 154, 162, 0.3);
+}
+
+.region-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  min-height: 50px;
+}
+
+.sub-category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sub-category-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #8B7A6F;
+  background-color: rgba(255, 248, 240, 0.9);
+  border: 2px solid #FFB6C1;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+.sub-category-button:hover {
+  background-color: rgba(255, 182, 193, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.2);
+}
+
+.sub-category-button.active {
+  background: linear-gradient(135deg, #FFB6C1 0%, #FFA8B5 100%);
+  color: #6B5B4F;
+  border-color: #FF9AA2;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255, 154, 162, 0.3);
+}
+
+.region-select {
+  padding: 0.5rem 1rem;
+  font-size: 1.05rem;
+  color: #8B7A6F;
+  background-color: rgba(255, 248, 240, 0.9);
+  border: 2px solid #FFB6C1;
+  border-radius: 14px;
+  cursor: pointer;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  min-width: 140px;
+  transition: all 0.3s ease;
+}
+
+.region-select:hover {
+  border-color: #FF9AA2;
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.2);
+}
+
+/* 메인 콘텐츠 영역 (좌우 분할) */
+.main-content-wrapper {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 2rem;
+  background: rgba(255, 248, 240, 0.95);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 16px rgba(255, 182, 193, 0.15);
+  border: 1px solid rgba(255, 182, 193, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 왼쪽: 아이템 목록 패널 */
+.list-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+}
+
+.list-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+  overflow: hidden;
+}
+
+.list-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #6B5B4F;
+  margin: 0;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: calc(100vh - 500px);
+  min-height: 500px;
+  max-height: 700px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.5rem;
+}
+
+.location-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid transparent;
+  border-radius: 16px;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.location-card:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: #FFB6C1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.2);
+}
+
+.location-card.active {
+  background: linear-gradient(135deg, #FFD4A3 0%, #FFC896 100%);
+  border-color: #FFB6C1;
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.3);
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #6B5B4F;
+  margin: 0;
+  word-break: break-word;
+  line-height: 1.4;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+.card-address {
+  font-size: 0.95rem;
+  color: #8B7A6F;
+  margin: 0;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.9rem;
+  background: linear-gradient(135deg, #FFD4A3 0%, #FFC896 100%);
+  color: #6B5B4F;
+  border-radius: 12px;
+  font-weight: 500;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+.loading-text,
+.empty-text {
+  text-align: center;
+  padding: 2rem;
+  color: #8B7A6F;
+  font-size: 1.1rem;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+/* 오른쪽: 지도 패널 */
+.map-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  overflow: visible; /* 지도가 제대로 보이도록 visible로 변경 */
+  height: 100%;
+  min-height: 500px; /* 최소 높이 보장 */
+}
+
+.map-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #6B5B4F;
+  margin: 0;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+.map-container {
+  width: 100%;
+  height: calc(100vh - 500px);
+  min-height: 500px;
+  max-height: 700px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 182, 193, 0.3);
+  background: #FFF8F0;
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  flex: 1;
+  /* 지도 렌더링을 위한 필수 스타일 */
+  display: block;
+  visibility: visible;
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.15);
+}
+
+/* 스크롤바 스타일 */
+.card-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.card-list::-webkit-scrollbar-track {
+  background: rgba(255, 182, 193, 0.1);
+  border-radius: 3px;
+}
+
+.card-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 182, 193, 0.5);
+  border-radius: 3px;
+}
+
+.card-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 182, 193, 0.7);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+  .main-content-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .map-container {
+    height: 500px;
+    min-height: 400px;
+  }
+
+  .card-list {
+    height: auto;
+    max-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .facility-map-container {
+    padding: 0 1rem;
+  }
+
+  .page-title {
+    font-size: 2.25rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.15rem;
+  }
+
+  .filter-section {
+    padding: 1rem;
+  }
+
+  .main-content-wrapper {
+    padding: 1rem;
+  }
+
+  .category-buttons {
+    gap: 0.4rem;
+  }
+
+  .category-button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+
+  .map-container {
+    height: 400px;
+    min-height: 300px;
+  }
+
+  .card-list {
+    max-height: 300px;
+  }
+}
+
+/* 상세 모달 */
+.detail-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.detail-modal {
+  background: linear-gradient(135deg, #FFF8F0 0%, #FFF5E6 50%, #FFEFD5 100%);
+  border-radius: 24px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(255, 182, 193, 0.25);
+  position: relative;
+  border: 1px solid rgba(255, 182, 193, 0.3);
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 2px solid rgba(255, 182, 193, 0.3);
+}
+
+.detail-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #6B5B4F;
+  margin: 0;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+.detail-close {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #8B7A6F;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.detail-close:hover {
+  background: rgba(255, 182, 193, 0.3);
+  color: #6B5B4F;
+}
+
+.detail-content {
+  padding: 2rem;
+}
+
+.detail-image-container {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.detail-image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.detail-info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.detail-info-item {
+  display: flex;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 182, 193, 0.2);
+}
+
+.detail-info-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  min-width: 150px;
+  font-weight: 600;
+  color: #6B5B4F;
+  font-size: 1.1rem;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+.detail-value {
+  flex: 1;
+  color: #8B7A6F;
+  font-size: 1.1rem;
+  word-break: break-word;
+}
+
+.detail-value a {
+  color: #6B5B4F;
+  text-decoration: none;
+}
+
+.detail-value a:hover {
+  text-decoration: underline;
+}
+
+.detail-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  gap: 1rem;
+}
+
+.loader {
+  border: 4px solid rgba(255, 182, 193, 0.3);
+  border-top: 4px solid #FF9AA2;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  color: #8B7A6F;
+  font-size: 1.15rem;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+.detail-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  gap: 1rem;
+}
+
+.error-text {
+  color: #d32f2f;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.retry-button {
+  background: linear-gradient(135deg, #FFB6C1 0%, #FFA8B5 100%);
+  color: #6B5B4F;
+  border: 2px solid #FF9AA2;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1.15rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  box-shadow: 0 2px 8px rgba(255, 154, 162, 0.3);
+}
+
+.retry-button:hover {
+  background: linear-gradient(135deg, #FFA8B5 0%, #FF9AA2 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 154, 162, 0.4);
+}
+
+@media (max-width: 768px) {
+  .detail-modal {
+    max-width: 95%;
+    margin: 1rem;
+  }
+
+  .detail-header {
+    padding: 1rem 1.5rem;
+  }
+
+  .detail-title {
+    font-size: 1.75rem;
+  }
+
+  .detail-content {
+    padding: 1.5rem;
+  }
+
+  .detail-label {
+    min-width: 120px;
+    font-size: 1.05rem;
+  }
+
+  .detail-value {
+    font-size: 1.05rem;
+  }
+
+  .detail-info-item {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

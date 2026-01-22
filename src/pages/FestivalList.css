@@ -1,0 +1,500 @@
+.festival-list-page {
+  min-height: calc(100vh - 200px);
+  background: linear-gradient(135deg, #FFF8F0 0%, #FFF5E6 30%, #FFEFD5 60%, #FFD4A3 100%);
+  padding: 2rem 0;
+}
+
+.festival-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.page-title {
+  font-size: 2.75rem;
+  font-weight: 600;
+  color: #6B5B4F;
+  margin: 0 0 0.5rem 0;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  font-size: 1.25rem;
+  color: #8B7A6F;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* 로딩, 에러, 빈 상태 */
+.loading-container,
+.error-container,
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(255, 182, 193, 0.3);
+  border-top-color: #FF9AA2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text,
+.error-text,
+.empty-text {
+  font-size: 1.15rem;
+  color: #8B7A6F;
+  margin-bottom: 1rem;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+.error-text {
+  color: #FF6B6B;
+}
+
+.retry-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #6B5B4F;
+  background: linear-gradient(135deg, #FFB6C1 0%, #FFA8B5 100%);
+  border: 2px solid #FF9AA2;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  box-shadow: 0 2px 8px rgba(255, 154, 162, 0.3);
+}
+
+.retry-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 154, 162, 0.4);
+}
+
+/* 행사 카드 리스트 */
+.festival-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.festival-card {
+  background: rgba(255, 248, 240, 0.95);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 16px rgba(255, 182, 193, 0.15);
+  border: 1px solid rgba(255, 182, 193, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.festival-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 182, 193, 0.25);
+  border-color: rgba(255, 182, 193, 0.4);
+}
+
+.festival-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.festival-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #6B5B4F;
+  margin: 0;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+.festival-info-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.festival-info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #5a5a5a;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #6B5B4F;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+.info-value {
+  color: #8B7A6F;
+}
+
+/* 상세 모달 */
+.detail-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.detail-modal {
+  background: linear-gradient(135deg, #FFF8F0 0%, #FFF5E6 50%, #FFEFD5 100%);
+  border-radius: 24px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(255, 182, 193, 0.25);
+  position: relative;
+  border: 1px solid rgba(255, 182, 193, 0.3);
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 2px solid rgba(255, 182, 193, 0.3);
+}
+
+.detail-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #6B5B4F;
+  margin: 0;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+.detail-close {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #8B7A6F;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.detail-close:hover {
+  background: rgba(255, 182, 193, 0.3);
+  color: #6B5B4F;
+}
+
+.detail-content {
+  padding: 2rem;
+}
+
+.detail-image-container {
+  width: 50%;
+  margin-bottom: 1.5rem;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #FFD4A3 0%, #FFC896 100%);
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.2);
+}
+
+.detail-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.detail-info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 182, 193, 0.2);
+}
+
+.detail-info-row:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #6B5B4F;
+  min-width: 100px;
+  font-size: 1.1rem;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+.detail-value {
+  color: #8B7A6F;
+  flex: 1;
+  font-size: 1.1rem;
+  word-break: break-word;
+}
+
+.detail-loading,
+.detail-error {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.detail-footer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid rgba(255, 182, 193, 0.3);
+  display: flex;
+  justify-content: center;
+}
+
+.homepage-button {
+  padding: 0.875rem 2rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #6B5B4F;
+  background: linear-gradient(135deg, #FFB6C1 0%, #FFA8B5 100%);
+  border: 2px solid #FF9AA2;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  box-shadow: 0 4px 12px rgba(255, 154, 162, 0.3);
+}
+
+.homepage-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 154, 162, 0.4);
+  background: linear-gradient(135deg, #FFA8B5 0%, #FF9AA2 100%);
+}
+
+/* 페이징 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.pagination-button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #6B5B4F;
+  background: linear-gradient(135deg, #FFD4A3 0%, #FFC896 100%);
+  border: 2px solid transparent;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+}
+
+.pagination-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #FFB6C1 0%, #FFA8B5 100%);
+  border-color: #FF9AA2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 154, 162, 0.3);
+}
+
+.pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-numbers {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pagination-number {
+  min-width: 40px;
+  height: 40px;
+  padding: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #8B7A6F;
+  background-color: rgba(255, 248, 240, 0.9);
+  border: 2px solid transparent;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-number:hover {
+  background-color: rgba(255, 255, 255, 1);
+  border-color: #FFB6C1;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.2);
+}
+
+.pagination-number.active {
+  background: linear-gradient(135deg, #FFB6C1 0%, #FFA8B5 100%);
+  color: #6B5B4F;
+  border-color: #FF9AA2;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255, 154, 162, 0.3);
+}
+
+.pagination-ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  color: #8B7A6F;
+  font-size: 1.05rem;
+  padding: 0 0.5rem;
+}
+
+/* 상세 페이지 스타일 */
+.detail-page {
+  background: rgba(255, 248, 240, 0.95);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 20px rgba(255, 182, 193, 0.15);
+  border: 1px solid rgba(255, 182, 193, 0.2);
+}
+
+.detail-page-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+}
+
+.back-button {
+  padding: 0.65rem 1rem;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  background: linear-gradient(135deg, #FFD4A3 0%, #FFC896 100%);
+  color: #6B5B4F;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-size: 1.05rem;
+}
+
+.back-button:hover {
+  border-color: #FFB6C1;
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.35);
+  transform: translateY(-2px);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .festival-container {
+    padding: 0 1rem;
+  }
+
+  .page-title {
+    font-size: 2.25rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.15rem;
+  }
+
+  .festival-card {
+    padding: 1rem;
+  }
+
+  .festival-title {
+    font-size: 1.5rem;
+  }
+
+  .festival-info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .detail-modal {
+    max-width: 95%;
+    margin: 1rem;
+  }
+
+  .detail-header {
+    padding: 1rem 1.5rem;
+  }
+
+  .detail-title {
+    font-size: 1.75rem;
+  }
+
+  .detail-content {
+    padding: 1.5rem;
+  }
+
+  .detail-label {
+    min-width: 80px;
+    font-size: 1.05rem;
+  }
+
+  .detail-value {
+    font-size: 1.05rem;
+  }
+
+  .pagination {
+    gap: 0.3rem;
+  }
+
+  .pagination-button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+
+  .pagination-number {
+    min-width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+}
