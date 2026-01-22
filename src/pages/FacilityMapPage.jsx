@@ -3,7 +3,7 @@ import axiosInstance from "../../configs/axios-config.js";
 import MapComponent from "../components/MapComponent.jsx";
 import "./FacilityMapPage.css";
 import { MAP, HOSPITAL, STYLE } from "../../configs/host-config.js";
-import { logUserEvent } from "./utils/analyticsUtils";
+import { logUserEvent } from "../hooks/user-log-hook.jsx";
 
 const FacilityMapPage = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);

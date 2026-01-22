@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../configs/axios-config.js";
 import "./StrayAnimalList.css";
 import { API_BASE_URL, PET } from "../../configs/host-config.js";
-import { logUserEvent } from "./utils/analyticsUtils";
+import { logUserEvent } from "../hooks/user-log-hook.jsx";
 
 const StrayAnimalList = () => {
   const navigate = useNavigate();
