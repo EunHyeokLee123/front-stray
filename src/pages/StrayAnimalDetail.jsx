@@ -47,7 +47,11 @@ const StrayAnimalDetail = () => {
           <div className="detail-page-header">
             <button
               className="back-button"
-              onClick={() => navigate("/stray/list")}
+              onClick={() =>
+                navigate(
+                  `/stray/list?region=${region}&category=${category}&page=${page}`
+                )
+              }
             >
               ← 목록으로
             </button>

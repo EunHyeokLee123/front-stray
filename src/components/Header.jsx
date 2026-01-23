@@ -26,7 +26,7 @@ const Header = () => {
     <header className="header">
       <div className="header-container">
         <div className="logo-container">
-          <Link to="/stray/list">
+          <Link to="/stray/list?region=전체&category=개&page=0">
             <img src="/nukki.png" alt="냥몽 로고" className="logo-img" />
           </Link>
         </div>
