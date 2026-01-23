@@ -153,6 +153,16 @@ const StrayAnimalList = () => {
     setCurrentPage(page);
   };
 
+  const resetFilters = () => {
+    setSelectedRegion("전체");
+    setSelectedCategory("개");
+    setCurrentPage(0);
+
+    sessionStorage.setItem("stray_region", "전체");
+    sessionStorage.setItem("stray_category", "개");
+    sessionStorage.setItem("stray_page", 0);
+  };
+
   useEffect(() => {
     fetchStrayAnimals(currentPage);
   }, [currentPage]);
@@ -291,14 +301,7 @@ const StrayAnimalList = () => {
               <p className="empty-text">
                 검색 조건에 맞는 유기동물이 없습니다.
               </p>
-              <button
-                className="reset-button"
-                onClick={() => {
-                  setSelectedRegion("전체");
-                  setSelectedCategory("개");
-                  setCurrentPage(0);
-                }}
-              >
+              <button className="reset-button" onClick={resetFilters}>
                 필터 초기화
               </button>
             </div>
