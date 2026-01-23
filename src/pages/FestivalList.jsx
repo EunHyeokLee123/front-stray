@@ -52,6 +52,10 @@ const FestivalList = () => {
   };
 
   useEffect(() => {
+    sessionStorage.setItem("festival_page", currentPage);
+  }, [currentPage]);
+
+  useEffect(() => {
     fetchFestivals(currentPage);
   }, [currentPage]);
 

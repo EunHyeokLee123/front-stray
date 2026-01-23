@@ -157,7 +157,7 @@ const StrayAnimalList = () => {
   // 필터 변경 시 데이터 다시 로드
   useEffect(() => {
     setCurrentPage(0);
-    sessionStorage.setItem("festival_page", 0);
+    sessionStorage.setItem("stray_page", 0);
   }, [selectedRegion, selectedCategory]);
 
   // 데이터 변환 함수
