@@ -24,7 +24,7 @@ const StrayAnimalList = () => {
         { replace: true }
       );
     }
-  }, []);
+  }, [searchParams, setSearchParams]);
   const selectedRegion = searchParams.get("region") || "전체";
   const selectedCategory = searchParams.get("category") || "개";
   const currentPage = Number(searchParams.get("page") || 0);
