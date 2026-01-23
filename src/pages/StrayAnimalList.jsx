@@ -11,6 +11,14 @@ const getInitialPage = () => {
   return savedPage !== null ? Number(savedPage) : 0;
 };
 
+const getInitialRegion = () => {
+  return sessionStorage.getItem("stray_region") || "전체";
+};
+
+const getInitialCategory = () => {
+  return sessionStorage.getItem("stray_category") || "개";
+};
+
 const StrayAnimalList = () => {
   const navigate = useNavigate();
   const [animals, setAnimals] = useState([]);
@@ -22,8 +30,8 @@ const StrayAnimalList = () => {
   const pageSize = 6;
 
   // 필터 상태
-  const [selectedRegion, setSelectedRegion] = useState("전체");
-  const [selectedCategory, setSelectedCategory] = useState("개");
+  const [selectedRegion, setSelectedRegion] = useState(getInitialRegion);
+  const [selectedCategory, setSelectedCategory] = useState(getInitialCategory);
 
   const regions = [
     "전체",
@@ -123,9 +131,10 @@ const StrayAnimalList = () => {
       const resultData = data.result || data;
       setAnimals(resultData.content || resultData.data || resultData || []);
 
-      if (resultData.pageable) {
-        setCurrentPage(resultData.pageable.pageNumber);
-      }
+      // if (resultData.pageable) {
+      //   setCurrentPage(resultData.pageable.pageNumber);
+      // }
+
       setTotalPages(resultData.totalPages || 0);
       setTotalElements(resultData.totalElements || 0);
     } catch (err) {
@@ -150,16 +159,15 @@ const StrayAnimalList = () => {
     logUserEvent("page_view", { page_name: "stray_animal" });
   }, []);
 
-  // 컴포넌트 마운트 시 데이터 로드
   useEffect(() => {
-    fetchStrayAnimals(currentPage);
-  }, []);
+    sessionStorage.setItem("stray_region", selectedRegion);
+    sessionStorage.setItem("stray_category", selectedCategory);
+  }, [selectedRegion, selectedCategory]);
 
   // 필터 변경 시 데이터 다시 로드
   useEffect(() => {
     setCurrentPage(0);
     sessionStorage.setItem("stray_page", 0);
-    fetchStrayAnimals(0);
   }, [selectedRegion, selectedCategory]);
 
   // 데이터 변환 함수

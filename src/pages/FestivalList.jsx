@@ -8,6 +8,8 @@ import { logUserEvent } from "../hooks/user-log-hook.jsx";
 const getInitialPage = () => {
   const savedPage = sessionStorage.getItem("festival_page");
   sessionStorage.removeItem("stray_page");
+  sessionStorage.removeItem("stray_region");
+  sessionStorage.removeItem("stray_category");
   return savedPage !== null ? Number(savedPage) : 0;
 };
 
