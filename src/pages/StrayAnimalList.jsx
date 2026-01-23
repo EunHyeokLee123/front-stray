@@ -1,39 +1,23 @@
-import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axiosInstance from "../../configs/axios-config.js";
 import "./StrayAnimalList.css";
 import { API_BASE_URL, PET } from "../../configs/host-config.js";
 import { logUserEvent } from "../hooks/user-log-hook.jsx";
-
-const getInitialPage = () => {
-  const savedPage = sessionStorage.getItem("stray_page");
-  sessionStorage.removeItem("festival_page");
-  return savedPage !== null ? Number(savedPage) : 0;
-};
-
-const getInitialRegion = () => {
-  return sessionStorage.getItem("stray_region") || "전체";
-};
-
-const getInitialCategory = () => {
-  return sessionStorage.getItem("stray_category") || "개";
-};
 
 const StrayAnimalList = () => {
   const navigate = useNavigate();
   const [animals, setAnimals] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(getInitialPage);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const selectedRegion = searchParams.get("region") || "전체";
+  const selectedCategory = searchParams.get("category") || "개";
+  const currentPage = Number(searchParams.get("page") || 0);
   const pageSize = 6;
-
-  // 필터 상태
-  const [selectedRegion, setSelectedRegion] = useState(getInitialRegion);
-  const [selectedCategory, setSelectedCategory] = useState(getInitialCategory);
-
-  const isFirstRender = useRef(true);
 
   const regions = [
     "전체",
@@ -99,12 +83,8 @@ const StrayAnimalList = () => {
     return "";
   };
 
-  useEffect(() => {
-    sessionStorage.setItem("stray_page", currentPage);
-  }, [currentPage]);
-
   // 유기동물 목록 조회 함수
-  const fetchStrayAnimals = async (page = 0) => {
+  const fetchStrayAnimals = async () => {
     setLoading(true);
     setError(null);
 
@@ -122,10 +102,13 @@ const StrayAnimalList = () => {
       const kindFilter = kindMap[selectedCategory] || "개";
 
       // TODO: 실제 API 엔드포인트로 변경 필요
-      const response = await axiosInstance.post(`${PET}/search/${page}`, {
-        region: addressFilter,
-        kind: kindFilter,
-      });
+      const response = await axiosInstance.post(
+        `${PET}/search/${currentPage}`,
+        {
+          region: addressFilter,
+          kind: kindFilter,
+        }
+      );
 
       const data = response.data;
 
@@ -148,44 +131,28 @@ const StrayAnimalList = () => {
     }
   };
 
-  // 페이지 변경 함수
   const handlePageChange = (page) => {
-    setCurrentPage(page);
+    setSearchParams({
+      region: selectedRegion,
+      category: selectedCategory,
+      page,
+    });
   };
 
   const resetFilters = () => {
-    setSelectedRegion("전체");
-    setSelectedCategory("개");
-    setCurrentPage(0);
-
-    sessionStorage.setItem("stray_region", "전체");
-    sessionStorage.setItem("stray_category", "개");
-    sessionStorage.setItem("stray_page", 0);
+    setSearchParams({
+      region: "전체",
+      category: "개",
+      page: 0,
+    });
   };
-
   useEffect(() => {
-    fetchStrayAnimals(currentPage);
-  }, [currentPage]);
+    fetchStrayAnimals();
+  }, [selectedRegion, selectedCategory, currentPage]);
 
   useEffect(() => {
     logUserEvent("page_view", { page_name: "stray_animal" });
   }, []);
-
-  useEffect(() => {
-    sessionStorage.setItem("stray_region", selectedRegion);
-    sessionStorage.setItem("stray_category", selectedCategory);
-  }, [selectedRegion, selectedCategory]);
-
-  // 필터 변경 시 데이터 다시 로드
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-
-    setCurrentPage(0);
-    sessionStorage.setItem("stray_page", 0);
-  }, [selectedRegion, selectedCategory]);
 
   // 데이터 변환 함수
   const transformAnimalData = (animal) => {
@@ -224,8 +191,9 @@ const StrayAnimalList = () => {
 
   // 상세 페이지로 이동
   const handleDetailClick = (desertionNo) => {
-    if (!desertionNo) return;
-    navigate(`/stray/detail/${desertionNo}`);
+    navigate(
+      `/stray/detail/${desertionNo}?region=${selectedRegion}&category=${selectedCategory}&page=${currentPage}`
+    );
   };
 
   return (
@@ -248,7 +216,13 @@ const StrayAnimalList = () => {
                     className={`filter-button ${
                       selectedRegion === region ? "active" : ""
                     }`}
-                    onClick={() => setSelectedRegion(region)}
+                    onClick={() =>
+                      setSearchParams({
+                        region,
+                        category: selectedCategory,
+                        page: 0,
+                      })
+                    }
                   >
                     {region}
                   </button>
@@ -265,7 +239,13 @@ const StrayAnimalList = () => {
                     className={`filter-button ${
                       selectedCategory === category ? "active" : ""
                     }`}
-                    onClick={() => setSelectedCategory(category)}
+                    onClick={() =>
+                      setSearchParams({
+                        region: selectedRegion,
+                        category,
+                        page: 0,
+                      })
+                    }
                   >
                     {category}
                   </button>
@@ -288,7 +268,7 @@ const StrayAnimalList = () => {
               <p className="error-text">{error}</p>
               <button
                 className="retry-button"
-                onClick={() => fetchStrayAnimals(currentPage)}
+                onClick={() => fetchStrayAnimals()}
               >
                 다시 시도
               </button>
