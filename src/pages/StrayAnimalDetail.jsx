@@ -60,10 +60,7 @@ const StrayAnimalDetail = () => {
           {detailError && !detailLoading && (
             <div className="detail-error">
               <p className="error-text">{detailError}</p>
-              <button
-                className="retry-button"
-                onClick={() => navigate("/stray/list")}
-              >
+              <button className="retry-button" onClick={() => navigate(-1)}>
                 목록으로
               </button>
             </div>
