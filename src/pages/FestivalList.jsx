@@ -7,6 +7,7 @@ import { logUserEvent } from "../hooks/user-log-hook.jsx";
 
 const getInitialPage = () => {
   const savedPage = sessionStorage.getItem("festival_page");
+  sessionStorage.removeItem("stray_page");
   return savedPage !== null ? Number(savedPage) : 0;
 };
 
@@ -33,6 +34,9 @@ const FestivalList = () => {
       const resultData = data.result || data;
       setFestivals(resultData.content || resultData.data || resultData || []);
 
+      if (resultData.pageable) {
+        setCurrentPage(resultData.pageable.pageNumber);
+      }
       setTotalPages(resultData.totalPages || 0);
       setTotalElements(resultData.totalElements || 0);
     } catch (err) {

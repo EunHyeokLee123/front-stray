@@ -7,6 +7,7 @@ import { logUserEvent } from "../hooks/user-log-hook.jsx";
 
 const getInitialPage = () => {
   const savedPage = sessionStorage.getItem("stray_page");
+  sessionStorage.removeItem("festival_page");
   return savedPage !== null ? Number(savedPage) : 0;
 };
 
