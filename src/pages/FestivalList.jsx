@@ -33,9 +33,6 @@ const FestivalList = () => {
       const resultData = data.result || data;
       setFestivals(resultData.content || resultData.data || resultData || []);
 
-      if (resultData.pageable) {
-        setCurrentPage(resultData.pageable.pageNumber);
-      }
       setTotalPages(resultData.totalPages || 0);
       setTotalElements(resultData.totalElements || 0);
     } catch (err) {
@@ -68,11 +65,6 @@ const FestivalList = () => {
     if (!festivalId) return;
     navigate(`/festival/detail/${festivalId}`);
   };
-
-  // 컴포넌트 마운트 시 데이터 로드
-  useEffect(() => {
-    fetchFestivals(currentPage);
-  }, []);
 
   return (
     <div className="festival-list-page">
