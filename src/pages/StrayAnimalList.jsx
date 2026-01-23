@@ -5,6 +5,11 @@ import "./StrayAnimalList.css";
 import { API_BASE_URL, PET } from "../../configs/host-config.js";
 import { logUserEvent } from "../hooks/user-log-hook.jsx";
 
+const getInitialPage = () => {
+  const savedPage = sessionStorage.getItem("stray_page");
+  return savedPage !== null ? Number(savedPage) : 0;
+};
+
 const StrayAnimalList = () => {
   const navigate = useNavigate();
   const [animals, setAnimals] = useState([]);
@@ -83,11 +88,6 @@ const StrayAnimalList = () => {
     return "";
   };
 
-  const getInitialPage = () => {
-    const savedPage = sessionStorage.getItem("stray_page");
-    return savedPage !== null ? Number(savedPage) : 0;
-  };
-
   useEffect(() => {
     sessionStorage.setItem("stray_page", currentPage);
   }, [currentPage]);
@@ -139,8 +139,11 @@ const StrayAnimalList = () => {
   // 페이지 변경 함수
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    fetchStrayAnimals(page);
   };
+
+  useEffect(() => {
+    fetchStrayAnimals(currentPage);
+  }, [currentPage]);
 
   useEffect(() => {
     logUserEvent("page_view", { page_name: "stray_animal" });
@@ -154,7 +157,7 @@ const StrayAnimalList = () => {
   // 필터 변경 시 데이터 다시 로드
   useEffect(() => {
     setCurrentPage(0);
-    fetchStrayAnimals(0);
+    sessionStorage.setItem("festival_page", 0);
   }, [selectedRegion, selectedCategory]);
 
   // 데이터 변환 함수
