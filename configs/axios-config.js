@@ -46,7 +46,6 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.log(error);
     return Promise.reject(error);
   }
 );
@@ -63,8 +62,6 @@ axiosInstance.interceptors.response.use(
 
     const status = error.response?.status;
     const message = error.response?.data;
-
-    console.log(error);
 
     //  토큰 만료 or 없음 → 재발급
     if (

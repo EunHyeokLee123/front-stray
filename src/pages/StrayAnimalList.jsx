@@ -10,7 +10,7 @@ const StrayAnimalList = () => {
   const [animals, setAnimals] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(getInitialPage);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const pageSize = 6;
@@ -83,6 +83,15 @@ const StrayAnimalList = () => {
     return "";
   };
 
+  const getInitialPage = () => {
+    const savedPage = sessionStorage.getItem("stray_page");
+    return savedPage !== null ? Number(savedPage) : 0;
+  };
+
+  useEffect(() => {
+    sessionStorage.setItem("stray_page", currentPage);
+  }, [currentPage]);
+
   // 유기동물 목록 조회 함수
   const fetchStrayAnimals = async (page = 0) => {
     setLoading(true);
@@ -139,7 +148,7 @@ const StrayAnimalList = () => {
 
   // 컴포넌트 마운트 시 데이터 로드
   useEffect(() => {
-    fetchStrayAnimals(0);
+    fetchStrayAnimals(currentPage);
   }, []);
 
   // 필터 변경 시 데이터 다시 로드
@@ -161,14 +170,14 @@ const StrayAnimalList = () => {
         animal.sexCd === "M"
           ? "수컷"
           : animal.sexCd === "F"
-            ? "암컷"
-            : animal.sexCd === "Q"
-              ? "미상"
-              : "성별 정보 없음",
+          ? "암컷"
+          : animal.sexCd === "Q"
+          ? "미상"
+          : "성별 정보 없음",
       rescueDate: animal.happenDt
         ? `${animal.happenDt.slice(0, 4)}-${animal.happenDt.slice(
             4,
-            6,
+            6
           )}-${animal.happenDt.slice(6, 8)}`
         : "날짜 정보 없음",
       kindNm: animal.kindNm,
@@ -280,8 +289,8 @@ const StrayAnimalList = () => {
             <>
               <div className="info-bar">
                 <p className="info-text">
-                  총 {totalElements}개 중 {currentPage * pageSize + 1}-
-                  {Math.min((currentPage + 1) * pageSize, totalElements)}개
+                  총 {totalElements}마리 중 {currentPage * pageSize + 1}-
+                  {Math.min((currentPage + 1) * pageSize, totalElements)}마리
                 </p>
               </div>
 
@@ -337,11 +346,11 @@ const StrayAnimalList = () => {
                   const maxVisiblePages = 7;
                   const startPage = Math.max(
                     0,
-                    currentPage - Math.floor(maxVisiblePages / 2),
+                    currentPage - Math.floor(maxVisiblePages / 2)
                   );
                   const endPage = Math.min(
                     totalPages - 1,
-                    startPage + maxVisiblePages - 1,
+                    startPage + maxVisiblePages - 1
                   );
 
                   return (
@@ -375,7 +384,7 @@ const StrayAnimalList = () => {
                         {/* 현재 페이지 범위 */}
                         {Array.from(
                           { length: endPage - startPage + 1 },
-                          (_, i) => startPage + i,
+                          (_, i) => startPage + i
                         ).map((page) => (
                           <button
                             key={page}
@@ -408,7 +417,7 @@ const StrayAnimalList = () => {
                         className="pagination-button"
                         onClick={() =>
                           handlePageChange(
-                            Math.min(totalPages - 1, currentPage + 1),
+                            Math.min(totalPages - 1, currentPage + 1)
                           )
                         }
                         disabled={currentPage === totalPages - 1}

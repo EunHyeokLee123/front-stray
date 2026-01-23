@@ -24,7 +24,6 @@ const StrayAnimalDetail = () => {
         const data = res.data?.result || res.data;
         setDetailData(data);
       } catch (err) {
-        console.error("상세 조회 실패:", err);
         setDetailError("상세 정보를 불러오지 못했습니다.");
         setDetailData(null);
       } finally {
@@ -86,7 +85,9 @@ const StrayAnimalDetail = () => {
                       />
                     </div>
                   ))}
-                {[detailData.popfile1, detailData.popfile2].every((v) => !v) && (
+                {[detailData.popfile1, detailData.popfile2].every(
+                  (v) => !v
+                ) && (
                   <div className="detail-image-box">
                     <img src="/logo.png" alt="이미지 없음" />
                   </div>
@@ -94,18 +95,6 @@ const StrayAnimalDetail = () => {
               </div>
 
               <div className="detail-grid">
-                <div className="detail-row">
-                  <span className="detail-label">유기번호</span>
-                  <span className="detail-value">
-                    {detailData.desertionNo || "-"}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">축종</span>
-                  <span className="detail-value">
-                    {detailData.upKindNm || "-"}
-                  </span>
-                </div>
                 <div className="detail-row">
                   <span className="detail-label">품종</span>
                   <span className="detail-value">
@@ -120,9 +109,7 @@ const StrayAnimalDetail = () => {
                 </div>
                 <div className="detail-row">
                   <span className="detail-label">나이</span>
-                  <span className="detail-value">
-                    {detailData.age || "-"}
-                  </span>
+                  <span className="detail-value">{detailData.age || "-"}</span>
                 </div>
                 <div className="detail-row">
                   <span className="detail-label">체중</span>
