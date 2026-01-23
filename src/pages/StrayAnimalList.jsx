@@ -159,6 +159,7 @@ const StrayAnimalList = () => {
   useEffect(() => {
     setCurrentPage(0);
     sessionStorage.setItem("stray_page", 0);
+    fetchStrayAnimals(0);
   }, [selectedRegion, selectedCategory]);
 
   // 데이터 변환 함수
