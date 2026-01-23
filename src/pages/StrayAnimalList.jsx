@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../configs/axios-config.js";
 import "./StrayAnimalList.css";
@@ -32,6 +32,8 @@ const StrayAnimalList = () => {
   // 필터 상태
   const [selectedRegion, setSelectedRegion] = useState(getInitialRegion);
   const [selectedCategory, setSelectedCategory] = useState(getInitialCategory);
+
+  const isFirstRender = useRef(true);
 
   const regions = [
     "전체",
@@ -166,6 +168,11 @@ const StrayAnimalList = () => {
 
   // 필터 변경 시 데이터 다시 로드
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
     setCurrentPage(0);
     sessionStorage.setItem("stray_page", 0);
   }, [selectedRegion, selectedCategory]);
