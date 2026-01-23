@@ -83,6 +83,23 @@ const StrayAnimalList = () => {
     return "";
   };
 
+  const updateSearchParams = (next) => {
+    const current = {
+      region: selectedRegion,
+      category: selectedCategory,
+      page: currentPage,
+    };
+
+    const isSame =
+      current.region === next.region &&
+      current.category === next.category &&
+      current.page === next.page;
+
+    if (!isSame) {
+      setSearchParams(next);
+    }
+  };
+
   // 유기동물 목록 조회 함수
   const fetchStrayAnimals = async () => {
     setLoading(true);
@@ -132,7 +149,7 @@ const StrayAnimalList = () => {
   };
 
   const handlePageChange = (page) => {
-    setSearchParams({
+    updateSearchParams({
       region: selectedRegion,
       category: selectedCategory,
       page,
@@ -146,6 +163,7 @@ const StrayAnimalList = () => {
       page: 0,
     });
   };
+
   useEffect(() => {
     fetchStrayAnimals();
   }, [selectedRegion, selectedCategory, currentPage]);
@@ -217,7 +235,7 @@ const StrayAnimalList = () => {
                       selectedRegion === region ? "active" : ""
                     }`}
                     onClick={() =>
-                      setSearchParams({
+                      updateSearchParams({
                         region,
                         category: selectedCategory,
                         page: 0,
@@ -240,7 +258,7 @@ const StrayAnimalList = () => {
                       selectedCategory === category ? "active" : ""
                     }`}
                     onClick={() =>
-                      setSearchParams({
+                      updateSearchParams({
                         region: selectedRegion,
                         category,
                         page: 0,
