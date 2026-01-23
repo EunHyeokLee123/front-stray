@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import axiosInstance from "../../configs/axios-config.js";
 import "./StrayAnimalList.css";
 import { PET } from "../../configs/host-config.js";
@@ -10,6 +10,12 @@ const StrayAnimalDetail = () => {
   const [detailLoading, setDetailLoading] = useState(false);
   const [detailError, setDetailError] = useState(null);
   const [detailData, setDetailData] = useState(null);
+
+  const [searchParams] = useSearchParams();
+
+  const region = searchParams.get("region") || "전체";
+  const category = searchParams.get("category") || "개";
+  const page = searchParams.get("page") || 0;
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -60,7 +66,14 @@ const StrayAnimalDetail = () => {
           {detailError && !detailLoading && (
             <div className="detail-error">
               <p className="error-text">{detailError}</p>
-              <button className="retry-button" onClick={() => navigate(-1)}>
+              <button
+                className="retry-button"
+                onClick={() =>
+                  navigate(
+                    `/stray/list?region=${region}&category=${category}&page=${page}`
+                  )
+                }
+              >
                 목록으로
               </button>
             </div>
