@@ -13,7 +13,18 @@ const StrayAnimalList = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
-
+  useEffect(() => {
+    if (!searchParams.has("region")) {
+      setSearchParams(
+        {
+          region: "전체",
+          category: "개",
+          page: 0,
+        },
+        { replace: true }
+      );
+    }
+  }, []);
   const selectedRegion = searchParams.get("region") || "전체";
   const selectedCategory = searchParams.get("category") || "개";
   const currentPage = Number(searchParams.get("page") || 0);

@@ -31,10 +31,7 @@ function App() {
                 />
               }
             />
-            <Route
-              path="/stray/list?region=전체&category=개&page=0"
-              element={<StrayAnimalList />}
-            />
+            <Route path="/stray/list" element={<StrayAnimalList />} />
             <Route path="/stray/detail/:id" element={<StrayAnimalDetail />} />
             <Route path="/festival/list" element={<FestivalList />} />
             <Route path="/festival/detail/:id" element={<FestivalDetail />} />
