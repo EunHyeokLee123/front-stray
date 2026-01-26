@@ -22,7 +22,15 @@ function App() {
         <Header />
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<Navigate to="/stray/list" replace />} />
+            <Route
+              path="/"
+              element={
+                <Navigate
+                  to="/stray/list?region=전체&category=개&page=0"
+                  replace
+                />
+              }
+            />
             <Route path="/stray/list" element={<StrayAnimalList />} />
             <Route path="/stray/detail/:id" element={<StrayAnimalDetail />} />
             <Route path="/festival/list" element={<FestivalList />} />

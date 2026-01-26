@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axiosInstance from "../../configs/axios-config.js";
 import "./StrayAnimalList.css";
 import { API_BASE_URL, PET } from "../../configs/host-config.js";
@@ -10,14 +10,25 @@ const StrayAnimalList = () => {
   const [animals, setAnimals] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+  useEffect(() => {
+    if (!searchParams.has("region")) {
+      setSearchParams(
+        {
+          region: "전체",
+          category: "개",
+          page: 0,
+        },
+        { replace: true }
+      );
+    }
+  }, [searchParams, setSearchParams]);
+  const selectedRegion = searchParams.get("region") || "전체";
+  const selectedCategory = searchParams.get("category") || "개";
+  const currentPage = Number(searchParams.get("page") || 0);
   const pageSize = 6;
-
-  // 필터 상태
-  const [selectedRegion, setSelectedRegion] = useState("전체");
-  const [selectedCategory, setSelectedCategory] = useState("개");
 
   const regions = [
     "전체",
@@ -83,8 +94,25 @@ const StrayAnimalList = () => {
     return "";
   };
 
+  const updateSearchParams = (next) => {
+    const current = {
+      region: selectedRegion,
+      category: selectedCategory,
+      page: currentPage,
+    };
+
+    const isSame =
+      current.region === next.region &&
+      current.category === next.category &&
+      current.page === next.page;
+
+    if (!isSame) {
+      setSearchParams(next);
+    }
+  };
+
   // 유기동물 목록 조회 함수
-  const fetchStrayAnimals = async (page = 0) => {
+  const fetchStrayAnimals = async () => {
     setLoading(true);
     setError(null);
 
@@ -102,10 +130,13 @@ const StrayAnimalList = () => {
       const kindFilter = kindMap[selectedCategory] || "개";
 
       // TODO: 실제 API 엔드포인트로 변경 필요
-      const response = await axiosInstance.post(`${PET}/search/${page}`, {
-        region: addressFilter,
-        kind: kindFilter,
-      });
+      const response = await axiosInstance.post(
+        `${PET}/search/${currentPage}`,
+        {
+          region: addressFilter,
+          kind: kindFilter,
+        }
+      );
 
       const data = response.data;
 
@@ -113,9 +144,10 @@ const StrayAnimalList = () => {
       const resultData = data.result || data;
       setAnimals(resultData.content || resultData.data || resultData || []);
 
-      if (resultData.pageable) {
-        setCurrentPage(resultData.pageable.pageNumber);
-      }
+      // if (resultData.pageable) {
+      //   setCurrentPage(resultData.pageable.pageNumber);
+      // }
+
       setTotalPages(resultData.totalPages || 0);
       setTotalElements(resultData.totalElements || 0);
     } catch (err) {
@@ -127,26 +159,29 @@ const StrayAnimalList = () => {
     }
   };
 
-  // 페이지 변경 함수
   const handlePageChange = (page) => {
-    setCurrentPage(page);
-    fetchStrayAnimals(page);
+    updateSearchParams({
+      region: selectedRegion,
+      category: selectedCategory,
+      page,
+    });
   };
+
+  const resetFilters = () => {
+    setSearchParams({
+      region: "전체",
+      category: "개",
+      page: 0,
+    });
+  };
+
+  useEffect(() => {
+    fetchStrayAnimals();
+  }, [selectedRegion, selectedCategory, currentPage]);
 
   useEffect(() => {
     logUserEvent("page_view", { page_name: "stray_animal" });
   }, []);
-
-  // 컴포넌트 마운트 시 데이터 로드
-  useEffect(() => {
-    fetchStrayAnimals(0);
-  }, []);
-
-  // 필터 변경 시 데이터 다시 로드
-  useEffect(() => {
-    setCurrentPage(0);
-    fetchStrayAnimals(0);
-  }, [selectedRegion, selectedCategory]);
 
   // 데이터 변환 함수
   const transformAnimalData = (animal) => {
@@ -161,14 +196,14 @@ const StrayAnimalList = () => {
         animal.sexCd === "M"
           ? "수컷"
           : animal.sexCd === "F"
-            ? "암컷"
-            : animal.sexCd === "Q"
-              ? "미상"
-              : "성별 정보 없음",
+          ? "암컷"
+          : animal.sexCd === "Q"
+          ? "미상"
+          : "성별 정보 없음",
       rescueDate: animal.happenDt
         ? `${animal.happenDt.slice(0, 4)}-${animal.happenDt.slice(
             4,
-            6,
+            6
           )}-${animal.happenDt.slice(6, 8)}`
         : "날짜 정보 없음",
       kindNm: animal.kindNm,
@@ -185,8 +220,9 @@ const StrayAnimalList = () => {
 
   // 상세 페이지로 이동
   const handleDetailClick = (desertionNo) => {
-    if (!desertionNo) return;
-    navigate(`/stray/detail/${desertionNo}`);
+    navigate(
+      `/stray/detail/${desertionNo}?region=${selectedRegion}&category=${selectedCategory}&page=${currentPage}`
+    );
   };
 
   return (
@@ -209,7 +245,13 @@ const StrayAnimalList = () => {
                     className={`filter-button ${
                       selectedRegion === region ? "active" : ""
                     }`}
-                    onClick={() => setSelectedRegion(region)}
+                    onClick={() =>
+                      updateSearchParams({
+                        region,
+                        category: selectedCategory,
+                        page: 0,
+                      })
+                    }
                   >
                     {region}
                   </button>
@@ -226,7 +268,13 @@ const StrayAnimalList = () => {
                     className={`filter-button ${
                       selectedCategory === category ? "active" : ""
                     }`}
-                    onClick={() => setSelectedCategory(category)}
+                    onClick={() =>
+                      updateSearchParams({
+                        region: selectedRegion,
+                        category,
+                        page: 0,
+                      })
+                    }
                   >
                     {category}
                   </button>
@@ -249,7 +297,7 @@ const StrayAnimalList = () => {
               <p className="error-text">{error}</p>
               <button
                 className="retry-button"
-                onClick={() => fetchStrayAnimals(currentPage)}
+                onClick={() => fetchStrayAnimals()}
               >
                 다시 시도
               </button>
@@ -262,14 +310,7 @@ const StrayAnimalList = () => {
               <p className="empty-text">
                 검색 조건에 맞는 유기동물이 없습니다.
               </p>
-              <button
-                className="reset-button"
-                onClick={() => {
-                  setSelectedRegion("전체");
-                  setSelectedCategory("개");
-                  setCurrentPage(0);
-                }}
-              >
+              <button className="reset-button" onClick={resetFilters}>
                 필터 초기화
               </button>
             </div>
@@ -280,8 +321,8 @@ const StrayAnimalList = () => {
             <>
               <div className="info-bar">
                 <p className="info-text">
-                  총 {totalElements}개 중 {currentPage * pageSize + 1}-
-                  {Math.min((currentPage + 1) * pageSize, totalElements)}개
+                  총 {totalElements}마리 중 {currentPage * pageSize + 1}-
+                  {Math.min((currentPage + 1) * pageSize, totalElements)}마리
                 </p>
               </div>
 
@@ -337,11 +378,11 @@ const StrayAnimalList = () => {
                   const maxVisiblePages = 7;
                   const startPage = Math.max(
                     0,
-                    currentPage - Math.floor(maxVisiblePages / 2),
+                    currentPage - Math.floor(maxVisiblePages / 2)
                   );
                   const endPage = Math.min(
                     totalPages - 1,
-                    startPage + maxVisiblePages - 1,
+                    startPage + maxVisiblePages - 1
                   );
 
                   return (
@@ -375,7 +416,7 @@ const StrayAnimalList = () => {
                         {/* 현재 페이지 범위 */}
                         {Array.from(
                           { length: endPage - startPage + 1 },
-                          (_, i) => startPage + i,
+                          (_, i) => startPage + i
                         ).map((page) => (
                           <button
                             key={page}
@@ -408,7 +449,7 @@ const StrayAnimalList = () => {
                         className="pagination-button"
                         onClick={() =>
                           handlePageChange(
-                            Math.min(totalPages - 1, currentPage + 1),
+                            Math.min(totalPages - 1, currentPage + 1)
                           )
                         }
                         disabled={currentPage === totalPages - 1}

@@ -5,12 +5,20 @@ import "./FestivalList.css";
 import { FESTIVAL } from "../../configs/host-config.js";
 import { logUserEvent } from "../hooks/user-log-hook.jsx";
 
+const getInitialPage = () => {
+  const savedPage = sessionStorage.getItem("festival_page");
+  sessionStorage.removeItem("stray_page");
+  sessionStorage.removeItem("stray_region");
+  sessionStorage.removeItem("stray_category");
+  return savedPage !== null ? Number(savedPage) : 0;
+};
+
 const FestivalList = () => {
   const navigate = useNavigate();
   const [festivals, setFestivals] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(getInitialPage);
   const [totalPages, setTotalPages] = useState(0);
   const [_totalElements, setTotalElements] = useState(0);
 
@@ -21,8 +29,6 @@ const FestivalList = () => {
 
     try {
       const response = await axiosInstance.get(`${FESTIVAL}/list/${page}`);
-
-      console.log(response);
 
       const data = response.data;
 
@@ -36,7 +42,6 @@ const FestivalList = () => {
       setTotalPages(resultData.totalPages || 0);
       setTotalElements(resultData.totalElements || 0);
     } catch (err) {
-      console.error("행사 목록 조회 실패:", err);
       setError("행사 정보를 불러오는데 실패했습니다.");
       setFestivals([]);
     } finally {
@@ -47,8 +52,15 @@ const FestivalList = () => {
   // 페이지 변경 함수
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    fetchFestivals(page);
   };
+
+  useEffect(() => {
+    sessionStorage.setItem("festival_page", currentPage);
+  }, [currentPage]);
+
+  useEffect(() => {
+    fetchFestivals(currentPage);
+  }, [currentPage]);
 
   useEffect(() => {
     logUserEvent("page_view", { page_name: "festival" });
@@ -59,11 +71,6 @@ const FestivalList = () => {
     if (!festivalId) return;
     navigate(`/festival/detail/${festivalId}`);
   };
-
-  // 컴포넌트 마운트 시 데이터 로드
-  useEffect(() => {
-    fetchFestivals(0);
-  }, []);
 
   return (
     <div className="festival-list-page">
@@ -156,11 +163,11 @@ const FestivalList = () => {
                     const maxVisiblePages = 7;
                     const startPage = Math.max(
                       0,
-                      currentPage - Math.floor(maxVisiblePages / 2),
+                      currentPage - Math.floor(maxVisiblePages / 2)
                     );
                     const endPage = Math.min(
                       totalPages - 1,
-                      startPage + maxVisiblePages - 1,
+                      startPage + maxVisiblePages - 1
                     );
 
                     return (
@@ -183,7 +190,7 @@ const FestivalList = () => {
                         {/* 현재 페이지 범위 */}
                         {Array.from(
                           { length: endPage - startPage + 1 },
-                          (_, i) => startPage + i,
+                          (_, i) => startPage + i
                         ).map((page) => (
                           <button
                             key={page}
