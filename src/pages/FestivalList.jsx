@@ -135,12 +135,6 @@ const FestivalList = () => {
                           {festival.festivalDate || "-"}
                         </span>
                       </span>
-                      <span className="festival-info-item">
-                        <span className="info-label">주소:</span>
-                        <span className="info-value">
-                          {festival.addr || "-"}
-                        </span>
-                      </span>
                     </div>
                   </div>
                 </div>
@@ -163,11 +157,11 @@ const FestivalList = () => {
                     const maxVisiblePages = 7;
                     const startPage = Math.max(
                       0,
-                      currentPage - Math.floor(maxVisiblePages / 2)
+                      currentPage - Math.floor(maxVisiblePages / 2),
                     );
                     const endPage = Math.min(
                       totalPages - 1,
-                      startPage + maxVisiblePages - 1
+                      startPage + maxVisiblePages - 1,
                     );
 
                     return (
@@ -190,7 +184,7 @@ const FestivalList = () => {
                         {/* 현재 페이지 범위 */}
                         {Array.from(
                           { length: endPage - startPage + 1 },
-                          (_, i) => startPage + i
+                          (_, i) => startPage + i,
                         ).map((page) => (
                           <button
                             key={page}

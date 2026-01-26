@@ -72,9 +72,9 @@ const FestivalDetail = () => {
               <div className="detail-info-grid">
                 <div className="detail-info-row">
                   <span className="detail-value">
-                  <h1 className="detail-title">
-                    {detailData?.title || "행사 상세"}
-            </h1>
+                    <h1 className="detail-title">
+                      {detailData?.title || "행사 상세"}
+                    </h1>
                   </span>
                 </div>
                 <div className="detail-info-row">
@@ -107,12 +107,6 @@ const FestivalDetail = () => {
                     {detailData.reservationDate || "-"}
                   </span>
                 </div>
-                <div className="detail-info-row">
-                  <span className="detail-label">주소:</span>
-                  <span className="detail-value">
-                    {detailData.addr || "-"}
-                  </span>
-                </div>
               </div>
 
               {detailData.imagePath && (
@@ -127,7 +121,6 @@ const FestivalDetail = () => {
                   />
                 </div>
               )}
-
 
               {detailData.url && (
                 <div className="detail-footer">
