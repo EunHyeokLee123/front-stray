@@ -776,12 +776,6 @@ const FacilityMapPage = () => {
                           {modalData.businessName || "-"}
                         </span>
                       </div>
-                      <div className="detail-info-item">
-                        <span className="detail-label">개방서비스명</span>
-                        <span className="detail-value">
-                          {modalData.serviceName || "-"}
-                        </span>
-                      </div>
                       {modalData.phoneNumber && (
                         <div className="detail-info-item">
                           <span className="detail-label">전화번호</span>
@@ -817,14 +811,6 @@ const FacilityMapPage = () => {
                           <span className="detail-label">인허가일자</span>
                           <span className="detail-value">
                             {modalData.approvalDate}
-                          </span>
-                        </div>
-                      )}
-                      {modalData.siteArea && (
-                        <div className="detail-info-item">
-                          <span className="detail-label">소재지면적</span>
-                          <span className="detail-value">
-                            {modalData.siteArea}㎡
                           </span>
                         </div>
                       )}
