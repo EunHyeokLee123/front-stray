@@ -31,7 +31,7 @@
 }
 
 .page-subtitle {
-  font-size: 1rem;
+  font-size: 1.1rem;
   padding-top: 0.5rem;
   color: #8b7a6f;
   margin: 0;
@@ -40,7 +40,7 @@
 }
 
 .seo-description {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 /* 로딩, 에러, 빈 상태 */
