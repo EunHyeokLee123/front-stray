@@ -25,7 +25,7 @@
   font-size: 2.75rem;
   font-weight: 600;
   color: #6b5b4f;
-  //margin: 0 0 1rem 0;
+  margin: 0 0 1rem 0;
   font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
   letter-spacing: -0.02em;
 }
@@ -40,7 +40,7 @@
 }
 
 .seo-description {
-  font-size: 0.9rem;
+  font-size: 1.1rem;
 }
 
 /* 로딩, 에러, 빈 상태 */

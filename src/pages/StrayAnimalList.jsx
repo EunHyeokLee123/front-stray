@@ -22,7 +22,7 @@ const StrayAnimalList = () => {
           category: "개",
           page: 0,
         },
-        { replace: true }
+        { replace: true },
       );
     }
   }, [searchParams, setSearchParams]);
@@ -120,8 +120,8 @@ const StrayAnimalList = () => {
       selectedCategory === "개"
         ? "유기견"
         : selectedCategory === "고양이"
-        ? "유기묘"
-        : "유기동물";
+          ? "유기묘"
+          : "유기동물";
 
     const title = `${regionText} ${categoryText} 입양 정보 | 냥몽`;
 
@@ -163,7 +163,7 @@ const StrayAnimalList = () => {
         {
           region: addressFilter,
           kind: kindFilter,
-        }
+        },
       );
 
       const data = response.data;
@@ -225,14 +225,14 @@ const StrayAnimalList = () => {
         animal.sexCd === "M"
           ? "수컷"
           : animal.sexCd === "F"
-          ? "암컷"
-          : animal.sexCd === "Q"
-          ? "미상"
-          : "성별 정보 없음",
+            ? "암컷"
+            : animal.sexCd === "Q"
+              ? "미상"
+              : "성별 정보 없음",
       rescueDate: animal.happenDt
         ? `${animal.happenDt.slice(0, 4)}-${animal.happenDt.slice(
             4,
-            6
+            6,
           )}-${animal.happenDt.slice(6, 8)}`
         : "날짜 정보 없음",
       kindNm: animal.kindNm,
@@ -250,7 +250,7 @@ const StrayAnimalList = () => {
   // 상세 페이지로 이동
   const handleDetailClick = (desertionNo) => {
     navigate(
-      `/stray/detail/${desertionNo}?region=${selectedRegion}&category=${selectedCategory}&page=${currentPage}`
+      `/stray/detail/${desertionNo}?region=${selectedRegion}&category=${selectedCategory}&page=${currentPage}`,
     );
   };
 
@@ -264,17 +264,17 @@ const StrayAnimalList = () => {
               {selectedCategory === "개"
                 ? "유기견"
                 : selectedCategory === "고양이"
-                ? "유기묘"
-                : "유기동물"}{" "}
+                  ? "유기묘"
+                  : "유기동물"}{" "}
               정보
             </h1>
-            <p className="seo-description">
+            <p className="seo-desc">
               {selectedRegion === "전체" ? "전국" : selectedRegion} 지역의{" "}
               {selectedCategory === "개"
                 ? "유기견"
                 : selectedCategory === "고양이"
-                ? "유기묘"
-                : "유기동물"}{" "}
+                  ? "유기묘"
+                  : "유기동물"}{" "}
               입양 정보를 제공합니다. 냥몽에서 새로운 가족을 기다리는 아이들을
               만나보세요.
             </p>
@@ -424,11 +424,11 @@ const StrayAnimalList = () => {
                   const maxVisiblePages = 7;
                   const startPage = Math.max(
                     0,
-                    currentPage - Math.floor(maxVisiblePages / 2)
+                    currentPage - Math.floor(maxVisiblePages / 2),
                   );
                   const endPage = Math.min(
                     totalPages - 1,
-                    startPage + maxVisiblePages - 1
+                    startPage + maxVisiblePages - 1,
                   );
 
                   return (
@@ -462,7 +462,7 @@ const StrayAnimalList = () => {
                         {/* 현재 페이지 범위 */}
                         {Array.from(
                           { length: endPage - startPage + 1 },
-                          (_, i) => startPage + i
+                          (_, i) => startPage + i,
                         ).map((page) => (
                           <button
                             key={page}
@@ -495,7 +495,7 @@ const StrayAnimalList = () => {
                         className="pagination-button"
                         onClick={() =>
                           handlePageChange(
-                            Math.min(totalPages - 1, currentPage + 1)
+                            Math.min(totalPages - 1, currentPage + 1),
                           )
                         }
                         disabled={currentPage === totalPages - 1}
