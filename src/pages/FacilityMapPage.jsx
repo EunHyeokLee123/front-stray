@@ -4,6 +4,7 @@ import MapComponent from "../components/MapComponent.jsx";
 import "./FacilityMapPage.css";
 import { MAP, HOSPITAL, STYLE } from "../../configs/host-config.js";
 import { logUserEvent } from "../hooks/user-log-hook.jsx";
+import { useSEO } from "../hooks/useSEO.jsx";
 
 const FacilityMapPage = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -300,6 +301,50 @@ const FacilityMapPage = () => {
       setSelectedCultureSubCategory("12");
     }
   };
+
+  // 지역 코드 → 한글
+  const getRegionLabel = (code) => {
+    const region = cultureRegionOptions.find((r) => r.value === code);
+    return region?.label || "전국";
+  };
+
+  // 카테고리 → 한글
+  const getCategoryLabel = (id) => {
+    const cat = categories.find((c) => c.id === id);
+    return cat?.name || "반려동물 시설";
+  };
+
+  const getFacilitySEO = () => {
+    let region = "전국";
+    let category = getCategoryLabel(selectedCategory);
+
+    if (selectedCategory === "culture") {
+      region = getRegionLabel(selectedCultureRegion);
+    } else if (selectedCategory === "hospital") {
+      region = getRegionLabel(selectedHospitalRegion);
+    } else if (isGroomingCategory) {
+      region = getRegionLabel(selectedGroomingRegion);
+    }
+
+    const title = `${region} ${category} 위치·정보 지도 | 냥몽`;
+
+    const description = `${region} 지역 ${category} 위치, 주소, 전화번호, 이용정보를 지도에서 한눈에 확인하세요. 반려동물과 함께 이용할 수 있는 시설 정보를 제공합니다.`;
+
+    return {
+      title,
+      description,
+
+      image: "/images/seo/og-map.png",
+
+      canonical: `https://nyangmong.com/map`,
+    };
+  };
+
+  // SEO 데이터 생성
+  const seoData = getFacilitySEO();
+
+  // SEO 적용
+  useSEO(seoData);
 
   const selectedCultureLabel = cultureSubCategories.find(
     (cat) => cat.value === selectedCultureSubCategory

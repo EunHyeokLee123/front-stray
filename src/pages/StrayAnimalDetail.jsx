@@ -3,6 +3,7 @@ import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import axiosInstance from "../../configs/axios-config.js";
 import "./StrayAnimalList.css";
 import { PET } from "../../configs/host-config.js";
+import { useSEO } from "../hooks/useSEO.jsx";
 
 const StrayAnimalDetail = () => {
   const { id } = useParams();
@@ -16,6 +17,40 @@ const StrayAnimalDetail = () => {
   const region = searchParams.get("region") || "전체";
   const category = searchParams.get("category") || "개";
   const page = searchParams.get("page") || 0;
+
+  // 상세페이지 SEO 생성
+  const getDetailSEO = () => {
+    if (!detailData) return null;
+
+    const regionText = region === "전체" ? "" : region + " ";
+
+    const kind = detailData.kindNm || "유기동물";
+    const age = detailData.age || "";
+    const place = detailData.happenPlace || "";
+    const shelter = detailData.careNm || "";
+
+    const title = `${regionText}${kind} 입양 정보 | 냥몽`;
+
+    const description = `${place}에서 구조된 ${kind}${
+      age ? ` (${age})` : ""
+    }의 입양 정보입니다. 보호소: ${shelter}. 연락처 및 위치 확인 가능.`;
+
+    const image =
+      detailData.popfile1 ||
+      detailData.popfile2 ||
+      "/images/seo/article-default-1200.webp";
+
+    return {
+      title,
+      description,
+      image,
+      canonical: `https://nyangmong.com/stray/detail/${id}?region=${region}&category=${category}&page=${page}`,
+    };
+  };
+
+  const seo = getDetailSEO();
+
+  useSEO(seo);
 
   useEffect(() => {
     const fetchDetail = async () => {

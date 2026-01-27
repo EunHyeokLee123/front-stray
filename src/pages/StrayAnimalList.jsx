@@ -4,6 +4,7 @@ import axiosInstance from "../../configs/axios-config.js";
 import "./StrayAnimalList.css";
 import { API_BASE_URL, PET } from "../../configs/host-config.js";
 import { logUserEvent } from "../hooks/user-log-hook.jsx";
+import { useSEO } from "../hooks/useSEO.jsx";
 
 const StrayAnimalList = () => {
   const navigate = useNavigate();
@@ -29,6 +30,10 @@ const StrayAnimalList = () => {
   const selectedCategory = searchParams.get("category") || "개";
   const currentPage = Number(searchParams.get("page") || 0);
   const pageSize = 6;
+
+  const seo = getSEOData();
+
+  useSEO(seo);
 
   const regions = [
     "전체",
@@ -109,6 +114,29 @@ const StrayAnimalList = () => {
     if (!isSame) {
       setSearchParams(next);
     }
+  };
+
+  // SEO 메타 생성
+  const getSEOData = () => {
+    const regionText = selectedRegion === "전체" ? "전국" : selectedRegion;
+
+    const categoryText =
+      selectedCategory === "개"
+        ? "유기견"
+        : selectedCategory === "고양이"
+        ? "유기묘"
+        : "유기동물";
+
+    const title = `${regionText} ${categoryText} 입양 정보 | 냥몽`;
+
+    const description = `${regionText} 지역의 ${categoryText} 보호소 정보와 입양 가능한 동물 목록을 확인하세요. 냥몽에서 새로운 가족을 만나보세요.`;
+
+    return {
+      title,
+      description,
+      image: "/images/seo/og-main-1200.png",
+      canonical: `https://nyangmong.com/stray/list?region=${selectedRegion}&category=${selectedCategory}&page=${currentPage}`,
+    };
   };
 
   // 유기동물 목록 조회 함수

@@ -4,6 +4,7 @@ import axiosInstance from "../../configs/axios-config.js";
 import "./FestivalList.css";
 import { FESTIVAL } from "../../configs/host-config.js";
 import { logUserEvent } from "../hooks/user-log-hook.jsx";
+import { useSEO } from "../hooks/useSEO.jsx";
 
 const getInitialPage = () => {
   const savedPage = sessionStorage.getItem("festival_page");
@@ -49,6 +50,22 @@ const FestivalList = () => {
     }
   };
 
+  // 행사 목록 SEO 생성
+  const getFestivalListSEO = () => {
+    const pageText = currentPage > 0 ? ` - ${currentPage + 1}페이지` : "";
+
+    return {
+      title: `반려동물 박람회·펫페어 일정${pageText} | 냥몽`,
+
+      description:
+        "국내 반려동물 박람회, 펫페어, 반려동물 행사 일정을 한눈에 확인하세요. 위치, 일정, 참가 정보까지 제공하는 냥몽입니다.",
+
+      image: "/images/seo/og-main-1200.png",
+
+      canonical: `https://nyangmong.com/festival/list`,
+    };
+  };
+
   // 페이지 변경 함수
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -71,6 +88,9 @@ const FestivalList = () => {
     if (!festivalId) return;
     navigate(`/festival/detail/${festivalId}`);
   };
+
+  const seo = getFestivalListSEO();
+  useSEO(seo);
 
   return (
     <div className="festival-list-page">
@@ -157,11 +177,11 @@ const FestivalList = () => {
                     const maxVisiblePages = 7;
                     const startPage = Math.max(
                       0,
-                      currentPage - Math.floor(maxVisiblePages / 2),
+                      currentPage - Math.floor(maxVisiblePages / 2)
                     );
                     const endPage = Math.min(
                       totalPages - 1,
-                      startPage + maxVisiblePages - 1,
+                      startPage + maxVisiblePages - 1
                     );
 
                     return (
@@ -184,7 +204,7 @@ const FestivalList = () => {
                         {/* 현재 페이지 범위 */}
                         {Array.from(
                           { length: endPage - startPage + 1 },
-                          (_, i) => startPage + i,
+                          (_, i) => startPage + i
                         ).map((page) => (
                           <button
                             key={page}
