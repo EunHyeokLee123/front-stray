@@ -73,7 +73,7 @@ const StrayAnimalDetail = () => {
 
   const seo = getDetailSEO();
 
-  useSEO(seo);
+  useSEO(seo || {});
 
   return (
     <div className="stray-animal-list-page">
