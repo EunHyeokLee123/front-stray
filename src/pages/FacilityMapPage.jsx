@@ -514,8 +514,8 @@ const FacilityMapPage = () => {
     <div className="facility-map-page">
       <div className="facility-map-container">
         <div className="page-header">
-          <h1 className="page-title">반려동물 관련 시설 정보</h1>
-          <p className="page-subtitle">주변 시설을 지도에서 확인하세요</p>
+          <h1 className="page-title">{title}</h1>
+          <p className="page-subtitle">{description}</p>
         </div>
 
         {/* ✅ SEO 영역 추가 */}
