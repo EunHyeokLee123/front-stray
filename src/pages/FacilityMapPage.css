@@ -600,3 +600,41 @@
     gap: 0.5rem;
   }
 }
+
+/* =========================
+   Map SEO Section
+========================= */
+
+.map-seo-section {
+  background: rgba(255, 248, 240, 0.9);
+  border: 1px solid rgba(255, 182, 193, 0.25);
+  border-radius: 20px;
+
+  padding: 1.6rem 2rem;
+  margin-bottom: 2.5rem;
+
+  text-align: center;
+
+  box-shadow: 0 4px 14px rgba(255, 182, 193, 0.12);
+}
+
+.map-seo-title {
+  font-size: 1.9rem;
+  font-weight: 600;
+  color: #6b5b4f;
+
+  margin-bottom: 0.8rem;
+
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
+}
+
+.map-seo-desc {
+  font-size: 1rem;
+  color: #8b7a6f;
+  line-height: 1.6;
+
+  max-width: 800px;
+  margin: 0 auto;
+
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
+}

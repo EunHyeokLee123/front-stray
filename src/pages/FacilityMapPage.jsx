@@ -89,6 +89,10 @@ const FacilityMapPage = () => {
   ];
   const isGroomingCategory = groomingCategories.includes(selectedCategory);
 
+  const getCategoryName = (id) => {
+    return categories.find((c) => c.id === id)?.name || "";
+  };
+
   useEffect(() => {
     logUserEvent("page_view", { page_name: "map" });
   }, []);
@@ -99,12 +103,12 @@ const FacilityMapPage = () => {
       setShowGroomingRegion(true);
       axiosInstance
         .get(
-          `${STYLE}/region/list/${selectedGroomingRegion}/${selectedCategory}`
+          `${STYLE}/region/list/${selectedGroomingRegion}/${selectedCategory}`,
         )
         .then((res) => {
           const districts = res.data?.result || [];
           const sortedDistricts = districts.sort((a, b) =>
-            a.localeCompare(b, "ko")
+            a.localeCompare(b, "ko"),
           );
           setGroomingDistrictOptions(sortedDistricts);
           setSelectedGroomingDistrict(sortedDistricts[0] || "");
@@ -129,7 +133,7 @@ const FacilityMapPage = () => {
     ) {
       axiosInstance
         .get(
-          `${STYLE}/list/${selectedGroomingRegion}/${selectedGroomingDistrict}/${selectedCategory}`
+          `${STYLE}/list/${selectedGroomingRegion}/${selectedGroomingDistrict}/${selectedCategory}`,
         )
         .then((res) => {
           const list = res.data?.result || [];
@@ -138,7 +142,7 @@ const FacilityMapPage = () => {
           if (list.length > 0) {
             const firstShop = list.find(
               (shop) =>
-                shop.facilityName && (shop.fullAddress || shop.roadAddress)
+                shop.facilityName && (shop.fullAddress || shop.roadAddress),
             );
             if (firstShop) {
               // selectedLocation 설정
@@ -185,7 +189,7 @@ const FacilityMapPage = () => {
           // 첫 번째 아이템을 기본 선택
           if (locations.length > 0) {
             const firstLocation = locations.find(
-              (location) => location.addr || location.addr1
+              (location) => location.addr || location.addr1,
             );
             if (firstLocation) {
               setSelectedLocation(firstLocation);
@@ -194,7 +198,7 @@ const FacilityMapPage = () => {
                 .get(`${MAP}/detail/${firstLocation.mapId}`)
                 .then((detailRes) => {
                   setSelectedCultureDetail(
-                    detailRes.data?.result || detailRes.data || null
+                    detailRes.data?.result || detailRes.data || null,
                   );
                 })
                 .catch(() => {
@@ -222,7 +226,7 @@ const FacilityMapPage = () => {
         .then((res) => {
           const categoryData = res.data?.result || res.data || [];
           const sortedCategoryData = categoryData.sort((a, b) =>
-            a.localeCompare(b, "ko")
+            a.localeCompare(b, "ko"),
           );
           setHospitalCategoryOptions(sortedCategoryData);
           if (sortedCategoryData.length > 0) {
@@ -242,7 +246,7 @@ const FacilityMapPage = () => {
       setIsHospitalLoading(true);
       axiosInstance
         .get(
-          `${HOSPITAL}/list/${selectedHospitalRegion}/${selectedHospitalCategory}`
+          `${HOSPITAL}/list/${selectedHospitalRegion}/${selectedHospitalCategory}`,
         )
         .then((res) => {
           const hospitalData = Array.isArray(res.data?.result)
@@ -252,7 +256,7 @@ const FacilityMapPage = () => {
           // 첫 번째 아이템을 기본 선택
           if (hospitalData.length > 0) {
             const firstHospital = hospitalData.find(
-              (h) => h.hospitalName && h.fullAddress
+              (h) => h.hospitalName && h.fullAddress,
             );
             if (firstHospital) {
               setSelectedLocation(firstHospital);
@@ -261,7 +265,7 @@ const FacilityMapPage = () => {
                 .get(`${HOSPITAL}/detail/${firstHospital.hospitalId}`)
                 .then((detailRes) => {
                   setSelectedHospitalInfo(
-                    detailRes.data?.result || detailRes.data || null
+                    detailRes.data?.result || detailRes.data || null,
                   );
                 })
                 .catch(() => {
@@ -347,7 +351,7 @@ const FacilityMapPage = () => {
   useSEO(seoData);
 
   const selectedCultureLabel = cultureSubCategories.find(
-    (cat) => cat.value === selectedCultureSubCategory
+    (cat) => cat.value === selectedCultureSubCategory,
   )?.name;
 
   const handleCultureLocationClick = async (location) => {
@@ -366,7 +370,7 @@ const FacilityMapPage = () => {
 
     try {
       const res = await axiosInstance.get(
-        `${HOSPITAL}/detail/${hospital.hospitalId}`
+        `${HOSPITAL}/detail/${hospital.hospitalId}`,
       );
       setSelectedHospitalInfo(res.data?.result || res.data || null);
     } catch (err) {
@@ -405,12 +409,12 @@ const FacilityMapPage = () => {
       } else if (selectedCategory === "hospital") {
         // 동물병원
         response = await axiosInstance.get(
-          `${HOSPITAL}/detail/${location.hospitalId}`
+          `${HOSPITAL}/detail/${location.hospitalId}`,
         );
       } else {
         // 나머지 카테고리
         response = await axiosInstance.get(
-          `${STYLE}/detail/${selectedCategory}/${location.id}`
+          `${STYLE}/detail/${selectedCategory}/${location.id}`,
         );
       }
 
@@ -450,6 +454,62 @@ const FacilityMapPage = () => {
     return [];
   };
 
+  const getPageSEOText = () => {
+    let region = "전국";
+    let district = "";
+    let title = "";
+    let description = "";
+
+    // 카테고리 한글명
+    const categoryName = getCategoryName(selectedCategory);
+
+    /* =====================
+     미용실 / 병원
+  ===================== */
+    if (isGroomingCategory || selectedCategory === "hospital") {
+      region = getRegionLabel(selectedGroomingRegion || selectedHospitalRegion);
+
+      district = selectedGroomingDistrict || "";
+
+      title = `${region} ${district} ${categoryName} 지도 정보`;
+
+      description = `${region} ${district} 지역 ${categoryName} 위치, 주소, 이용정보를 지도에서 한눈에 확인하세요.`;
+
+      return { title, description };
+    }
+
+    /* =====================
+     문화시설
+  ===================== */
+    if (selectedCategory === "culture") {
+      const subCategoryName =
+        cultureSubCategories.find(
+          (cat) => cat.value === selectedCultureSubCategory,
+        )?.name || "문화시설";
+
+      region = getRegionLabel(selectedCultureRegion);
+
+      title = `${region} 반려동물 ${subCategoryName} 지도 정보`;
+
+      description = `${region} 지역 반려동물 ${subCategoryName} 위치, 주소, 이용정보를 확인하세요.`;
+
+      return { title, description };
+    }
+
+    /* =====================
+     기타
+  ===================== */
+    region = getRegionLabel(selectedRegion);
+
+    title = `${region} ${categoryName} 지도 정보`;
+
+    description = `${region} 지역 ${categoryName} 위치와 정보를 확인하세요.`;
+
+    return { title, description };
+  };
+
+  const { title, description } = getPageSEOText();
+
   return (
     <div className="facility-map-page">
       <div className="facility-map-container">
@@ -457,6 +517,12 @@ const FacilityMapPage = () => {
           <h1 className="page-title">반려동물 관련 시설 정보</h1>
           <p className="page-subtitle">주변 시설을 지도에서 확인하세요</p>
         </div>
+
+        {/* ✅ SEO 영역 추가 */}
+        <section className="map-seo-section">
+          <h2 className="map-seo-title">{title}</h2>
+          <p className="map-seo-desc">{description}</p>
+        </section>
 
         {/* 필터 영역 (상단) */}
         <div className="filter-section">
@@ -753,8 +819,8 @@ const FacilityMapPage = () => {
                     {selectedCategory === "culture"
                       ? modalData.title || "문화시설 상세"
                       : selectedCategory === "hospital"
-                      ? modalData.businessName || "동물병원 상세"
-                      : modalData.facilityName || "시설 상세"}
+                        ? modalData.businessName || "동물병원 상세"
+                        : modalData.facilityName || "시설 상세"}
                   </h2>
                   <button className="detail-close" onClick={closeModal}>
                     ×
