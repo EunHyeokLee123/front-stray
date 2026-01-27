@@ -149,14 +149,6 @@ const StrayAnimalDetail = () => {
                   className="slider-image"
                 />
 
-                {/* ✅ 설명문 추가 */}
-                <p className="detail-seo-text">
-                  {detailData.happenPlace || "해당 지역"}에서 구조된{" "}
-                  {detailData.kindNm || "유기동물"}입니다. 현재{" "}
-                  {detailData.careNm || "보호소"}에서 새로운 만남을 기다리고
-                  있습니다.
-                </p>
-
                 <button
                   className="slider-btn right"
                   onClick={() =>
@@ -168,6 +160,14 @@ const StrayAnimalDetail = () => {
                   ›
                 </button>
               </div>
+
+              {/* ✅ 설명문 추가 */}
+              <p className="detail-seo-text">
+                {detailData.happenPlace || "해당 지역"}에서 구조된{" "}
+                {detailData.kindNm || "유기동물"}입니다. 현재{" "}
+                {detailData.careNm || "보호소"}에서 새로운 만남을 기다리고
+                있습니다.
+              </p>
 
               {/* 상세정보 버튼 */}
               <button
