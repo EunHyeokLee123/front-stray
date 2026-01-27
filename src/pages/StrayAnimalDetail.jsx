@@ -18,6 +18,29 @@ const StrayAnimalDetail = () => {
   const category = searchParams.get("category") || "개";
   const page = searchParams.get("page") || 0;
 
+  useEffect(() => {
+    const fetchDetail = async () => {
+      if (!id) {
+        setDetailError("유기번호가 없습니다.");
+        return;
+      }
+      setDetailLoading(true);
+      setDetailError(null);
+      try {
+        const res = await axiosInstance.get(`${PET}/detail/${id}`);
+        const data = res.data?.result || res.data;
+        setDetailData(data);
+      } catch (err) {
+        setDetailError("상세 정보를 불러오지 못했습니다.");
+        setDetailData(null);
+      } finally {
+        setDetailLoading(false);
+      }
+    };
+
+    fetchDetail();
+  }, [id]);
+
   // 상세페이지 SEO 생성
   const getDetailSEO = () => {
     if (!detailData) return null;
@@ -52,29 +75,6 @@ const StrayAnimalDetail = () => {
 
   useSEO(seo);
 
-  useEffect(() => {
-    const fetchDetail = async () => {
-      if (!id) {
-        setDetailError("유기번호가 없습니다.");
-        return;
-      }
-      setDetailLoading(true);
-      setDetailError(null);
-      try {
-        const res = await axiosInstance.get(`${PET}/detail/${id}`);
-        const data = res.data?.result || res.data;
-        setDetailData(data);
-      } catch (err) {
-        setDetailError("상세 정보를 불러오지 못했습니다.");
-        setDetailData(null);
-      } finally {
-        setDetailLoading(false);
-      }
-    };
-
-    fetchDetail();
-  }, [id]);
-
   return (
     <div className="stray-animal-list-page">
       <div className="stray-animal-container">
@@ -91,8 +91,17 @@ const StrayAnimalDetail = () => {
               ← 목록으로
             </button>
             <h1 className="page-title">
-              {detailData?.kindNm || "유기동물 상세"}
+              {region !== "전체" && `${region} `}
+              {detailData?.kindNm || "유기동물"} 입양 정보
             </h1>
+            {detailData && (
+              <p className="seo-description">
+                {detailData.happenPlace || "해당 지역"}에서 구조된{" "}
+                {detailData.kindNm || "유기동물"}입니다. 현재{" "}
+                {detailData.careNm || "보호소"}에서 보호 중이며, 입양을 기다리고
+                있습니다.
+              </p>
+            )}
           </div>
 
           {detailLoading && (

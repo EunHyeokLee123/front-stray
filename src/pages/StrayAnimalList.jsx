@@ -259,8 +259,25 @@ const StrayAnimalList = () => {
       <div className="stray-animal-container">
         <>
           <div className="page-header">
-            <h1 className="page-title">유기동물 정보</h1>
-            <p className="page-subtitle">새로운 가족을 기다리는 아이들</p>
+            <h1 className="page-title">
+              {selectedRegion === "전체" ? "전국" : selectedRegion}{" "}
+              {selectedCategory === "개"
+                ? "유기견"
+                : selectedCategory === "고양이"
+                ? "유기묘"
+                : "유기동물"}{" "}
+              정보
+            </h1>
+            <p className="seo-description">
+              {selectedRegion === "전체" ? "전국" : selectedRegion} 지역의{" "}
+              {selectedCategory === "개"
+                ? "유기견"
+                : selectedCategory === "고양이"
+                ? "유기묘"
+                : "유기동물"}{" "}
+              의 입양 정보를 제공합니다. 냥몽에서 새로운 가족을 기다리는
+              아이들을 만나보세요.
+            </p>
           </div>
 
           {/* 필터 영역 */}
@@ -374,7 +391,7 @@ const StrayAnimalList = () => {
                         className="card-title"
                         onClick={() => handleDetailClick(animal.desertionNo)}
                       >
-                        {animal.title}
+                        {animal.title} 입양 정보
                       </h3>
                       <div className="card-info">
                         <div className="info-item">
