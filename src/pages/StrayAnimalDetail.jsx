@@ -11,6 +11,8 @@ const StrayAnimalDetail = () => {
   const [detailLoading, setDetailLoading] = useState(false);
   const [detailError, setDetailError] = useState(null);
   const [detailData, setDetailData] = useState(null);
+  const [currentImage, setCurrentImage] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const [searchParams] = useSearchParams();
 
@@ -71,6 +73,12 @@ const StrayAnimalDetail = () => {
     };
   };
 
+  const images = [detailData?.popfile1, detailData?.popfile2].filter(Boolean);
+
+  if (images.length === 0) {
+    images.push("/logo.png");
+  }
+
   const seo = getDetailSEO();
 
   useSEO(seo || {});
@@ -92,16 +100,8 @@ const StrayAnimalDetail = () => {
             </button>
             <h1 className="page-title">
               {region !== "전체" && `${region} `}
-              {detailData?.kindNm || "유기동물"} 입양 정보
+              {detailData?.kindNm || "유기동물"} 정보
             </h1>
-            {detailData && (
-              <p className="seo-description">
-                {detailData.happenPlace || "해당 지역"}에서 구조된{" "}
-                {detailData.kindNm || "유기동물"}입니다. 현재{" "}
-                {detailData.careNm || "보호소"}에서 보호 중이며, 입양을 기다리고
-                있습니다.
-              </p>
-            )}
           </div>
 
           {detailLoading && (
@@ -127,107 +127,90 @@ const StrayAnimalDetail = () => {
             </div>
           )}
 
+          {/* 상세 내용 */}
           {detailData && !detailLoading && !detailError && (
             <div className="detail-layout">
-              <div className="detail-gallery">
-                {[detailData.popfile1, detailData.popfile2]
-                  .filter(Boolean)
-                  .map((src, idx) => (
-                    <div key={idx} className="detail-image-box">
-                      <img
-                        src={src}
-                        alt={detailData.kindNm || "유기동물"}
-                        onError={(e) => {
-                          e.target.src = "/logo.png";
-                        }}
-                      />
-                    </div>
-                  ))}
-                {[detailData.popfile1, detailData.popfile2].every(
-                  (v) => !v
-                ) && (
-                  <div className="detail-image-box">
-                    <img src="/logo.png" alt="이미지 없음" />
-                  </div>
-                )}
+              {/* 이미지 슬라이더 */}
+              <div className="detail-slider">
+                <button
+                  className="slider-btn left"
+                  onClick={() =>
+                    setCurrentImage((prev) =>
+                      prev === 0 ? images.length - 1 : prev - 1
+                    )
+                  }
+                >
+                  ‹
+                </button>
+
+                <img
+                  src={images[currentImage]}
+                  alt={detailData.kindNm}
+                  className="slider-image"
+                />
+
+                {/* ✅ 설명문 추가 */}
+                <p className="detail-seo-text">
+                  {detailData.happenPlace || "해당 지역"}에서 구조된{" "}
+                  {detailData.kindNm || "유기동물"}입니다. 현재{" "}
+                  {detailData.careNm || "보호소"}에서 새로운 만남을 기다리고
+                  있습니다.
+                </p>
+
+                <button
+                  className="slider-btn right"
+                  onClick={() =>
+                    setCurrentImage((prev) =>
+                      prev === images.length - 1 ? 0 : prev + 1
+                    )
+                  }
+                >
+                  ›
+                </button>
               </div>
 
-              <div className="detail-grid">
-                <div className="detail-row">
-                  <span className="detail-label">품종</span>
-                  <span className="detail-value">
-                    {detailData.kindNm || "-"}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">털색</span>
-                  <span className="detail-value">
-                    {detailData.colorCd || "-"}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">나이</span>
-                  <span className="detail-value">{detailData.age || "-"}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">체중</span>
-                  <span className="detail-value">
-                    {detailData.weight || "-"}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">성별</span>
-                  <span className="detail-value">
-                    {detailData.sexCd || "-"}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">중성화</span>
-                  <span className="detail-value">
-                    {detailData.neuterYn || "-"}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">발생일</span>
-                  <span className="detail-value">
-                    {detailData.happenDt || "-"}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">발생장소</span>
-                  <span className="detail-value">
-                    {detailData.happenPlace || "-"}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">보호소</span>
-                  <span className="detail-value">
-                    {detailData.careNm || "-"}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">보호소 전화</span>
-                  <span className="detail-value">
-                    {detailData.careTel || "-"}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">보호소 주소</span>
-                  <span className="detail-value">
-                    {detailData.careAddr || "-"}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">특이사항</span>
-                  <span className="detail-value">
-                    {detailData.specialMark || "-"}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">기타</span>
-                  <span className="detail-value">
-                    {detailData.etcBigo || "-"}
-                  </span>
+              {/* 상세정보 버튼 */}
+              <button
+                className="detail-open-btn"
+                onClick={() => setModalOpen(true)}
+              >
+                📋 상세 정보 보기
+              </button>
+            </div>
+          )}
+          {/* 상세정보 모달 */}
+          {modalOpen && (
+            <div className="detail-modal-overlay">
+              <div className="detail-modal">
+                <button
+                  className="modal-close"
+                  onClick={() => setModalOpen(false)}
+                >
+                  ✕
+                </button>
+
+                <h2>상세 정보</h2>
+
+                <div className="modal-grid">
+                  {[
+                    ["품종", detailData.kindNm],
+                    ["털색", detailData.colorCd],
+                    ["나이", detailData.age],
+                    ["체중", detailData.weight],
+                    ["성별", detailData.sexCd],
+                    ["중성화", detailData.neuterYn],
+                    ["발생일", detailData.happenDt],
+                    ["장소", detailData.happenPlace],
+                    ["보호소", detailData.careNm],
+                    ["전화", detailData.careTel],
+                    ["주소", detailData.careAddr],
+                    ["특이사항", detailData.specialMark],
+                  ].map(([label, value], i) => (
+                    <div key={i} className="modal-row">
+                      <span>{label}</span>
+                      <span>{value || "-"}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

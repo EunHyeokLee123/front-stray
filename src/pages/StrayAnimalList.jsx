@@ -391,7 +391,7 @@ const StrayAnimalList = () => {
                         className="card-title"
                         onClick={() => handleDetailClick(animal.desertionNo)}
                       >
-                        {animal.title} 입양 정보
+                        {animal.title}
                       </h3>
                       <div className="card-info">
                         <div className="info-item">
