@@ -469,7 +469,7 @@ const FacilityMapPage = () => {
     if (isGroomingCategory || selectedCategory === "hospital") {
       region = getRegionLabel(selectedGroomingRegion || selectedHospitalRegion);
 
-      district = selectedHospitalRegion || selectedGroomingDistrict;
+      district = selectedHospitalCategory || selectedHospitalRegion;
 
       title = `${region} ${district} ${categoryName} 지도 정보`;
 
