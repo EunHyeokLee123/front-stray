@@ -204,6 +204,7 @@ const StrayAnimalList = () => {
   };
 
   useEffect(() => {
+    sessionStorage.removeItem("festival_page");
     fetchStrayAnimals();
   }, [selectedRegion, selectedCategory, currentPage]);
 
