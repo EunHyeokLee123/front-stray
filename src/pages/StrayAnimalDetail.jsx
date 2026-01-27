@@ -98,7 +98,7 @@ const StrayAnimalDetail = () => {
               className="back-button"
               onClick={() =>
                 navigate(
-                  `/stray/list?region=${region}&category=${category}&page=${page}`
+                  `/stray/list?region=${region}&category=${category}&page=${page}`,
                 )
               }
             >
@@ -124,7 +124,7 @@ const StrayAnimalDetail = () => {
                 className="retry-button"
                 onClick={() =>
                   navigate(
-                    `/stray/list?region=${region}&category=${category}&page=${page}`
+                    `/stray/list?region=${region}&category=${category}&page=${page}`,
                   )
                 }
               >
@@ -146,7 +146,7 @@ const StrayAnimalDetail = () => {
 
                       setTimeout(() => {
                         setCurrentImage((prev) =>
-                          prev === 0 ? images.length - 1 : prev - 1
+                          prev === 0 ? images.length - 1 : prev - 1,
                         );
                         setFade(false);
                       }, 200);
@@ -177,7 +177,7 @@ const StrayAnimalDetail = () => {
 
                       setTimeout(() => {
                         setCurrentImage((prev) =>
-                          prev === images.length - 1 ? 0 : prev + 1
+                          prev === images.length - 1 ? 0 : prev + 1,
                         );
                         setFade(false);
                       }, 200);

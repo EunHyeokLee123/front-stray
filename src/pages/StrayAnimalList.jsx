@@ -131,7 +131,7 @@ const StrayAnimalList = () => {
       title,
       description,
       image: "/seo/og-main-1200.webp",
-      canonical: `https://nyangmong.com/stray/list?region=${selectedRegion}&category=${selectedCategory}&page=${currentPage}`,
+      canonical: `https://nyangmong.com/stray/list?region=${selectedRegion}&category=${selectedCategory}`,
     };
   };
 
