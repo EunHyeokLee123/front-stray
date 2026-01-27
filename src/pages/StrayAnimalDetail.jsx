@@ -13,6 +13,7 @@ const StrayAnimalDetail = () => {
   const [detailData, setDetailData] = useState(null);
   const [currentImage, setCurrentImage] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
+  const [fade, setFade] = useState(false);
 
   const [searchParams] = useSearchParams();
 
@@ -135,11 +136,16 @@ const StrayAnimalDetail = () => {
                 <div className="detail-slider">
                   <button
                     className="slider-btn left"
-                    onClick={() =>
-                      setCurrentImage((prev) =>
-                        prev === 0 ? images.length - 1 : prev - 1
-                      )
-                    }
+                    onClick={() => {
+                      setFade(true);
+
+                      setTimeout(() => {
+                        setCurrentImage((prev) =>
+                          prev === 0 ? images.length - 1 : prev - 1
+                        );
+                        setFade(false);
+                      }, 200);
+                    }}
                   >
                     ‹
                   </button>
@@ -147,16 +153,21 @@ const StrayAnimalDetail = () => {
                   <img
                     src={images[currentImage]}
                     alt={detailData.kindNm}
-                    className="slider-image"
+                    className={`slider-image ${fade ? "fade" : ""}`}
                   />
 
                   <button
                     className="slider-btn right"
-                    onClick={() =>
-                      setCurrentImage((prev) =>
-                        prev === images.length - 1 ? 0 : prev + 1
-                      )
-                    }
+                    onClick={() => {
+                      setFade(true);
+
+                      setTimeout(() => {
+                        setCurrentImage((prev) =>
+                          prev === images.length - 1 ? 0 : prev + 1
+                        );
+                        setFade(false);
+                      }, 200);
+                    }}
                   >
                     ›
                   </button>

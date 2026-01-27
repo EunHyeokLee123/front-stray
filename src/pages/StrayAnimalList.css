@@ -557,15 +557,26 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.8);
+
+  background: rgba(255, 255, 255, 0.85);
   border: none;
-  width: 42px;
-  height: 42px;
+
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  font-size: 1.6rem;
-  cursor: pointer;
+
+  font-size: 1.8rem;
   font-weight: bold;
-  transition: 0.2s;
+
+  cursor: pointer;
+
+  display: flex; /* 핵심 */
+  align-items: center; /* 수직 중앙 */
+  justify-content: center; /* 수평 중앙 */
+
+  line-height: 1;
+
+  transition: all 0.2s ease;
 }
 
 .slider-btn:hover {
@@ -711,4 +722,28 @@
 .detail-open-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 154, 162, 0.35);
+}
+
+.detail-seo-text {
+  font-size: 1.4rem; /* 글자 크기 */
+  line-height: 1.8; /* 줄 간격 */
+  font-weight: 500;
+  color: #6b5b4f;
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+}
+
+/* 이미지 전환 애니메이션 */
+
+.slider-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  transition: all 0.35s ease;
+}
+
+.slider-image.fade {
+  opacity: 0;
+  transform: scale(0.97);
 }
