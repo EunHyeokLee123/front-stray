@@ -10,7 +10,7 @@ const FacilityMapPage = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("culture");
   const [showCultureSubCategories, setShowCultureSubCategories] =
-    useState(false);
+    useState(true);
   const [selectedCultureSubCategory, setSelectedCultureSubCategory] =
     useState("12");
   const [selectedCultureRegion, setSelectedCultureRegion] = useState("1");
@@ -517,12 +517,6 @@ const FacilityMapPage = () => {
           <h1 className="page-title">{title}</h1>
           <p className="page-subtitle">{description}</p>
         </div>
-
-        {/* ✅ SEO 영역 추가 */}
-        <section className="map-seo-section">
-          <h2 className="map-seo-title">{title}</h2>
-          <p className="map-seo-desc">{description}</p>
-        </section>
 
         {/* 필터 영역 (상단) */}
         <div className="filter-section">
