@@ -71,22 +71,15 @@ const FestivalDetail = () => {
             <div className="detail-content">
               {/* ✅ SEO 영역 */}
               <header className="festival-seo-header">
-                <h1 className="festival-title">{detailData.title}</h1>
+                <h1 className="festival-seo-title">{detailData.title}</h1>
 
-                <p className="festival-description">
+                <p className="festival-seo-desc">
                   {detailData.location}에서 열리는
                   {detailData.festivalDate} 반려동물 박람회입니다.
                   일정·요금·관람 정보를 확인하세요.
                 </p>
               </header>
               <div className="detail-info-grid">
-                <div className="detail-info-row">
-                  <span className="detail-value">
-                    <h1 className="detail-title">
-                      {detailData?.title || "행사 상세"}
-                    </h1>
-                  </span>
-                </div>
                 <div className="detail-info-row">
                   <span className="detail-label">위치:</span>
                   <span className="detail-value">
