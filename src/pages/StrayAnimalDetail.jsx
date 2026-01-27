@@ -38,7 +38,7 @@ const StrayAnimalDetail = () => {
     const image =
       detailData.popfile1 ||
       detailData.popfile2 ||
-      "/images/seo/article-default-1200.webp";
+      "/seo/article-default-1200.webp";
 
     return {
       title,

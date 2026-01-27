@@ -334,7 +334,7 @@ const FacilityMapPage = () => {
       title,
       description,
 
-      image: "/images/seo/og-map.png",
+      image: "/seo/og-main-1200.webp",
 
       canonical: `https://nyangmong.com/map`,
     };

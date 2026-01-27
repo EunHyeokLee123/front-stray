@@ -134,7 +134,7 @@ const StrayAnimalList = () => {
     return {
       title,
       description,
-      image: "/images/seo/og-main-1200.png",
+      image: "/seo/og-main-1200.webp",
       canonical: `https://nyangmong.com/stray/list?region=${selectedRegion}&category=${selectedCategory}&page=${currentPage}`,
     };
   };

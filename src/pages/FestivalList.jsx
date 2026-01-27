@@ -60,7 +60,7 @@ const FestivalList = () => {
       description:
         "국내 반려동물 박람회, 펫페어, 반려동물 행사 일정을 한눈에 확인하세요. 위치, 일정, 참가 정보까지 제공하는 냥몽입니다.",
 
-      image: "/images/seo/og-main-1200.png",
+      image: "/seo/og-main-1200.webp",
 
       canonical: `https://nyangmong.com/festival/list`,
     };
