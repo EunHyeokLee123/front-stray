@@ -237,6 +237,7 @@
 
 .detail-image-container {
   width: 50%;
+  margin-top: 3rem; /* ⭐ 추가 */
   margin-bottom: 1.5rem;
   border-radius: 16px;
   overflow: hidden;
