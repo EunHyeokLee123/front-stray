@@ -30,6 +30,15 @@
   letter-spacing: -0.02em;
 }
 
+.detail-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #6b5b4f;
+  margin: 0 0 0.5rem 0;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
+  letter-spacing: -0.02em;
+}
+
 .page-subtitle {
   font-size: 1.25rem;
   color: #8b7a6f;
@@ -516,6 +525,14 @@
     height: 36px;
     font-size: 1rem;
   }
+
+  .detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-right {
+    margin-top: 1rem;
+  }
 }
 
 /* 이미지 슬라이더 */
@@ -645,4 +662,53 @@
 
 .modal-row span:last-child {
   color: #8b7a6f;
+}
+
+/* 좌우 레이아웃 */
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* 왼쪽 영역 */
+
+.detail-left {
+  width: 100%;
+}
+
+/* 오른쪽 영역 */
+
+.detail-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.2rem;
+  background: rgba(255, 248, 240, 0.9);
+  border-radius: 18px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 14px rgba(255, 182, 193, 0.15);
+  border: 1px solid rgba(255, 182, 193, 0.2);
+}
+
+/* 상세 버튼 */
+
+.detail-open-btn {
+  padding: 0.8rem 1.4rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ffb6c1 0%, #ffa8b5 100%);
+  border: 2px solid #ff9aa2;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #6b5b4f;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
+  transition: all 0.25s ease;
+}
+
+.detail-open-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 154, 162, 0.35);
 }

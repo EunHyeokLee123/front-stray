@@ -98,7 +98,7 @@ const StrayAnimalDetail = () => {
             >
               ← 목록으로
             </button>
-            <h1 className="page-title">
+            <h1 className="detail-title">
               {region !== "전체" && `${region} `}
               {detailData?.kindNm || "유기동물"} 정보
             </h1>
@@ -130,54 +130,60 @@ const StrayAnimalDetail = () => {
           {/* 상세 내용 */}
           {detailData && !detailLoading && !detailError && (
             <div className="detail-layout">
-              {/* 이미지 슬라이더 */}
-              <div className="detail-slider">
-                <button
-                  className="slider-btn left"
-                  onClick={() =>
-                    setCurrentImage((prev) =>
-                      prev === 0 ? images.length - 1 : prev - 1
-                    )
-                  }
-                >
-                  ‹
-                </button>
+              {/* 왼쪽: 이미지 영역 */}
+              <div className="detail-left">
+                <div className="detail-slider">
+                  <button
+                    className="slider-btn left"
+                    onClick={() =>
+                      setCurrentImage((prev) =>
+                        prev === 0 ? images.length - 1 : prev - 1
+                      )
+                    }
+                  >
+                    ‹
+                  </button>
 
-                <img
-                  src={images[currentImage]}
-                  alt={detailData.kindNm}
-                  className="slider-image"
-                />
+                  <img
+                    src={images[currentImage]}
+                    alt={detailData.kindNm}
+                    className="slider-image"
+                  />
 
-                <button
-                  className="slider-btn right"
-                  onClick={() =>
-                    setCurrentImage((prev) =>
-                      prev === images.length - 1 ? 0 : prev + 1
-                    )
-                  }
-                >
-                  ›
-                </button>
+                  <button
+                    className="slider-btn right"
+                    onClick={() =>
+                      setCurrentImage((prev) =>
+                        prev === images.length - 1 ? 0 : prev + 1
+                      )
+                    }
+                  >
+                    ›
+                  </button>
+                </div>
               </div>
 
-              {/* ✅ 설명문 추가 */}
-              <p className="detail-seo-text">
-                {detailData.happenPlace || "해당 지역"}에서 구조된{" "}
-                {detailData.kindNm || "유기동물"}입니다. 현재{" "}
-                {detailData.careNm || "보호소"}에서 새로운 만남을 기다리고
-                있습니다.
-              </p>
+              {/* 오른쪽: 정보 영역 */}
+              <div className="detail-right">
+                {/* 설명문 */}
+                <p className="detail-seo-text">
+                  {detailData.happenPlace || "해당 지역"}에서 구조된{" "}
+                  {detailData.kindNm || "유기동물"}입니다. 현재{" "}
+                  {detailData.careNm || "보호소"}에서 새로운 만남을 기다리고
+                  있습니다.
+                </p>
 
-              {/* 상세정보 버튼 */}
-              <button
-                className="detail-open-btn"
-                onClick={() => setModalOpen(true)}
-              >
-                📋 상세 정보 보기
-              </button>
+                {/* 버튼 */}
+                <button
+                  className="detail-open-btn"
+                  onClick={() => setModalOpen(true)}
+                >
+                  📋 상세 정보 보기
+                </button>
+              </div>
             </div>
           )}
+
           {/* 상세정보 모달 */}
           {modalOpen && (
             <div className="detail-modal-overlay">
