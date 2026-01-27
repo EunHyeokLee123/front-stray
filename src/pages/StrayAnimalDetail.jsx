@@ -14,6 +14,7 @@ const StrayAnimalDetail = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [fade, setFade] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   const [searchParams] = useSearchParams();
 
@@ -43,6 +44,10 @@ const StrayAnimalDetail = () => {
 
     fetchDetail();
   }, [id]);
+
+  useEffect(() => {
+    setImgError(false);
+  }, [currentImage]);
 
   // 상세페이지 SEO 생성
   const getDetailSEO = () => {
@@ -150,11 +155,20 @@ const StrayAnimalDetail = () => {
                     ‹
                   </button>
 
-                  <img
-                    src={images[currentImage]}
-                    alt={detailData.kindNm}
-                    className={`slider-image ${fade ? "fade" : ""}`}
-                  />
+                  {!imgError ? (
+                    <img
+                      src={images[currentImage]}
+                      alt={detailData.kindNm}
+                      className={`slider-image ${fade ? "fade" : ""}`}
+                      onError={() => setImgError(true)}
+                      onLoad={() => setImgError(false)}
+                    />
+                  ) : (
+                    <div className="image-error-box">
+                      <span>😿</span>
+                      <p>이미지 로드에 실패하였습니다.</p>
+                    </div>
+                  )}
 
                   <button
                     className="slider-btn right"

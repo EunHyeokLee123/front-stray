@@ -747,3 +747,33 @@
   opacity: 0;
   transform: scale(0.97);
 }
+
+/* 이미지 로드 실패 UI */
+
+.image-error-box {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg, #ffd4a3, #ffc896);
+
+  color: #8b7a6f;
+  font-size: 1.1rem;
+  font-weight: 500;
+
+  border-radius: 18px;
+
+  text-align: center;
+  padding: 1rem;
+
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
+}
+
+.image-error-box span {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
