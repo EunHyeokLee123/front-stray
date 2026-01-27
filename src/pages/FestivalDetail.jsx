@@ -69,6 +69,16 @@ const FestivalDetail = () => {
 
           {detailData && !detailLoading && !detailError && (
             <div className="detail-content">
+              {/* ✅ SEO 영역 */}
+              <header className="festival-seo-header">
+                <h1 className="festival-title">{detailData.title}</h1>
+
+                <p className="festival-description">
+                  {detailData.location}에서 열리는
+                  {detailData.festivalDate} 반려동물 박람회입니다.
+                  일정·요금·관람 정보를 확인하세요.
+                </p>
+              </header>
               <div className="detail-info-grid">
                 <div className="detail-info-row">
                   <span className="detail-value">
@@ -109,19 +119,6 @@ const FestivalDetail = () => {
                 </div>
               </div>
 
-              {detailData.imagePath && (
-                <div className="detail-image-container">
-                  <img
-                    src={detailData.imagePath}
-                    alt={detailData.title || "행사 이미지"}
-                    className="detail-image"
-                    onError={(e) => {
-                      e.target.src = "/logo.png";
-                    }}
-                  />
-                </div>
-              )}
-
               {detailData.url && (
                 <div className="detail-footer">
                   <button
@@ -132,6 +129,19 @@ const FestivalDetail = () => {
                   >
                     홈페이지보기
                   </button>
+                </div>
+              )}
+
+              {detailData.imagePath && (
+                <div className="detail-image-container">
+                  <img
+                    src={detailData.imagePath}
+                    alt={detailData.title || "행사 이미지"}
+                    className="detail-image"
+                    onError={(e) => {
+                      e.target.src = "/logo.png";
+                    }}
+                  />
                 </div>
               )}
             </div>
