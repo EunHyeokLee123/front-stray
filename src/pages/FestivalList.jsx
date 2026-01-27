@@ -96,8 +96,27 @@ const FestivalList = () => {
     <div className="festival-list-page">
       <div className="festival-container">
         <div className="page-header">
-          <h1 className="page-title">반려동물 행사정보</h1>
-          <p className="page-subtitle">다양한 반려동물 행사를 만나보세요</p>
+          <h1 className="page-title">
+            2026년 반려동물 박람회·펫페어 일정 총정리
+          </h1>
+
+          <p className="page-subtitle">
+            전국 반려동물 행사 정보를 한눈에 확인하세요.
+          </p>
+
+          {/* ✅ SEO용 설명 영역 */}
+          <div className="seo-description">
+            <p>
+              냥몽에서는 국내에서 열리는 반려동물 박람회, 펫페어, 반려동물 행사
+              정보를 최신 일정 기준으로 제공합니다.
+            </p>
+
+            <p>
+              서울, 경기, 부산, 대구 등 전국 주요 지역의 반려동물 행사 일정과
+              위치, 참가 정보를 확인하고 반려동물과 함께 특별한 시간을
+              보내보세요.
+            </p>
+          </div>
         </div>
 
         {/* 로딩 상태 */}

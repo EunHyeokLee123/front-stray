@@ -1,6 +1,12 @@
 .festival-list-page {
   min-height: calc(100vh - 200px);
-  background: linear-gradient(135deg, #FFF8F0 0%, #FFF5E6 30%, #FFEFD5 60%, #FFD4A3 100%);
+  background: linear-gradient(
+    135deg,
+    #fff8f0 0%,
+    #fff5e6 30%,
+    #ffefd5 60%,
+    #ffd4a3 100%
+  );
   padding: 2rem 0;
 }
 
@@ -18,16 +24,18 @@
 .page-title {
   font-size: 2.75rem;
   font-weight: 600;
-  color: #6B5B4F;
-  margin: 0 0 0.5rem 0;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  color: #6b5b4f;
+  //margin: 0 0 1rem 0;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
   letter-spacing: -0.02em;
 }
 
 .page-subtitle {
   font-size: 1.25rem;
-  color: #8B7A6F;
+  padding-top: 0.5rem;
+  color: #8b7a6f;
   margin: 0;
+  margin-top: 0.8rem;
   font-weight: 400;
 }
 
@@ -47,7 +55,7 @@
   width: 48px;
   height: 48px;
   border: 4px solid rgba(255, 182, 193, 0.3);
-  border-top-color: #FF9AA2;
+  border-top-color: #ff9aa2;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
@@ -63,26 +71,26 @@
 .error-text,
 .empty-text {
   font-size: 1.15rem;
-  color: #8B7A6F;
+  color: #8b7a6f;
   margin-bottom: 1rem;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
 }
 
 .error-text {
-  color: #FF6B6B;
+  color: #ff6b6b;
 }
 
 .retry-button {
   padding: 0.75rem 1.5rem;
   font-size: 1.15rem;
   font-weight: 500;
-  color: #6B5B4F;
-  background: linear-gradient(135deg, #FFB6C1 0%, #FFA8B5 100%);
-  border: 2px solid #FF9AA2;
+  color: #6b5b4f;
+  background: linear-gradient(135deg, #ffb6c1 0%, #ffa8b5 100%);
+  border: 2px solid #ff9aa2;
   border-radius: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
   box-shadow: 0 2px 8px rgba(255, 154, 162, 0.3);
 }
 
@@ -124,9 +132,9 @@
 .festival-title {
   font-size: 1.75rem;
   font-weight: 600;
-  color: #6B5B4F;
+  color: #6b5b4f;
   margin: 0;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
 }
 
 .festival-info-row {
@@ -146,12 +154,12 @@
 
 .info-label {
   font-weight: 600;
-  color: #6B5B4F;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  color: #6b5b4f;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
 }
 
 .info-value {
-  color: #8B7A6F;
+  color: #8b7a6f;
 }
 
 /* 상세 모달 */
@@ -171,7 +179,7 @@
 }
 
 .detail-modal {
-  background: linear-gradient(135deg, #FFF8F0 0%, #FFF5E6 50%, #FFEFD5 100%);
+  background: linear-gradient(135deg, #fff8f0 0%, #fff5e6 50%, #ffefd5 100%);
   border-radius: 24px;
   max-width: 700px;
   width: 100%;
@@ -193,16 +201,16 @@
 .detail-title {
   font-size: 2rem;
   font-weight: 600;
-  color: #6B5B4F;
+  color: #6b5b4f;
   margin: 0;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
 }
 
 .detail-close {
   background: none;
   border: none;
   font-size: 2rem;
-  color: #8B7A6F;
+  color: #8b7a6f;
   cursor: pointer;
   padding: 0;
   width: 32px;
@@ -216,7 +224,7 @@
 
 .detail-close:hover {
   background: rgba(255, 182, 193, 0.3);
-  color: #6B5B4F;
+  color: #6b5b4f;
 }
 
 .detail-content {
@@ -228,7 +236,7 @@
   margin-bottom: 1.5rem;
   border-radius: 16px;
   overflow: hidden;
-  background: linear-gradient(135deg, #FFD4A3 0%, #FFC896 100%);
+  background: linear-gradient(135deg, #ffd4a3 0%, #ffc896 100%);
   box-shadow: 0 4px 12px rgba(255, 182, 193, 0.2);
 }
 
@@ -260,14 +268,14 @@
 
 .detail-label {
   font-weight: 600;
-  color: #6B5B4F;
+  color: #6b5b4f;
   min-width: 100px;
   font-size: 1.1rem;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
 }
 
 .detail-value {
-  color: #8B7A6F;
+  color: #8b7a6f;
   flex: 1;
   font-size: 1.1rem;
   word-break: break-word;
@@ -291,20 +299,20 @@
   padding: 0.875rem 2rem;
   font-size: 1.15rem;
   font-weight: 600;
-  color: #6B5B4F;
-  background: linear-gradient(135deg, #FFB6C1 0%, #FFA8B5 100%);
-  border: 2px solid #FF9AA2;
+  color: #6b5b4f;
+  background: linear-gradient(135deg, #ffb6c1 0%, #ffa8b5 100%);
+  border: 2px solid #ff9aa2;
   border-radius: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
   box-shadow: 0 4px 12px rgba(255, 154, 162, 0.3);
 }
 
 .homepage-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(255, 154, 162, 0.4);
-  background: linear-gradient(135deg, #FFA8B5 0%, #FF9AA2 100%);
+  background: linear-gradient(135deg, #ffa8b5 0%, #ff9aa2 100%);
 }
 
 /* 페이징 */
@@ -321,18 +329,18 @@
   padding: 0.6rem 1.2rem;
   font-size: 1.05rem;
   font-weight: 500;
-  color: #6B5B4F;
-  background: linear-gradient(135deg, #FFD4A3 0%, #FFC896 100%);
+  color: #6b5b4f;
+  background: linear-gradient(135deg, #ffd4a3 0%, #ffc896 100%);
   border: 2px solid transparent;
   border-radius: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
 }
 
 .pagination-button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #FFB6C1 0%, #FFA8B5 100%);
-  border-color: #FF9AA2;
+  background: linear-gradient(135deg, #ffb6c1 0%, #ffa8b5 100%);
+  border-color: #ff9aa2;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 154, 162, 0.3);
 }
@@ -355,13 +363,13 @@
   padding: 0.5rem;
   font-size: 1.05rem;
   font-weight: 500;
-  color: #8B7A6F;
+  color: #8b7a6f;
   background-color: rgba(255, 248, 240, 0.9);
   border: 2px solid transparent;
   border-radius: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -369,15 +377,15 @@
 
 .pagination-number:hover {
   background-color: rgba(255, 255, 255, 1);
-  border-color: #FFB6C1;
+  border-color: #ffb6c1;
   transform: translateY(-2px);
   box-shadow: 0 2px 8px rgba(255, 182, 193, 0.2);
 }
 
 .pagination-number.active {
-  background: linear-gradient(135deg, #FFB6C1 0%, #FFA8B5 100%);
-  color: #6B5B4F;
-  border-color: #FF9AA2;
+  background: linear-gradient(135deg, #ffb6c1 0%, #ffa8b5 100%);
+  color: #6b5b4f;
+  border-color: #ff9aa2;
   font-weight: 600;
   box-shadow: 0 2px 8px rgba(255, 154, 162, 0.3);
 }
@@ -388,7 +396,7 @@
   justify-content: center;
   min-width: 40px;
   height: 40px;
-  color: #8B7A6F;
+  color: #8b7a6f;
   font-size: 1.05rem;
   padding: 0 0.5rem;
 }
@@ -407,24 +415,23 @@
   align-items: center;
   gap: 1rem;
   margin-bottom: 1.5rem;
-
 }
 
 .back-button {
   padding: 0.65rem 1rem;
   border-radius: 14px;
   border: 2px solid transparent;
-  background: linear-gradient(135deg, #FFD4A3 0%, #FFC896 100%);
-  color: #6B5B4F;
+  background: linear-gradient(135deg, #ffd4a3 0%, #ffc896 100%);
+  color: #6b5b4f;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
   font-size: 1.05rem;
 }
 
 .back-button:hover {
-  border-color: #FFB6C1;
+  border-color: #ffb6c1;
   box-shadow: 0 4px 12px rgba(255, 182, 193, 0.35);
   transform: translateY(-2px);
 }
