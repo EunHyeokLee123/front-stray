@@ -627,7 +627,7 @@
   background: #fff8f0;
   width: 100%;
   max-width: 600px;
-  max-height: 80vh;
+  max-height: 90vh;
   border-radius: 20px;
   padding: 1.5rem;
   overflow-y: auto;
@@ -654,16 +654,26 @@
 /* 모달 내부 */
 
 .modal-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 0.8rem;
 }
 
 .modal-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 0.5rem;
+
   border-bottom: 1px solid rgba(255, 182, 193, 0.2);
-  padding-bottom: 0.4rem;
+  padding: 0.6rem 0;
+
+  align-items: start;
+}
+
+.modal-row span {
+  word-break: keep-all;
+  white-space: normal;
+  line-height: 1.6;
 }
 
 .modal-row span:first-child {
