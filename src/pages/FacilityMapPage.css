@@ -1,6 +1,12 @@
 .facility-map-page {
   min-height: calc(100vh - 200px);
-  background: linear-gradient(135deg, #FFF8F0 0%, #FFF5E6 30%, #FFEFD5 60%, #FFD4A3 100%);
+  background: linear-gradient(
+    135deg,
+    #fff8f0 0%,
+    #fff5e6 30%,
+    #ffefd5 60%,
+    #ffd4a3 100%
+  );
   padding: 2rem 0;
 }
 
@@ -18,15 +24,15 @@
 .page-title {
   font-size: 2.75rem;
   font-weight: 600;
-  color: #6B5B4F;
+  color: #6b5b4f;
   margin: 0 0 0.5rem 0;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
   letter-spacing: -0.02em;
 }
 
 .page-subtitle {
   font-size: 1.25rem;
-  color: #8B7A6F;
+  color: #8b7a6f;
   margin: 0;
   font-weight: 400;
 }
@@ -55,26 +61,26 @@
   padding: 0.6rem 1.2rem;
   font-size: 1.05rem;
   font-weight: 500;
-  color: #8B7A6F;
+  color: #8b7a6f;
   background-color: rgba(255, 248, 240, 0.9);
   border: 2px solid transparent;
   border-radius: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
 }
 
 .category-button:hover {
   background-color: rgba(255, 255, 255, 1);
-  border-color: #FFB6C1;
+  border-color: #ffb6c1;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 182, 193, 0.2);
 }
 
 .category-button.active {
-  background: linear-gradient(135deg, #FFB6C1 0%, #FFA8B5 100%);
-  color: #6B5B4F;
-  border-color: #FF9AA2;
+  background: linear-gradient(135deg, #ffb6c1 0%, #ffa8b5 100%);
+  color: #6b5b4f;
+  border-color: #ff9aa2;
   font-weight: 600;
   box-shadow: 0 4px 12px rgba(255, 154, 162, 0.3);
 }
@@ -97,13 +103,13 @@
   padding: 0.5rem 1rem;
   font-size: 1rem;
   font-weight: 500;
-  color: #8B7A6F;
+  color: #8b7a6f;
   background-color: rgba(255, 248, 240, 0.9);
-  border: 2px solid #FFB6C1;
+  border: 2px solid #ffb6c1;
   border-radius: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
 }
 
 .sub-category-button:hover {
@@ -113,9 +119,9 @@
 }
 
 .sub-category-button.active {
-  background: linear-gradient(135deg, #FFB6C1 0%, #FFA8B5 100%);
-  color: #6B5B4F;
-  border-color: #FF9AA2;
+  background: linear-gradient(135deg, #ffb6c1 0%, #ffa8b5 100%);
+  color: #6b5b4f;
+  border-color: #ff9aa2;
   font-weight: 600;
   box-shadow: 0 2px 8px rgba(255, 154, 162, 0.3);
 }
@@ -123,18 +129,18 @@
 .region-select {
   padding: 0.5rem 1rem;
   font-size: 1.05rem;
-  color: #8B7A6F;
+  color: #8b7a6f;
   background-color: rgba(255, 248, 240, 0.9);
-  border: 2px solid #FFB6C1;
+  border: 2px solid #ffb6c1;
   border-radius: 14px;
   cursor: pointer;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
   min-width: 140px;
   transition: all 0.3s ease;
 }
 
 .region-select:hover {
-  border-color: #FF9AA2;
+  border-color: #ff9aa2;
   box-shadow: 0 2px 8px rgba(255, 182, 193, 0.2);
 }
 
@@ -172,9 +178,9 @@
 .list-title {
   font-size: 1.3rem;
   font-weight: 600;
-  color: #6B5B4F;
+  color: #6b5b4f;
   margin: 0;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
 }
 
 .card-list {
@@ -201,14 +207,14 @@
 
 .location-card:hover {
   background: rgba(255, 255, 255, 1);
-  border-color: #FFB6C1;
+  border-color: #ffb6c1;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 182, 193, 0.2);
 }
 
 .location-card.active {
-  background: linear-gradient(135deg, #FFD4A3 0%, #FFC896 100%);
-  border-color: #FFB6C1;
+  background: linear-gradient(135deg, #ffd4a3 0%, #ffc896 100%);
+  border-color: #ffb6c1;
   box-shadow: 0 4px 12px rgba(255, 182, 193, 0.3);
 }
 
@@ -221,16 +227,16 @@
 .card-title {
   font-size: 1.05rem;
   font-weight: 600;
-  color: #6B5B4F;
+  color: #6b5b4f;
   margin: 0;
   word-break: break-word;
   line-height: 1.4;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
 }
 
 .card-address {
   font-size: 0.95rem;
-  color: #8B7A6F;
+  color: #8b7a6f;
   margin: 0;
   word-break: break-word;
   line-height: 1.4;
@@ -240,20 +246,20 @@
   display: inline-block;
   padding: 0.25rem 0.75rem;
   font-size: 0.9rem;
-  background: linear-gradient(135deg, #FFD4A3 0%, #FFC896 100%);
-  color: #6B5B4F;
+  background: linear-gradient(135deg, #ffd4a3 0%, #ffc896 100%);
+  color: #6b5b4f;
   border-radius: 12px;
   font-weight: 500;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
 }
 
 .loading-text,
 .empty-text {
   text-align: center;
   padding: 2rem;
-  color: #8B7A6F;
+  color: #8b7a6f;
   font-size: 1.1rem;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
 }
 
 /* 오른쪽: 지도 패널 */
@@ -272,9 +278,9 @@
 .map-title {
   font-size: 1.3rem;
   font-weight: 600;
-  color: #6B5B4F;
+  color: #6b5b4f;
   margin: 0;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
 }
 
 .map-container {
@@ -285,7 +291,7 @@
   border-radius: 16px;
   overflow: hidden;
   border: 2px solid rgba(255, 182, 193, 0.3);
-  background: #FFF8F0;
+  background: #fff8f0;
   position: relative;
   z-index: 1;
   isolation: isolate;
@@ -389,7 +395,7 @@
 }
 
 .detail-modal {
-  background: linear-gradient(135deg, #FFF8F0 0%, #FFF5E6 50%, #FFEFD5 100%);
+  background: linear-gradient(135deg, #fff8f0 0%, #fff5e6 50%, #ffefd5 100%);
   border-radius: 24px;
   max-width: 700px;
   width: 100%;
@@ -411,16 +417,16 @@
 .detail-title {
   font-size: 2rem;
   font-weight: 600;
-  color: #6B5B4F;
+  color: #6b5b4f;
   margin: 0;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
 }
 
 .detail-close {
   background: none;
   border: none;
   font-size: 2rem;
-  color: #8B7A6F;
+  color: #8b7a6f;
   cursor: pointer;
   padding: 0;
   width: 32px;
@@ -434,7 +440,7 @@
 
 .detail-close:hover {
   background: rgba(255, 182, 193, 0.3);
-  color: #6B5B4F;
+  color: #6b5b4f;
 }
 
 .detail-content {
@@ -473,20 +479,20 @@
 .detail-label {
   min-width: 150px;
   font-weight: 600;
-  color: #6B5B4F;
+  color: #6b5b4f;
   font-size: 1.1rem;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
 }
 
 .detail-value {
   flex: 1;
-  color: #8B7A6F;
+  color: #8b7a6f;
   font-size: 1.1rem;
   word-break: break-word;
 }
 
 .detail-value a {
-  color: #6B5B4F;
+  color: #6b5b4f;
   text-decoration: none;
 }
 
@@ -505,7 +511,7 @@
 
 .loader {
   border: 4px solid rgba(255, 182, 193, 0.3);
-  border-top: 4px solid #FF9AA2;
+  border-top: 4px solid #ff9aa2;
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -522,9 +528,9 @@
 }
 
 .loading-text {
-  color: #8B7A6F;
+  color: #8b7a6f;
   font-size: 1.15rem;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
 }
 
 .detail-error {
@@ -543,21 +549,21 @@
 }
 
 .retry-button {
-  background: linear-gradient(135deg, #FFB6C1 0%, #FFA8B5 100%);
-  color: #6B5B4F;
-  border: 2px solid #FF9AA2;
+  background: linear-gradient(135deg, #ffb6c1 0%, #ffa8b5 100%);
+  color: #6b5b4f;
+  border: 2px solid #ff9aa2;
   padding: 0.75rem 1.5rem;
   border-radius: 12px;
   cursor: pointer;
   font-size: 1.15rem;
   font-weight: 600;
   transition: all 0.3s ease;
-  font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
   box-shadow: 0 2px 8px rgba(255, 154, 162, 0.3);
 }
 
 .retry-button:hover {
-  background: linear-gradient(135deg, #FFA8B5 0%, #FF9AA2 100%);
+  background: linear-gradient(135deg, #ffa8b5 0%, #ff9aa2 100%);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 154, 162, 0.4);
 }
