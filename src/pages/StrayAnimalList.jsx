@@ -31,10 +31,6 @@ const StrayAnimalList = () => {
   const currentPage = Number(searchParams.get("page") || 0);
   const pageSize = 6;
 
-  const seo = getSEOData();
-
-  useSEO(seo);
-
   const regions = [
     "전체",
     "서울",
@@ -138,6 +134,10 @@ const StrayAnimalList = () => {
       canonical: `https://nyangmong.com/stray/list?region=${selectedRegion}&category=${selectedCategory}&page=${currentPage}`,
     };
   };
+
+  const seo = getSEOData();
+
+  useSEO(seo);
 
   // 유기동물 목록 조회 함수
   const fetchStrayAnimals = async () => {
