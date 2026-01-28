@@ -3,26 +3,125 @@
 
   <url>
     <loc>https://nyangmong.com/</loc>
-    <lastmod>2026-01-23</lastmod>
+    <lastmod>2026-01-28</lastmod>
     <priority>1.0</priority>
   </url>
 
   <url>
     <loc>https://nyangmong.com/stray/list</loc>
-    <lastmod>2026-01-23</lastmod>
+    <lastmod>2026-01-28</lastmod>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://nyangmong.com/festival/list</loc>
-    <lastmod>2026-01-23</lastmod>
+    <lastmod>2026-01-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 반려동물 시설 지도 - 카테고리별 기본 페이지 -->
+  <url>
+    <loc>https://nyangmong.com/map/culture?cate=12&amp;region=1</loc>
+    <lastmod>2026-01-28</lastmod>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://nyangmong.com/map</loc>
-    <lastmod>2026-01-23</lastmod>
+    <loc>https://nyangmong.com/map/hospital</loc>
+    <lastmod>2026-01-28</lastmod>
     <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://nyangmong.com/map/style</loc>
+    <lastmod>2026-01-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://nyangmong.com/map/cafe</loc>
+    <lastmod>2026-01-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://nyangmong.com/map/shop</loc>
+    <lastmod>2026-01-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://nyangmong.com/map/museum</loc>
+    <lastmod>2026-01-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://nyangmong.com/map/art</loc>
+    <lastmod>2026-01-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://nyangmong.com/map/literary</loc>
+    <lastmod>2026-01-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://nyangmong.com/map/drug</loc>
+    <lastmod>2026-01-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 문화시설 주요 하위 카테고리 조합 (서울 기준) -->
+  <url>
+    <loc>https://nyangmong.com/map/culture?cate=12&amp;region=1</loc>
+    <lastmod>2026-01-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://nyangmong.com/map/culture?cate=14&amp;region=1</loc>
+    <lastmod>2026-01-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://nyangmong.com/map/culture?cate=28&amp;region=1</loc>
+    <lastmod>2026-01-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://nyangmong.com/map/culture?cate=32&amp;region=1</loc>
+    <lastmod>2026-01-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://nyangmong.com/map/culture?cate=38&amp;region=1</loc>
+    <lastmod>2026-01-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://nyangmong.com/map/culture?cate=39&amp;region=1</loc>
+    <lastmod>2026-01-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 주요 지역별 문화시설 (관광지 기준) -->
+  <url>
+    <loc>https://nyangmong.com/map/culture?cate=12&amp;region=31</loc>
+    <lastmod>2026-01-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://nyangmong.com/map/culture?cate=12&amp;region=6</loc>
+    <lastmod>2026-01-28</lastmod>
+    <priority>0.7</priority>
   </url>
 
 </urlset>
