@@ -35,7 +35,11 @@ function App() {
             <Route path="/stray/detail/:id" element={<StrayAnimalDetail />} />
             <Route path="/festival/list" element={<FestivalList />} />
             <Route path="/festival/detail/:id" element={<FestivalDetail />} />
-            <Route path="/map" element={<FacilityMapPage />} />
+            <Route path="/map/:category" element={<FacilityMapPage />} />
+            <Route
+              path="/map"
+              element={<Navigate to="/map/culture" replace />}
+            />
           </Routes>
         </main>
         <Footer />

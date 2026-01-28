@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../configs/axios-config.js";
 import MapComponent from "../components/MapComponent.jsx";
 import "./FacilityMapPage.css";
@@ -7,8 +8,10 @@ import { logUserEvent } from "../hooks/user-log-hook.jsx";
 import { useSEO } from "../hooks/useSEO.jsx";
 
 const FacilityMapPage = () => {
+  const { category } = useParams();
+  const navigate = useNavigate();
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState("culture");
+  const [selectedCategory, setSelectedCategory] = useState(category || "culture");
   const [showCultureSubCategories, setShowCultureSubCategories] =
     useState(true);
   const [selectedCultureSubCategory, setSelectedCultureSubCategory] =
@@ -84,7 +87,7 @@ const FacilityMapPage = () => {
     "shop",
     "museum",
     "art",
-    "literary",
+    "literary", 
     "drug",
   ];
   const isGroomingCategory = groomingCategories.includes(selectedCategory);
@@ -96,6 +99,27 @@ const FacilityMapPage = () => {
   useEffect(() => {
     logUserEvent("page_view", { page_name: "map" });
   }, []);
+
+  // URL 파라미터가 변경되면 selectedCategory 업데이트
+  useEffect(() => {
+    if (category && category !== selectedCategory) {
+      setSelectedCategory(category);
+      setSelectedLocation(null);
+      
+      if (category === "culture") {
+        setShowCultureSubCategories(true);
+        setShowHospitalRegion(false);
+      } else if (category === "hospital") {
+        setShowHospitalRegion(true);
+        setShowCultureSubCategories(false);
+      } else {
+        setShowCultureSubCategories(false);
+        setShowHospitalRegion(false);
+        setSelectedCultureSubCategory("12");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category]);
 
   // 미용실 지역 변경 시 리스트 요청
   useEffect(() => {
@@ -292,6 +316,8 @@ const FacilityMapPage = () => {
   const handleCategoryClick = (categoryId) => {
     setSelectedCategory(categoryId);
     setSelectedLocation(null);
+    // URL 업데이트
+    navigate(`/map/${categoryId}`, { replace: true });
 
     if (categoryId === "culture") {
       setShowCultureSubCategories(true);
@@ -340,7 +366,7 @@ const FacilityMapPage = () => {
 
       image: "/seo/og-main-1200.webp",
 
-      canonical: `https://nyangmong.com/map`,
+      canonical: `https://nyangmong.com/map/${selectedCategory}`,
     };
   };
 

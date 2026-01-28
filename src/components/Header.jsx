@@ -10,7 +10,7 @@ const Header = () => {
       path: "/stray/list?region=전체&category=개&page=0",
     },
     { id: "festival", label: "반려동물 행사정보", path: "/festival/list" },
-    { id: "facility", label: "반려동물 관련 시설 정보", path: "/map" },
+    { id: "facility", label: "반려동물 관련 시설 정보", path: "/map/culture" },
   ];
 
   const isActive = (path) => {
@@ -20,8 +20,8 @@ const Header = () => {
     if (path === "/festival/list") {
       return location.pathname.startsWith("/festival");
     }
-    if (path === "/map") {
-      return location.pathname === "/map";
+    if (path === "/map/culture") {
+      return location.pathname.startsWith("/map");
     }
     return false;
   };
