@@ -788,7 +788,7 @@ const FacilityMapPage = () => {
                           <div className="card-content">
                             <h4 className="card-title">{location.title}</h4>
                             <span className="category-badge">
-                              {selectedCultureLabel}
+                              {location.addr1}
                             </span>
                           </div>
                         </div>

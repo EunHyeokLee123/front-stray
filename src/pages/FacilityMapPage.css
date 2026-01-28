@@ -199,7 +199,7 @@
   background: rgba(255, 255, 255, 0.9);
   border: 2px solid transparent;
   border-radius: 16px;
-  padding: 0.75rem;
+  //padding: 0.75rem;
   cursor: pointer;
   transition: all 0.3s ease;
   flex-shrink: 0;
@@ -225,8 +225,8 @@
 }
 
 .card-title {
-  font-size: 1.05rem;
-  font-weight: 600;
+  font-size: 1.2rem;
+  font-weight: 900;
   color: #6b5b4f;
   margin: 0;
   word-break: break-word;
@@ -246,7 +246,7 @@
   display: inline-block;
   padding: 0.25rem 0.75rem;
   font-size: 0.9rem;
-  background: linear-gradient(135deg, #ffd4a3 0%, #ffc896 100%);
+  //background: linear-gradient(135deg, #ffd4a3 0%, #ffc896 100%);
   color: #6b5b4f;
   border-radius: 12px;
   font-weight: 500;
