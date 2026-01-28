@@ -38,7 +38,7 @@ function App() {
             <Route path="/map/:category" element={<FacilityMapPage />} />
             <Route
               path="/map"
-              element={<Navigate to="/map/culture" replace />}
+              element={<Navigate to="/map/culture?cate=12&region=1" replace />}
             />
           </Routes>
         </main>

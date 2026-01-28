@@ -10,7 +10,7 @@ const Header = () => {
       path: "/stray/list?region=전체&category=개&page=0",
     },
     { id: "festival", label: "반려동물 행사정보", path: "/festival/list" },
-    { id: "facility", label: "반려동물 관련 시설 정보", path: "/map/culture" },
+    { id: "facility", label: "반려동물 관련 시설 정보", path: "/map/culture?cate=12&region=1" },
   ];
 
   const isActive = (path) => {
