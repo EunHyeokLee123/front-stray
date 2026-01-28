@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../configs/axios-config.js";
 import MapComponent from "../components/MapComponent.jsx";
@@ -129,22 +129,31 @@ const FacilityMapPage = () => {
     logUserEvent("page_view", { page_name: "map" });
   }, []);
 
-  // URL 파라미터가 변경되면 selectedCategory 업데이트
+  // URL 파라미터가 변경되면 selectedCategory 업데이트 및 하위 필터 리셋
   useEffect(() => {
     if (category && category !== selectedCategory) {
       setSelectedCategory(category);
       setSelectedLocation(null);
-
+      
+      // 카테고리 변경 시 모든 하위 필터를 기본값으로 리셋
       if (category === "culture") {
         setShowCultureSubCategories(true);
         setShowHospitalRegion(false);
+        // culture 기본값으로 리셋
+        setSelectedCultureSubCategory("12");
+        setSelectedCultureRegion("1");
       } else if (category === "hospital") {
         setShowHospitalRegion(true);
         setShowCultureSubCategories(false);
+        // hospital 기본값으로 리셋
+        setSelectedHospitalRegion("1");
+        setSelectedHospitalCategory("");
       } else {
         setShowCultureSubCategories(false);
         setShowHospitalRegion(false);
-        setSelectedCultureSubCategory("12");
+        // grooming 기본값으로 리셋
+        setSelectedGroomingRegion("1");
+        setSelectedGroomingDistrict("");
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -375,18 +384,27 @@ const FacilityMapPage = () => {
     setSelectedCategory(categoryId);
     setSelectedLocation(null);
 
+    // 카테고리 변경 시 모든 하위 필터를 기본값으로 리셋
     if (categoryId === "culture") {
       setShowCultureSubCategories(true);
       setShowHospitalRegion(false);
+      // culture 기본값으로 리셋
+      setSelectedCultureSubCategory("12");
+      setSelectedCultureRegion("1");
     } else if (categoryId === "hospital") {
       setShowHospitalRegion(true);
       setShowCultureSubCategories(false);
+      // hospital 기본값으로 리셋
+      setSelectedHospitalRegion("1");
+      setSelectedHospitalCategory("");
     } else {
       setShowCultureSubCategories(false);
       setShowHospitalRegion(false);
-      setSelectedCultureSubCategory("12");
+      // grooming 기본값으로 리셋
+      setSelectedGroomingRegion("1");
+      setSelectedGroomingDistrict("");
     }
-
+    
     // URL 업데이트는 각 필터의 useEffect에서 처리됨
   };
 
@@ -506,7 +524,8 @@ const FacilityMapPage = () => {
     return [];
   };
 
-  const getPageSEOText = () => {
+  // SEO 텍스트를 useMemo로 메모이제이션하여 필터 변경 시 자동 재계산
+  const { title, description } = useMemo(() => {
     let region = "전국";
     let district = "";
     let title = "";
@@ -519,9 +538,15 @@ const FacilityMapPage = () => {
      미용실 / 병원
   ===================== */
     if (isGroomingCategory || selectedCategory === "hospital") {
-      region = getRegionLabel(selectedGroomingRegion || selectedHospitalRegion);
-
-      district = selectedHospitalCategory || selectedHospitalRegion;
+      // hospital과 grooming을 명확히 분리하여 각각의 region 사용
+      if (selectedCategory === "hospital") {
+        region = getRegionLabel(selectedHospitalRegion);
+        district = selectedHospitalCategory;
+      } else {
+        // grooming 카테고리들
+        region = getRegionLabel(selectedGroomingRegion);
+        district = selectedGroomingDistrict;
+      }
 
       title = `${region} ${district} ${categoryName} 지도 정보`;
 
@@ -551,16 +576,25 @@ const FacilityMapPage = () => {
     /* =====================
      기타
   ===================== */
-    region = getRegionLabel(selectedRegion);
+    // selectedRegion이 없으므로 기본값 사용
+    region = "전국";
 
     title = `${region} ${categoryName} 지도 정보`;
 
     description = `${region} 지역 ${categoryName} 위치와 정보를 확인하세요.`;
 
     return { title, description };
-  };
-
-  const { title, description } = getPageSEOText();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    selectedCategory,
+    selectedCultureSubCategory,
+    selectedCultureRegion,
+    selectedHospitalRegion,
+    selectedHospitalCategory,
+    selectedGroomingRegion,
+    selectedGroomingDistrict,
+    isGroomingCategory,
+  ]);
 
   const getFacilitySEO = () => {
     let region = "전국";

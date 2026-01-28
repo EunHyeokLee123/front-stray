@@ -20,7 +20,7 @@ const Header = () => {
     if (path === "/festival/list") {
       return location.pathname.startsWith("/festival");
     }
-    if (path === "/map/culture") {
+    if (path === "/map/culture?cate=12&region=1") {
       return location.pathname.startsWith("/map");
     }
     return false;
