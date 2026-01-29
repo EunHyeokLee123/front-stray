@@ -49,6 +49,30 @@ const StrayAnimalDetail = () => {
     setImgError(false);
   }, [currentImage]);
 
+  const transCd = (sexCd) => {
+    if (sexCd === "M") {
+      return "수컷";
+    } else if (sexCd === "F") {
+      return "암컷";
+    } else if (sexCd === "Q") {
+      return "미상";
+    } else {
+      return "미상";
+    }
+  };
+
+  const transNe = (neuterYn) => {
+    if (neuterYn === "Y") {
+      return "중성화";
+    } else if (neuterYn === "N") {
+      return "미중성화";
+    } else if (neuterYn === "U") {
+      return "미상";
+    } else {
+      return "미상";
+    }
+  };
+
   // 상세페이지 SEO 생성
   const getDetailSEO = () => {
     if (!detailData) return null;
@@ -228,8 +252,8 @@ const StrayAnimalDetail = () => {
                     ["털색", detailData.colorCd],
                     ["나이", detailData.age],
                     ["체중", detailData.weight],
-                    ["성별", detailData.sexCd],
-                    ["중성화", detailData.neuterYn],
+                    ["성별", transCd(detailData.sexCd)],
+                    ["중성화", transNe(detailData.neuterYn)],
                     ["발생일", detailData.happenDt],
                     ["장소", detailData.happenPlace],
                     ["보호소", detailData.careNm],
