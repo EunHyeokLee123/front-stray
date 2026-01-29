@@ -464,9 +464,11 @@
 
 .detail-layout {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
+  grid-template-columns: 1.2fr 0.8fr;
   gap: 1.5rem;
+  align-items: start;
 }
+
 
 .detail-gallery {
   display: flex;
@@ -603,6 +605,7 @@
   }
 
   .detail-layout {
+    display: contents;
     grid-template-columns: 1fr;
   }
 
@@ -763,12 +766,6 @@
 
 /* 좌우 레이아웃 */
 
-.detail-layout {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 1.5rem;
-  align-items: start;
-}
 
 /* 왼쪽 영역 */
 
