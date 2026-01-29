@@ -5,6 +5,7 @@ import "./StrayAnimalList.css";
 import { API_BASE_URL, PET } from "../../configs/host-config.js";
 import { logUserEvent } from "../hooks/user-log-hook.jsx";
 import { useSEO } from "../hooks/useSEO.jsx";
+import { useDeviceType } from "../hooks/use-device-type";
 
 const StrayAnimalList = () => {
   const navigate = useNavigate();
@@ -30,6 +31,17 @@ const StrayAnimalList = () => {
   const selectedCategory = searchParams.get("category") || "개";
   const currentPage = Number(searchParams.get("page") || 0);
   const pageSize = 6;
+
+  // device: 0=PC, 1=태블릿, 2=모바일
+  const { deviceType } = useDeviceType();
+  const device = (() => {
+    if (deviceType === "desktop") return 0;
+    if (deviceType === "tablet") return 1;
+    if (deviceType === "mobile") return 2;
+    return 0;
+  })();
+  const isValidDevice = device === 0 || device === 1 || device === 2;
+  const safeDevice = isValidDevice ? device : 0;
 
   const regions = [
     "전체",
@@ -163,6 +175,7 @@ const StrayAnimalList = () => {
         {
           region: addressFilter,
           kind: kindFilter,
+          device: safeDevice,
         },
       );
 
