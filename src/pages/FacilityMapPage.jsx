@@ -6,6 +6,7 @@ import "./FacilityMapPage.css";
 import { MAP, HOSPITAL, STYLE } from "../../configs/host-config.js";
 import { logUserEvent } from "../hooks/user-log-hook.jsx";
 import { useSEO } from "../hooks/useSEO.jsx";
+import { useDeviceType } from "../hooks/use-device-type";
 
 const FacilityMapPage = () => {
   const { category } = useParams();
@@ -39,6 +40,12 @@ const FacilityMapPage = () => {
   const [modalData, setModalData] = useState(null);
   const [modalLoading, setModalLoading] = useState(false);
   const [modalError, setModalError] = useState(null);
+
+  const { deviceType } = useDeviceType();
+  const isMobile = deviceType === "mobile";
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [cultureSubCategoryModalOpen, setCultureSubCategoryModalOpen] =
+    useState(false);
 
   const cultureSubCategories = [
     { value: "12", name: "관광지" },
@@ -204,7 +211,7 @@ const FacilityMapPage = () => {
           setGroomingDistrictOptions(sortedDistricts);
           setSelectedGroomingDistrict(sortedDistricts[0] || "");
         })
-        .catch((err) => {
+        .catch(() => {
           setGroomingDistrictOptions([]);
           setSelectedGroomingDistrict("");
         });
@@ -253,7 +260,7 @@ const FacilityMapPage = () => {
             setSelectedGroomingDetail(null);
           }
         })
-        .catch((err) => {
+        .catch(() => {
           setGroomingList([]);
           setSelectedGroomingDetail(null);
         });
@@ -301,7 +308,7 @@ const FacilityMapPage = () => {
             setSelectedCultureDetail(null);
           }
         })
-        .catch((err) => {
+        .catch(() => {
           setCultureLocations([]);
           setSelectedLocation(null);
         })
@@ -324,7 +331,7 @@ const FacilityMapPage = () => {
             setSelectedHospitalCategory(sortedCategoryData[0]);
           }
         })
-        .catch((err) => {
+        .catch(() => {
           setHospitalCategoryOptions([]);
           setSelectedHospitalCategory("");
         });
@@ -368,7 +375,7 @@ const FacilityMapPage = () => {
             setSelectedHospitalInfo(null);
           }
         })
-        .catch((err) => {
+        .catch(() => {
           setHospitalList([]);
           setSelectedLocation(null);
         })
@@ -430,7 +437,7 @@ const FacilityMapPage = () => {
     try {
       const res = await axiosInstance.get(`${MAP}/detail/${location.mapId}`);
       setSelectedCultureDetail(res.data?.result || res.data || null);
-    } catch (err) {
+    } catch {
       setSelectedCultureDetail(null);
     }
   };
@@ -443,7 +450,7 @@ const FacilityMapPage = () => {
         `${HOSPITAL}/detail/${hospital.hospitalId}`
       );
       setSelectedHospitalInfo(res.data?.result || res.data || null);
-    } catch (err) {
+    } catch {
       setSelectedHospitalInfo(null);
     }
   };
@@ -457,7 +464,7 @@ const FacilityMapPage = () => {
       .then((res) => {
         setSelectedGroomingDetail(res.data.result || null);
       })
-      .catch((err) => {
+      .catch(() => {
         setSelectedGroomingDetail(null);
       });
   };
@@ -637,121 +644,266 @@ const FacilityMapPage = () => {
       <div className="facility-map-container">
         <div className="page-header">
           <h1 className="page-title">{title}</h1>
-          <p className="page-subtitle">{description}</p>
+          {!isMobile && (
+            <p className="page-subtitle">{description}</p>
+          )}
         </div>
 
         {/* 필터 영역 (상단) */}
         <div className="filter-section">
           {/* 카테고리 선택 */}
           <div className="category-filter">
-            <div className="category-buttons">
-              {categories.map((category) => (
+            {!isMobile && (
+              <div className="category-buttons">
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    className={`category-button ${
+                      selectedCategory === category.id ? "active" : ""
+                    }`}
+                    onClick={() => handleCategoryClick(category.id)}
+                  >
+                    {category.name}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* 모바일: 카테고리 선택 버튼 1개 + 모달 */}
+            {isMobile && (
+              <>
                 <button
-                  key={category.id}
-                  className={`category-button ${
-                    selectedCategory === category.id ? "active" : ""
-                  }`}
-                  onClick={() => handleCategoryClick(category.id)}
+                  type="button"
+                  className="category-picker-button"
+                  onClick={() => {
+                    setCultureSubCategoryModalOpen(false);
+                    setCategoryModalOpen(true);
+                  }}
                 >
-                  {category.name}
+                  {getCategoryName(selectedCategory) || "카테고리 선택"}
                 </button>
-              ))}
-            </div>
+
+                {categoryModalOpen && (
+                  <div
+                    className="facility-filter-modal-overlay"
+                    onClick={() => setCategoryModalOpen(false)}
+                  >
+                    <div
+                      className="facility-filter-modal"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <button
+                        type="button"
+                        className="facility-filter-modal-close"
+                        aria-label="카테고리 선택 닫기"
+                        onClick={() => setCategoryModalOpen(false)}
+                      >
+                        ×
+                      </button>
+                      <h3 className="facility-filter-modal-title">
+                        카테고리 선택
+                      </h3>
+                      <div className="facility-filter-modal-grid">
+                        {categories.map((category) => (
+                          <button
+                            key={category.id}
+                            type="button"
+                            className={`category-button ${
+                              selectedCategory === category.id ? "active" : ""
+                            }`}
+                            onClick={() => {
+                              handleCategoryClick(category.id);
+                              setCategoryModalOpen(false);
+                            }}
+                          >
+                            {category.name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
           </div>
 
           {/* 지역 선택 (조건부 표시) */}
           <div className="region-filter">
             {/* 문화시설 하위 카테고리 */}
             {showCultureSubCategories && (
-              <>
-                <div className="sub-category-buttons">
-                  {cultureSubCategories.map((subCategory) => (
-                    <button
-                      key={subCategory.value}
-                      className={`sub-category-button ${
-                        selectedCultureSubCategory === subCategory.value
-                          ? "active"
-                          : ""
-                      }`}
-                      onClick={() =>
-                        setSelectedCultureSubCategory(subCategory.value)
-                      }
-                    >
-                      {subCategory.name}
-                    </button>
-                  ))}
+              <div className="culture-filter-row">
+                <div className="sub-category-wrap">
+                  {/* PC/태블릿: 서브 카테고리 버튼 나열 */}
+                  {!isMobile && (
+                    <div className="sub-category-buttons">
+                      {cultureSubCategories.map((subCategory) => (
+                        <button
+                          key={subCategory.value}
+                          className={`sub-category-button ${
+                            selectedCultureSubCategory === subCategory.value
+                              ? "active"
+                              : ""
+                          }`}
+                          onClick={() =>
+                            setSelectedCultureSubCategory(subCategory.value)
+                          }
+                        >
+                          {subCategory.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* 모바일: 서브 카테고리 선택 버튼 1개 + 모달 */}
+                  {isMobile && (
+                    <>
+                      <button
+                        type="button"
+                        className="sub-category-picker-button"
+                        onClick={() => {
+                          setCategoryModalOpen(false);
+                          setCultureSubCategoryModalOpen(true);
+                        }}
+                      >
+                        {selectedCultureLabel || "세부 카테고리 선택"}
+                      </button>
+
+                      {cultureSubCategoryModalOpen && (
+                        <div
+                          className="facility-filter-modal-overlay"
+                          onClick={() =>
+                            setCultureSubCategoryModalOpen(false)
+                          }
+                        >
+                          <div
+                            className="facility-filter-modal"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <button
+                              type="button"
+                              className="facility-filter-modal-close"
+                              aria-label="세부 카테고리 선택 닫기"
+                              onClick={() =>
+                                setCultureSubCategoryModalOpen(false)
+                              }
+                            >
+                              ×
+                            </button>
+                            <h3 className="facility-filter-modal-title">
+                              세부 카테고리 선택
+                            </h3>
+                            <div className="facility-filter-modal-grid">
+                              {cultureSubCategories.map((subCategory) => (
+                                <button
+                                  key={subCategory.value}
+                                  type="button"
+                                  className={`sub-category-button ${
+                                    selectedCultureSubCategory ===
+                                    subCategory.value
+                                      ? "active"
+                                      : ""
+                                  }`}
+                                  onClick={() => {
+                                    setSelectedCultureSubCategory(
+                                      subCategory.value
+                                    );
+                                    setCultureSubCategoryModalOpen(false);
+                                  }}
+                                >
+                                  {subCategory.name}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
-                <select
-                  className="region-select"
-                  value={selectedCultureRegion}
-                  onChange={(e) => setSelectedCultureRegion(e.target.value)}
-                >
-                  {cultureRegionOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </>
+
+                {/* 지역 선택 - '지역 :' 라벨 포함, 같은 줄에 배치 */}
+                <div className="region-row">
+                  <span className="region-label">지역 :</span>
+                  <select
+                    className="region-select"
+                    value={selectedCultureRegion}
+                    onChange={(e) => setSelectedCultureRegion(e.target.value)}
+                  >
+                    {cultureRegionOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
             )}
 
             {/* 동물병원 지역/카테고리 선택 */}
             {showHospitalRegion && (
               <>
-                <select
-                  className="region-select"
-                  value={selectedHospitalRegion}
-                  onChange={(e) => setSelectedHospitalRegion(e.target.value)}
-                >
-                  {hospitalRegionOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                {hospitalCategoryOptions.length > 0 && (
+                <div className="region-row">
+                  <span className="region-label">지역 :</span>
                   <select
                     className="region-select"
-                    value={selectedHospitalCategory}
-                    onChange={(e) =>
-                      setSelectedHospitalCategory(e.target.value)
-                    }
+                    value={selectedHospitalRegion}
+                    onChange={(e) => setSelectedHospitalRegion(e.target.value)}
                   >
-                    {hospitalCategoryOptions.map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
+                    {hospitalRegionOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
                       </option>
                     ))}
                   </select>
-                )}
+                  {hospitalCategoryOptions.length > 0 && (
+                    <select
+                      className="region-select"
+                      value={selectedHospitalCategory}
+                      onChange={(e) =>
+                        setSelectedHospitalCategory(e.target.value)
+                      }
+                    >
+                      {hospitalCategoryOptions.map((option, index) => (
+                        <option key={index} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                </div>
               </>
             )}
 
             {/* 미용실 지역 선택 */}
             {showGroomingRegion && (
               <>
-                <select
-                  className="region-select"
-                  value={selectedGroomingRegion}
-                  onChange={(e) => setSelectedGroomingRegion(e.target.value)}
-                >
-                  {hospitalRegionOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  className="region-select"
-                  value={selectedGroomingDistrict}
-                  onChange={(e) => setSelectedGroomingDistrict(e.target.value)}
-                >
-                  {groomingDistrictOptions.map((district) => (
-                    <option key={district} value={district}>
-                      {district}
-                    </option>
-                  ))}
-                </select>
+                <div className="region-row">
+                  <span className="region-label">지역 :</span>
+                  <select
+                    className="region-select"
+                    value={selectedGroomingRegion}
+                    onChange={(e) => setSelectedGroomingRegion(e.target.value)}
+                  >
+                    {hospitalRegionOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    className="region-select"
+                    value={selectedGroomingDistrict}
+                    onChange={(e) =>
+                      setSelectedGroomingDistrict(e.target.value)
+                    }
+                  >
+                    {groomingDistrictOptions.map((district) => (
+                      <option key={district} value={district}>
+                        {district}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </>
             )}
           </div>
@@ -947,7 +1099,7 @@ const FacilityMapPage = () => {
                   {/* 반려동물 문화시설 */}
                   {selectedCategory === "culture" && (
                     <div className="detail-info-grid">
-                      {modalData.image1 && (
+                      {modalData.image1 && !isMobile && (
                         <div className="detail-image-container">
                           <img
                             src={modalData.image1}
@@ -959,7 +1111,7 @@ const FacilityMapPage = () => {
                           />
                         </div>
                       )}
-                      {modalData.image2 && (
+                      {modalData.image2 && !isMobile && (
                         <div className="detail-image-container">
                           <img
                             src={modalData.image2}
@@ -981,14 +1133,6 @@ const FacilityMapPage = () => {
                         <div className="detail-info-item">
                           <span className="detail-label">전화번호</span>
                           <span className="detail-value">{modalData.tel}</span>
-                        </div>
-                      )}
-                      {modalData.contentType && (
-                        <div className="detail-info-item">
-                          <span className="detail-label">카테고리</span>
-                          <span className="detail-value">
-                            {modalData.contentType}
-                          </span>
                         </div>
                       )}
                     </div>

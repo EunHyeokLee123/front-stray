@@ -5,6 +5,7 @@ import "./FestivalList.css";
 import { FESTIVAL } from "../../configs/host-config.js";
 import { logUserEvent } from "../hooks/user-log-hook.jsx";
 import { useSEO } from "../hooks/useSEO.jsx";
+import { useDeviceType } from "../hooks/use-device-type";
 
 const getInitialPage = () => {
   const savedPage = sessionStorage.getItem("festival_page");
@@ -22,6 +23,9 @@ const FestivalList = () => {
   const [currentPage, setCurrentPage] = useState(getInitialPage);
   const [totalPages, setTotalPages] = useState(0);
   const [_totalElements, setTotalElements] = useState(0);
+  const { deviceType } = useDeviceType();
+  const isDesktop = deviceType === "desktop";
+  const isMobile = deviceType === "mobile";
 
   // 행사 목록 조회 함수
   const fetchFestivals = async (page = 0) => {
@@ -97,7 +101,7 @@ const FestivalList = () => {
       <div className="festival-container">
         <div className="page-header">
           <h1 className="page-title">
-            2026년 반려동물 박람회·펫페어 일정 총정리
+            2026 반려동물 박람회·펫페어 일정 총정리
           </h1>
 
           <p className="page-subtitle">
@@ -105,7 +109,8 @@ const FestivalList = () => {
           </p>
 
           {/* ✅ SEO용 설명 영역 */}
-          <div className="seo-description">
+          {isDesktop && (
+            <div className="seo-description">
             <p>
               냥몽에서는 국내에서 열리는 반려동물 박람회, 펫페어, 반려동물 행사
               정보를 최신 일정 기준으로 제공합니다.
@@ -117,6 +122,7 @@ const FestivalList = () => {
               보내보세요.
             </p>
           </div>
+          )}
         </div>
 
         {/* 로딩 상태 */}
@@ -183,13 +189,13 @@ const FestivalList = () => {
             {/* 페이징 */}
             {totalPages > 1 && (
               <div className="pagination">
-                <button
+                {!isMobile && (<button
                   className="pagination-button"
                   onClick={() => handlePageChange(Math.max(0, currentPage - 1))}
                   disabled={currentPage === 0}
                 >
                   이전
-                </button>
+                </button>)}
 
                 <div className="pagination-numbers">
                   {(() => {
@@ -255,7 +261,7 @@ const FestivalList = () => {
                   })()}
                 </div>
 
-                <button
+                  {!isMobile && (<button
                   className="pagination-button"
                   onClick={() =>
                     handlePageChange(Math.min(totalPages - 1, currentPage + 1))
@@ -263,7 +269,7 @@ const FestivalList = () => {
                   disabled={currentPage === totalPages - 1}
                 >
                   다음
-                </button>
+                </button>)}
               </div>
             )}
           </>

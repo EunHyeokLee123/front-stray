@@ -87,10 +87,8 @@
 
 .region-filter {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0.75rem;
-  align-items: center;
-  min-height: 50px;
 }
 
 .sub-category-buttons {
@@ -142,6 +140,115 @@
 .region-select:hover {
   border-color: #ff9aa2;
   box-shadow: 0 2px 8px rgba(255, 182, 193, 0.2);
+}
+
+.region-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.region-label {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #6b5b4f;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
+}
+
+.category-picker-button,
+.sub-category-picker-button {
+  padding: 0.55rem 1.1rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #8b7a6f;
+  background-color: #ffffff;
+  border: 2px solid #ffb6c1;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.2);
+}
+
+.category-picker-button:hover,
+.sub-category-picker-button:hover {
+  border-color: #ff9aa2;
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.3);
+  transform: translateY(-1px);
+}
+
+.facility-filter-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+}
+
+.facility-filter-modal {
+  background: #fff8f0;
+  width: 100%;
+  max-width: 560px;
+  max-height: 85vh;
+  border-radius: 20px;
+  padding: 1.25rem;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 182, 193, 0.2);
+}
+
+.facility-filter-modal-close {
+  position: absolute;
+  right: 14px;
+  top: 10px;
+  border: none;
+  background: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: #6b5b4f;
+}
+
+.facility-filter-modal-title {
+  text-align: center;
+  margin: 0 0 1rem 0;
+  color: #6b5b4f;
+  font-size: 1.35rem;
+  font-weight: 700;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
+}
+
+.facility-filter-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.culture-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.sub-category-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .main-content-wrapper {
+    gap: 1rem;
+  }
+
+  .region-select {
+    min-width: 110px;
+    font-size: 0.95rem;
+    padding: 0.45rem 0.8rem;
+  }
 }
 
 /* 메인 콘텐츠 영역 (좌우 분할) */

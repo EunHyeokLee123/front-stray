@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../configs/axios-config.js";
 import "./FestivalList.css";
 import { FESTIVAL } from "../../configs/host-config.js";
+import { useDeviceType } from "../hooks/use-device-type";
+
 
 const FestivalDetail = () => {
   const { id } = useParams();
@@ -10,6 +12,8 @@ const FestivalDetail = () => {
   const [detailLoading, setDetailLoading] = useState(false);
   const [detailError, setDetailError] = useState(null);
   const [detailData, setDetailData] = useState(null);
+  const { deviceType } = useDeviceType();
+  const isSmartPhone = deviceType === "mobile";
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -73,11 +77,13 @@ const FestivalDetail = () => {
               <header className="festival-seo-header">
                 <h1 className="festival-seo-title">{detailData.title}</h1>
 
-                <p className="festival-seo-desc">
+                {!isSmartPhone && (
+                  <p className="festival-seo-desc">
                   {detailData.location}에서 열리는
                   {detailData.festivalDate} 반려동물 박람회입니다.
                   일정·요금·관람 정보를 확인하세요.
                 </p>
+                )}
               </header>
               <div className="detail-info-grid">
                 <div className="detail-info-row">

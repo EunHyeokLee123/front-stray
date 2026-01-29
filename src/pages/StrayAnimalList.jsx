@@ -34,6 +34,9 @@ const StrayAnimalList = () => {
 
   // device: 0=PC, 1=태블릿, 2=모바일
   const { deviceType } = useDeviceType();
+  const isSmartphone = deviceType === "mobile";
+  const [regionModalOpen, setRegionModalOpen] = useState(false);
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const device = (() => {
     if (deviceType === "desktop") return 0;
     if (deviceType === "tablet") return 1;
@@ -296,49 +299,185 @@ const StrayAnimalList = () => {
           {/* 필터 영역 */}
           <div className="filter-section">
             <div className="filter-group">
-              <label className="filter-label">지역</label>
-              <div className="filter-buttons">
-                {regions.map((region) => (
+              <div className="filter-label-row">
+                <label className="filter-label filter-label-inline">지역</label>
+
+                {/* 모바일(스마트폰): 라벨 옆 버튼 1개 + 모달로 선택 */}
+                {isSmartphone && (
                   <button
-                    key={region}
-                    className={`filter-button ${
-                      selectedRegion === region ? "active" : ""
-                    }`}
-                    onClick={() =>
-                      updateSearchParams({
-                        region,
-                        category: selectedCategory,
-                        page: 0,
-                      })
-                    }
+                    type="button"
+                    className="filter-button region-picker-button"
+                    onClick={() => {
+                      setCategoryModalOpen(false);
+                      setRegionModalOpen(true);
+                    }}
                   >
-                    {region}
+                    {selectedRegion === "전체" ? "전국" : selectedRegion}
                   </button>
-                ))}
+                )}
               </div>
+
+              {/* PC/태블릿: 기존처럼 지역 버튼 전부 노출 */}
+              {!isSmartphone && (
+                <div className="filter-buttons">
+                  {regions.map((region) => (
+                    <button
+                      key={region}
+                      className={`filter-button ${
+                        selectedRegion === region ? "active" : ""
+                      }`}
+                      onClick={() =>
+                        updateSearchParams({
+                          region,
+                          category: selectedCategory,
+                          page: 0,
+                        })
+                      }
+                    >
+                      {region}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* 모바일(스마트폰): 버튼 1개 + 모달로 선택 */}
+              {isSmartphone && (
+                <>
+                  {regionModalOpen && (
+                    <div
+                      className="region-modal-overlay"
+                      onClick={() => setRegionModalOpen(false)}
+                    >
+                      <div
+                        className="region-modal"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <button
+                          type="button"
+                          className="region-modal-close"
+                          aria-label="지역 선택 닫기"
+                          onClick={() => setRegionModalOpen(false)}
+                        >
+                          ×
+                        </button>
+
+                        <h3 className="region-modal-title">지역 선택</h3>
+
+                        <div className="region-modal-grid">
+                          {regions.map((region) => (
+                            <button
+                              key={region}
+                              type="button"
+                              className={`filter-button ${
+                                selectedRegion === region ? "active" : ""
+                              }`}
+                              onClick={() => {
+                                updateSearchParams({
+                                  region,
+                                  category: selectedCategory,
+                                  page: 0,
+                                });
+                                setRegionModalOpen(false);
+                              }}
+                            >
+                              {region}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
 
             <div className="filter-group">
-              <label className="filter-label">축종</label>
-              <div className="filter-buttons">
-                {categories.map((category) => (
+              <div className="filter-label-row">
+                <label className="filter-label filter-label-inline">축종</label>
+
+                {/* 모바일(스마트폰): 라벨 옆 버튼 1개 + 모달로 선택 */}
+                {isSmartphone && (
                   <button
-                    key={category}
-                    className={`filter-button ${
-                      selectedCategory === category ? "active" : ""
-                    }`}
-                    onClick={() =>
-                      updateSearchParams({
-                        region: selectedRegion,
-                        category,
-                        page: 0,
-                      })
-                    }
+                    type="button"
+                    className="filter-button region-picker-button"
+                    onClick={() => {
+                      setRegionModalOpen(false);
+                      setCategoryModalOpen(true);
+                    }}
                   >
-                    {category}
+                    {selectedCategory}
                   </button>
-                ))}
+                )}
               </div>
+
+              {/* PC/태블릿: 기존처럼 축종 버튼 전부 노출 */}
+              {!isSmartphone && (
+                <div className="filter-buttons">
+                  {categories.map((category) => (
+                    <button
+                      key={category}
+                      className={`filter-button ${
+                        selectedCategory === category ? "active" : ""
+                      }`}
+                      onClick={() =>
+                        updateSearchParams({
+                          region: selectedRegion,
+                          category,
+                          page: 0,
+                        })
+                      }
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* 모바일(스마트폰): 축종 선택 모달 */}
+              {isSmartphone && categoryModalOpen && (
+                <div
+                  className="region-modal-overlay"
+                  onClick={() => setCategoryModalOpen(false)}
+                >
+                  <div
+                    className="region-modal"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <button
+                      type="button"
+                      className="region-modal-close"
+                      aria-label="축종 선택 닫기"
+                      onClick={() => setCategoryModalOpen(false)}
+                    >
+                      ×
+                    </button>
+
+                    <h3 className="region-modal-title">축종 선택</h3>
+
+                    <div className="region-modal-grid">
+                      {categories.map((category) => (
+                        <button
+                          key={category}
+                          type="button"
+                          className={`filter-button ${
+                            selectedCategory === category ? "active" : ""
+                          }`}
+                          onClick={() => {
+                            updateSearchParams({
+                              region: selectedRegion,
+                              category,
+                              page: 0,
+                            });
+                            setCategoryModalOpen(false);
+                          }}
+                        >
+                          {category}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -434,7 +573,7 @@ const StrayAnimalList = () => {
               {/* 페이징 */}
               {totalPages > 1 &&
                 (() => {
-                  const maxVisiblePages = 7;
+                  const maxVisiblePages = isSmartphone ? 5 : 7;
                   const startPage = Math.max(
                     0,
                     currentPage - Math.floor(maxVisiblePages / 2),
@@ -446,15 +585,17 @@ const StrayAnimalList = () => {
 
                   return (
                     <div className="pagination">
-                      <button
-                        className="pagination-button"
-                        onClick={() =>
-                          handlePageChange(Math.max(0, currentPage - 1))
-                        }
-                        disabled={currentPage === 0}
-                      >
-                        이전
-                      </button>
+                      {!isSmartphone && (
+                        <button
+                          className="pagination-button"
+                          onClick={() =>
+                            handlePageChange(Math.max(0, currentPage - 1))
+                          }
+                          disabled={currentPage === 0}
+                        >
+                          이전
+                        </button>
+                      )}
 
                       <div className="pagination-numbers">
                         {/* 첫 페이지가 보이지 않을 때만 표시 */}
@@ -504,17 +645,19 @@ const StrayAnimalList = () => {
                         )}
                       </div>
 
-                      <button
-                        className="pagination-button"
-                        onClick={() =>
-                          handlePageChange(
-                            Math.min(totalPages - 1, currentPage + 1),
-                          )
-                        }
-                        disabled={currentPage === totalPages - 1}
-                      >
-                        다음
-                      </button>
+                      {!isSmartphone && (
+                        <button
+                          className="pagination-button"
+                          onClick={() =>
+                            handlePageChange(
+                              Math.min(totalPages - 1, currentPage + 1),
+                            )
+                          }
+                          disabled={currentPage === totalPages - 1}
+                        >
+                          다음
+                        </button>
+                      )}
                     </div>
                   );
                 })()}

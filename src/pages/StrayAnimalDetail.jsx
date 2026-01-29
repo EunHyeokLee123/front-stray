@@ -34,7 +34,7 @@ const StrayAnimalDetail = () => {
         const res = await axiosInstance.get(`${PET}/detail/${id}`);
         const data = res.data?.result || res.data;
         setDetailData(data);
-      } catch (err) {
+      } catch {
         setDetailError("상세 정보를 불러오지 못했습니다.");
         setDetailData(null);
       } finally {
@@ -102,7 +102,7 @@ const StrayAnimalDetail = () => {
                 )
               }
             >
-              ← 목록으로
+              ← 목록
             </button>
             <h1 className="detail-title">
               {region !== "전체" && `${region} `}

@@ -33,6 +33,51 @@
   gap: 1rem;
 }
 
+.hamburger-button {
+  display: none;
+  border: 0;
+  background: rgba(255, 248, 240, 0.8);
+  border-radius: 14px;
+  padding: 0.6rem 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(255, 182, 193, 0.15);
+}
+
+.hamburger-button:hover {
+  background-color: rgba(255, 255, 255, 0.95);
+  transform: translateY(-1px);
+}
+
+.hamburger-icon {
+  width: 22px;
+  height: 16px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hamburger-icon > span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: #8b7a6f;
+  border-radius: 999px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.hamburger-icon.open > span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-icon.open > span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-icon.open > span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
 .nav-button {
   padding: 0.75rem 1.5rem;
   font-size: 1.15rem;
@@ -70,20 +115,33 @@
 
 @media (max-width: 768px) {
   .header-container {
-    flex-direction: column;
-    gap: 1rem;
+    flex-direction: row;
+    gap: 0.75rem;
     padding: 1rem;
   }
 
-  .nav-buttons {
-    flex-wrap: wrap;
+  .hamburger-button {
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-    width: 100%;
+  }
+
+  /* 모바일에서는 메뉴를 햄버거로 토글 */
+  .nav-buttons.mobile {
+    display: none;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.75rem 1rem 1rem;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .nav-buttons.mobile.open {
+    display: flex;
   }
 
   .nav-button {
-    flex: 1;
-    min-width: 120px;
+    width: 100%;
     font-size: 1rem;
     padding: 0.6rem 1rem;
   }
