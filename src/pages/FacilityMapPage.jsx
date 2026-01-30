@@ -670,17 +670,19 @@ const FacilityMapPage = () => {
             {/* 모바일: 카테고리 선택 버튼 1개 + 모달 */}
             {isMobile && (
               <>
-                <button
-                  type="button"
-                  className="category-picker-button"
-                  onClick={() => {
-                    setCultureSubCategoryModalOpen(false);
-                    setCategoryModalOpen(true);
-                  }}
-                >
-                  {getCategoryName(selectedCategory) || "카테고리 선택"}
-                </button>
-
+                <div className="mobile-category-filter">
+                  <div>테마: </div>
+                  <button
+                    type="button"
+                    className="category-picker-button"
+                    onClick={() => {
+                      setCultureSubCategoryModalOpen(false);
+                      setCategoryModalOpen(true);
+                    }}
+                  >
+                    {getCategoryName(selectedCategory) || "카테고리 선택"}
+                  </button>
+                </div>
                 {categoryModalOpen && (
                   <div
                     className="facility-filter-modal-overlay"
@@ -755,16 +757,19 @@ const FacilityMapPage = () => {
                   {/* 모바일: 서브 카테고리 선택 버튼 1개 + 모달 */}
                   {isMobile && (
                     <>
-                      <button
-                        type="button"
-                        className="sub-category-picker-button"
-                        onClick={() => {
-                          setCategoryModalOpen(false);
-                          setCultureSubCategoryModalOpen(true);
-                        }}
-                      >
-                        {selectedCultureLabel || "세부 카테고리 선택"}
-                      </button>
+                      <div className="mobile-sub-category-filter">
+                        <div>세부 :</div>
+                        <button
+                          type="button"
+                          className="sub-category-picker-button"
+                          onClick={() => {
+                            setCategoryModalOpen(false);
+                            setCultureSubCategoryModalOpen(true);
+                          }}
+                        >
+                          {selectedCultureLabel || "세부 카테고리 선택"}
+                        </button>
+                      </div>
 
                       {cultureSubCategoryModalOpen && (
                         <div
