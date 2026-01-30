@@ -461,6 +461,7 @@
   .card-list {
     height: auto;
     max-height: 400px;
+    min-height: 0;
   }
 }
 
