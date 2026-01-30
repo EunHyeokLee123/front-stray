@@ -136,29 +136,36 @@ const FacilityMapPage = () => {
     logUserEvent("page_view", { page_name: "map" });
   }, []);
 
-  // URL 파라미터가 변경되면 selectedCategory 업데이트 및 하위 필터 리셋
+  // URL의 category에 맞게 표시 플래그 동기화 (새로고침/직접 진입 시에도 올바른 필터만 노출)
   useEffect(() => {
-    if (category && category !== selectedCategory) {
+    if (!category) return;
+
+    // 항상 URL category 기준으로 어떤 필터 영역을 보여줄지 결정
+    if (category === "culture") {
+      setShowCultureSubCategories(true);
+      setShowHospitalRegion(false);
+      setShowGroomingRegion(false);
+    } else if (category === "hospital") {
+      setShowHospitalRegion(true);
+      setShowCultureSubCategories(false);
+      setShowGroomingRegion(false);
+    } else {
+      setShowGroomingRegion(true);
+      setShowCultureSubCategories(false);
+      setShowHospitalRegion(false);
+    }
+
+    // URL과 state가 어긋난 경우에만 selectedCategory 및 하위 필터 리셋
+    if (category !== selectedCategory) {
       setSelectedCategory(category);
       setSelectedLocation(null);
-
-      // 카테고리 변경 시 모든 하위 필터를 기본값으로 리셋
       if (category === "culture") {
-        setShowCultureSubCategories(true);
-        setShowHospitalRegion(false);
-        // culture 기본값으로 리셋
         setSelectedCultureSubCategory("12");
         setSelectedCultureRegion("1");
       } else if (category === "hospital") {
-        setShowHospitalRegion(true);
-        setShowCultureSubCategories(false);
-        // hospital 기본값으로 리셋
         setSelectedHospitalRegion("1");
         setSelectedHospitalCategory("");
       } else {
-        setShowCultureSubCategories(false);
-        setShowHospitalRegion(false);
-        // grooming 기본값으로 리셋
         setSelectedGroomingRegion("1");
         setSelectedGroomingDistrict("");
       }
@@ -407,6 +414,7 @@ const FacilityMapPage = () => {
     } else {
       setShowCultureSubCategories(false);
       setShowHospitalRegion(false);
+      setShowGroomingRegion(true);
       // grooming 기본값으로 리셋
       setSelectedGroomingRegion("1");
       setSelectedGroomingDistrict("");
