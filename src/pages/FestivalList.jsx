@@ -40,7 +40,6 @@ const FestivalList = () => {
     axiosInstance
       .get(`${FESTIVAL}/region`)
       .then((res) => {
-        console.log(res);
         const list = res.data?.result ?? res.data;
         const arr = Array.isArray(list) ? list : list ? [list] : [];
         setRegions(
@@ -49,7 +48,6 @@ const FestivalList = () => {
       })
       .catch((err) => {
         setRegions([]);
-        console.error(err);
       });
   }, []);
 
@@ -66,7 +64,6 @@ const FestivalList = () => {
               selectedRegion,
             )}/${page}`;
       const response = await axiosInstance.get(url);
-      console.log(response);
       const data = response.data;
 
       // API 응답 형식에 맞게 데이터 추출
@@ -79,7 +76,6 @@ const FestivalList = () => {
       setTotalPages(resultData.totalPages || 0);
       setTotalElements(resultData.totalElements || 0);
     } catch (err) {
-      console.error(err);
       setError("행사 정보를 불러오는데 실패했습니다.");
       setFestivals([]);
     } finally {

@@ -5,7 +5,6 @@ import "./FestivalList.css";
 import { FESTIVAL } from "../../configs/host-config.js";
 import { useDeviceType } from "../hooks/use-device-type";
 
-
 const FestivalDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -79,10 +78,10 @@ const FestivalDetail = () => {
 
                 {!isSmartPhone && (
                   <p className="festival-seo-desc">
-                  {detailData.location}에서 열리는
-                  {detailData.festivalDate} 반려동물 박람회입니다.
-                  일정·요금·관람 정보를 확인하세요.
-                </p>
+                    {detailData.location}에서 열리는
+                    {detailData.festivalDate} 반려동물 박람회입니다.
+                    일정·요금·관람 정보를 확인하세요.
+                  </p>
                 )}
               </header>
               <div className="detail-info-grid">
@@ -97,6 +96,10 @@ const FestivalDetail = () => {
                   <span className="detail-value">
                     {detailData.festivalDate || "-"}
                   </span>
+                </div>
+                <div className="detail-info-row">
+                  <span className="detail-label">주소:</span>
+                  <span className="detail-value">{detailData.addr || "-"}</span>
                 </div>
                 <div className="detail-info-row">
                   <span className="detail-label">진행시간:</span>
