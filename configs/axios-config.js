@@ -1,10 +1,11 @@
+/* global process */
 // 여기에서 axios 인스턴스를 생성하고,
 // interceptor 기능을 활용하여, access token이 만료되었을 때 refresh token을 사용하여
 // 새로운 access token을 발급받는 비동기 방식의 요청을 모듈화. (fetch는 interceptor 기능 x)
 // axios 인스턴스는 token이 필요한 모든 요청에 활용 될 것입니다.
 
 import axios from "axios";
-import { API_BASE_URL, TOKEN } from "./host-config";
+import { API_BASE_URL, TOKEN } from "./host-config.js";
 
 // Axios 인스턴스 생성
 // 이제부터 토큰이 필요한 요청은 그냥 axios가 아니라
@@ -26,19 +27,20 @@ Axios Interceptor는 요청 또는 응답이 처리되기 전에 실행되는 �
 */
 
 // 요청용 인터셉터 선언
-// 인터셉터의 use는 매개값은 콜백함수 2개를 받음
-// 1은 정상 동작 로직
-// 2는 과정중 에러 발생 시 실행할 로직
+// 브라우저: localStorage / Node(스크립트): process.env.SITEMAP_TOKEN, SITEMAP_FINGERPRINT
+const isNode = typeof window === "undefined";
 axiosInstance.interceptors.request.use(
   async (config) => {
-    // 1️⃣ 토큰
-    const token = localStorage.getItem("token");
+    const token = isNode
+      ? process.env.SITEMAP_TOKEN
+      : localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // 2️ Fingerprint
-    const fingerprint = localStorage.getItem("client_fingerprint");
+    const fingerprint = isNode
+      ? process.env.SITEMAP_FINGERPRINT
+      : localStorage.getItem("client_fingerprint");
     if (fingerprint) {
       config.headers["X-Fingerprint"] = fingerprint;
     }
@@ -59,9 +61,13 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-
     const status = error.response?.status;
     const message = error.response?.data;
+
+    // Node(스크립트): 토큰 재발급/alert 없이 그대로 reject
+    if (isNode) {
+      return Promise.reject(error);
+    }
 
     //  토큰 만료 or 없음 → 재발급
     if (
@@ -79,7 +85,6 @@ axiosInstance.interceptors.response.use(
           return Promise.reject("FINGERPRINT_MISSING");
         }
 
-        //  토큰 재발급
         const tokenResponse = await axios.get(`${API_BASE_URL}${TOKEN}`, {
           headers: {
             "X-Fingerprint": fingerprint,
@@ -97,19 +102,16 @@ axiosInstance.interceptors.response.use(
       }
     }
 
-    //  Redis 차단
     if (status === 429) {
       alert("요청이 너무 많습니다. 잠시 후 다시 시도해주세요.");
       return Promise.reject(error);
     }
 
-    //  Fingerprint 문제
     if (status === 400 && message === "FINGERPRINT_REQUIRED") {
       alert("보안 식별 정보가 누락되었습니다. 새로고침 해주세요.");
       return Promise.reject(error);
     }
 
-    //  비정상 접근
     if (status === 403 && message === "INVALID_USER_AGENT") {
       alert("비정상적인 접근입니다.");
       return Promise.reject(error);

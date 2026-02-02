@@ -1,3 +1,4 @@
+/* global process */
 /*
  리액트 프로젝트의 개발 중 ip는 localhost 입니다. -> 백엔드도 localhost로 작업 중일 것이다.
  하지만, 나중에는 서비스를 위해 도메인을 구입할 것입니다. -> 백엔드의 주소도 달라질 수 있다.
@@ -6,12 +7,19 @@
  호스트 네임을 전역적으로 관리하려는 의도로 설정하는 파일.
 */
 
-// 브라우저에서 현재 클라이언트의 호스트 이름을 얻어오기
-const clientHostName = window.location.hostname;
+// Node(스크립트) 환경: process.env 사용 / 브라우저: window.location 기준
+const clientHostName =
+  typeof window !== "undefined" ? window.location.hostname : null;
 
 let backendHostName;
 
-if (clientHostName === "localhost" || clientHostName === "127.0.0.1") {
+if (clientHostName === null) {
+  // Node (예: scripts/generate-sitemap-detail.js)
+  backendHostName = (
+    process.env.VITE_API_BASE_URL ||
+    "https://api.nyangmong.com"
+  ).replace(/\/+$/, "");
+} else if (clientHostName === "localhost" || clientHostName === "127.0.0.1") {
   // 개발 중 (로컬)
   backendHostName = "http://localhost:8000";
 } else if (
@@ -20,7 +28,6 @@ if (clientHostName === "localhost" || clientHostName === "127.0.0.1") {
   clientHostName.includes("172.")
 ) {
   // 로컬 네트워크 (모바일 접속 시)
-  // 같은 네트워크의 컴퓨터 IP로 백엔드 서버에 접근
   const currentHost = window.location.hostname;
   backendHostName = `http://${currentHost}:8000`;
 } else if (clientHostName === "nyangmong.com") {
