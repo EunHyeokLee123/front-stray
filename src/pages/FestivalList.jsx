@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axiosInstance from "../../configs/axios-config.js";
 import "./FestivalList.css";
 import { FESTIVAL } from "../../configs/host-config.js";
@@ -17,14 +17,27 @@ const getInitialPage = () => {
 
 const FestivalList = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const initialRegion =
+    searchParams.get("region") ||
+    sessionStorage.getItem("festival_region") ||
+    "전국";
+  const initialPage = (() => {
+    const p = searchParams.get("page");
+    if (p !== null && p !== "") {
+      const num = Number(p);
+      if (!Number.isNaN(num) && num >= 0) return num;
+    }
+    return getInitialPage();
+  })();
   const [festivals, setFestivals] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(getInitialPage);
+  const [currentPage, setCurrentPage] = useState(initialPage);
   const [totalPages, setTotalPages] = useState(0);
   const [_totalElements, setTotalElements] = useState(0);
   const [regions, setRegions] = useState([]);
-  const [selectedRegion, setSelectedRegion] = useState("전국");
+  const [selectedRegion, setSelectedRegion] = useState(initialRegion);
   const [regionModalOpen, setRegionModalOpen] = useState(false);
   const { deviceType } = useDeviceType();
   const isDesktop = deviceType === "desktop";
@@ -46,9 +59,7 @@ const FestivalList = () => {
           arr.filter((r) => typeof r === "string" && r != null && r !== ""),
         );
       })
-      .catch((err) => {
-        setRegions([]);
-      });
+      .catch(() => setRegions([]));
   }, []);
 
   // 행사 목록 조회 함수 (전국: /list/{page}, 지역: /region/list/{region}/{page})
@@ -64,6 +75,7 @@ const FestivalList = () => {
               selectedRegion,
             )}/${page}`;
       const response = await axiosInstance.get(url);
+
       const data = response.data;
 
       // API 응답 형식에 맞게 데이터 추출
@@ -75,7 +87,7 @@ const FestivalList = () => {
       }
       setTotalPages(resultData.totalPages || 0);
       setTotalElements(resultData.totalElements || 0);
-    } catch (err) {
+    } catch {
       setError("행사 정보를 불러오는데 실패했습니다.");
       setFestivals([]);
     } finally {
@@ -109,6 +121,10 @@ const FestivalList = () => {
   }, [currentPage]);
 
   useEffect(() => {
+    sessionStorage.setItem("festival_region", selectedRegion);
+  }, [selectedRegion]);
+
+  useEffect(() => {
     fetchFestivals(currentPage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, selectedRegion]);
@@ -121,6 +137,16 @@ const FestivalList = () => {
   useEffect(() => {
     logUserEvent("page_view", { page_name: "festival" });
   }, []);
+
+  // SEO용: URL에 region, page 쿼리 파라미터 반영 (기능적으로는 미사용)
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set("region", selectedRegion);
+    params.set("page", String(currentPage));
+    const search = params.toString();
+    const url = `${window.location.pathname}?${search}`;
+    window.history.replaceState(null, "", url);
+  }, [selectedRegion, currentPage]);
 
   // 상세 페이지로 이동
   const handleDetailClick = (festivalId) => {
