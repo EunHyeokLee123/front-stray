@@ -2,3 +2,4 @@ User-agent: *
 Disallow:
 
 Sitemap: https://nyangmong.com/sitemap.xml
+Sitemap: https://nyangmong.com/sitemap-detail.xml

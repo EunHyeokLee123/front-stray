@@ -107,7 +107,7 @@ const FestivalList = () => {
 
       image: "/seo/og-main-1200.webp",
 
-      canonical: `https://nyangmong.com/festival/list`,
+      canonical: `https://nyangmong.com/festival/list?region=${selectedRegion}&page=${currentPage}`,
     };
   };
 

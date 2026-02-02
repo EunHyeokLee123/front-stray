@@ -1,126 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
+  <!-- 루트 (실제 진입: / → /stray/list 리다이렉트) -->
   <url>
     <loc>https://nyangmong.com/</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>1.0</priority>
   </url>
 
+  <!-- 유기동물 정보: /stray/list, 상세 /stray/detail/:id (동적·목록 링크로 수집) -->
   <url>
     <loc>https://nyangmong.com/stray/list</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://nyangmong.com/stray/list?region=전체&amp;category=개&amp;page=0</loc>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.8</priority>
   </url>
 
+  <!-- 반려동물 행사: /festival/list, 상세 /festival/detail/:id (동적·목록 링크로 수집) -->
   <url>
     <loc>https://nyangmong.com/festival/list</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://nyangmong.com/festival/list?region=전국&amp;page=0</loc>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.8</priority>
   </url>
 
-  <!-- 반려동물 시설 지도 - 카테고리별 기본 페이지 -->
+  <!-- 반려동물 시설 지도: /map → /map/culture?cate=12&amp;region=1 리다이렉트 -->
+  <!-- 카테고리: culture, hospital, style, cafe, shop, museum, art, literary, drug -->
   <url>
     <loc>https://nyangmong.com/map/culture?cate=12&amp;region=1</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.8</priority>
   </url>
-
   <url>
     <loc>https://nyangmong.com/map/hospital</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.8</priority>
   </url>
-
   <url>
     <loc>https://nyangmong.com/map/style</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.8</priority>
   </url>
-
   <url>
     <loc>https://nyangmong.com/map/cafe</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.8</priority>
   </url>
-
   <url>
     <loc>https://nyangmong.com/map/shop</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.8</priority>
   </url>
-
   <url>
     <loc>https://nyangmong.com/map/museum</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.8</priority>
   </url>
-
   <url>
     <loc>https://nyangmong.com/map/art</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.8</priority>
   </url>
-
   <url>
     <loc>https://nyangmong.com/map/literary</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.8</priority>
   </url>
-
   <url>
     <loc>https://nyangmong.com/map/drug</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.8</priority>
   </url>
 
-  <!-- 문화시설 주요 하위 카테고리 조합 (서울 기준) -->
-  <url>
-    <loc>https://nyangmong.com/map/culture?cate=12&amp;region=1</loc>
-    <lastmod>2026-01-28</lastmod>
-    <priority>0.7</priority>
-  </url>
-
+  <!-- 문화시설 하위 카테고리 (서울 region=1) -->
   <url>
     <loc>https://nyangmong.com/map/culture?cate=14&amp;region=1</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.7</priority>
   </url>
-
   <url>
     <loc>https://nyangmong.com/map/culture?cate=28&amp;region=1</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.7</priority>
   </url>
-
   <url>
     <loc>https://nyangmong.com/map/culture?cate=32&amp;region=1</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.7</priority>
   </url>
-
   <url>
     <loc>https://nyangmong.com/map/culture?cate=38&amp;region=1</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.7</priority>
   </url>
-
   <url>
     <loc>https://nyangmong.com/map/culture?cate=39&amp;region=1</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.7</priority>
   </url>
 
-  <!-- 주요 지역별 문화시설 (관광지 기준) -->
+  <!-- 문화시설 지역별 (관광지 cate=12) -->
   <url>
     <loc>https://nyangmong.com/map/culture?cate=12&amp;region=31</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.7</priority>
   </url>
-
   <url>
     <loc>https://nyangmong.com/map/culture?cate=12&amp;region=6</loc>
-    <lastmod>2026-01-28</lastmod>
+    <lastmod>2026-01-29</lastmod>
     <priority>0.7</priority>
   </url>
 

@@ -4,6 +4,7 @@ import axiosInstance from "../../configs/axios-config.js";
 import "./FestivalList.css";
 import { FESTIVAL } from "../../configs/host-config.js";
 import { useDeviceType } from "../hooks/use-device-type";
+import { useSEO } from "../hooks/useSEO.jsx";
 
 const FestivalDetail = () => {
   const { id } = useParams();
@@ -37,6 +38,34 @@ const FestivalDetail = () => {
 
     fetchDetail();
   }, [id]);
+
+  // SEO: 상세 데이터 로드 후 메타/캐노니컬 반영
+  const seo = {
+    title: detailData?.title
+      ? `${detailData.title} | 냥몽`
+      : "반려동물 행사 상세 | 냥몽",
+    description: detailData
+      ? (() => {
+          const loc = (detailData.location || "").trim();
+          const date = (detailData.festivalDate || "").trim();
+          if (!loc && !date)
+            return "반려동물 박람회·펫페어 상세 정보를 확인하세요.";
+          const part = loc && date ? `${loc}에서 열리는 ${date}` : loc || date;
+          return `${part} 반려동물 박람회. 일정·요금·관람 정보를 확인하세요.`;
+        })()
+      : "반려동물 박람회·펫페어 상세 정보를 확인하세요.",
+    image:
+      detailData?.imagePath?.startsWith("http") ||
+      detailData?.imagePath?.startsWith("//")
+        ? detailData.imagePath
+        : detailData?.imagePath
+        ? `${window.location.origin}${
+            detailData.imagePath.startsWith("/") ? "" : "/"
+          }${detailData.imagePath}`
+        : "/seo/og-main-1200.webp",
+    canonical: `https://nyangmong.com/festival/detail/${id}`,
+  };
+  useSEO(seo);
 
   return (
     <div className="festival-list-page">
