@@ -40,13 +40,17 @@ const FestivalList = () => {
     axiosInstance
       .get(`${FESTIVAL}/region`)
       .then((res) => {
+        console.log(res);
         const list = res.data?.result ?? res.data;
         const arr = Array.isArray(list) ? list : list ? [list] : [];
         setRegions(
           arr.filter((r) => typeof r === "string" && r != null && r !== ""),
         );
       })
-      .catch(() => setRegions([]));
+      .catch((err) => {
+        setRegions([]);
+        console.error(err);
+      });
   }, []);
 
   // 행사 목록 조회 함수 (전국: /list/{page}, 지역: /region/list/{region}/{page})
@@ -62,7 +66,7 @@ const FestivalList = () => {
               selectedRegion,
             )}/${page}`;
       const response = await axiosInstance.get(url);
-
+      console.log(response);
       const data = response.data;
 
       // API 응답 형식에 맞게 데이터 추출
@@ -74,7 +78,8 @@ const FestivalList = () => {
       }
       setTotalPages(resultData.totalPages || 0);
       setTotalElements(resultData.totalElements || 0);
-    } catch {
+    } catch (err) {
+      console.error(err);
       setError("행사 정보를 불러오는데 실패했습니다.");
       setFestivals([]);
     } finally {
@@ -146,14 +151,13 @@ const FestivalList = () => {
           {isDesktop && (
             <div className="seo-description">
               <p>
-                냥몽에서는 {selectedRegion}에서 열리는 반려동물 박람회, 펫페어, 반려동물
-                행사 정보를 최신 일정 기준으로 제공합니다.
+                냥몽에서는 {selectedRegion}에서 열리는 반려동물 박람회, 펫페어,
+                반려동물 행사 정보를 최신 일정 기준으로 제공합니다.
               </p>
 
               <p>
-                {selectedRegion} 주요 지역의 반려동물 행사 일정과
-                위치, 참가 정보를 확인하고 반려동물과 함께 특별한 시간을
-                보내보세요.
+                {selectedRegion} 주요 지역의 반려동물 행사 일정과 위치, 참가
+                정보를 확인하고 반려동물과 함께 특별한 시간을 보내보세요.
               </p>
             </div>
           )}
