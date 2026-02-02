@@ -103,6 +103,128 @@
   box-shadow: 0 4px 12px rgba(255, 154, 162, 0.4);
 }
 
+/* 지역 선택 필터 */
+.festival-region-filter {
+  margin-bottom: 1.5rem;
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.festival-region-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #6b5b4f;
+  margin: 0;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
+}
+
+.festival-region-picker-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #8b7a6f;
+  background-color: #fff;
+  border: 2px solid #ffb6c1;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.18);
+}
+
+.festival-region-picker-button:hover {
+  border-color: #ff9aa2;
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.25);
+  transform: translateY(-1px);
+}
+
+/* 지역 선택 모달 */
+.festival-region-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+}
+
+.festival-region-modal {
+  background: #fff8f0;
+  width: 100%;
+  max-width: 400px;
+  max-height: 80vh;
+  border-radius: 20px;
+  padding: 1.25rem;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 182, 193, 0.2);
+}
+
+.festival-region-modal-close {
+  position: absolute;
+  right: 14px;
+  top: 10px;
+  border: none;
+  background: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: #6b5b4f;
+}
+
+.festival-region-modal-title {
+  text-align: center;
+  margin: 0 0 1rem 0;
+  color: #6b5b4f;
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
+}
+
+.festival-region-modal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.festival-region-modal-list .festival-region-button {
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 1rem;
+}
+
+.festival-region-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #8b7a6f;
+  background-color: rgba(255, 248, 240, 0.9);
+  border: 2px solid transparent;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
+}
+
+.festival-region-button:hover {
+  background-color: rgba(255, 255, 255, 1);
+  border-color: #ffb6c1;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.2);
+}
+
+.festival-region-button.active {
+  background: linear-gradient(135deg, #ffb6c1 0%, #ffa8b5 100%);
+  color: #6b5b4f;
+  border-color: #ff9aa2;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255, 154, 162, 0.3);
+}
+
 /* 행사 카드 리스트 */
 .festival-list {
   display: flex;

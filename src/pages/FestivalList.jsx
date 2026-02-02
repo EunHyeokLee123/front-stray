@@ -23,17 +23,45 @@ const FestivalList = () => {
   const [currentPage, setCurrentPage] = useState(getInitialPage);
   const [totalPages, setTotalPages] = useState(0);
   const [_totalElements, setTotalElements] = useState(0);
+  const [regions, setRegions] = useState([]);
+  const [selectedRegion, setSelectedRegion] = useState("전국");
+  const [regionModalOpen, setRegionModalOpen] = useState(false);
   const { deviceType } = useDeviceType();
   const isDesktop = deviceType === "desktop";
   const isMobile = deviceType === "mobile";
 
-  // 행사 목록 조회 함수
+  // 지역 목록: null/빈 문자열 제외, 전국 + API region
+  const regionOptions = [
+    "전국",
+    ...regions.filter((r) => r != null && r !== ""),
+  ];
+
+  useEffect(() => {
+    axiosInstance
+      .get(`${FESTIVAL}/region`)
+      .then((res) => {
+        const list = res.data?.result ?? res.data;
+        const arr = Array.isArray(list) ? list : list ? [list] : [];
+        setRegions(
+          arr.filter((r) => typeof r === "string" && r != null && r !== ""),
+        );
+      })
+      .catch(() => setRegions([]));
+  }, []);
+
+  // 행사 목록 조회 함수 (전국: /list/{page}, 지역: /region/list/{region}/{page})
   const fetchFestivals = async (page = 0) => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await axiosInstance.get(`${FESTIVAL}/list/${page}`);
+      const url =
+        selectedRegion === "전국"
+          ? `${FESTIVAL}/list/${page}`
+          : `${FESTIVAL}/region/list/${encodeURIComponent(
+              selectedRegion,
+            )}/${page}`;
+      const response = await axiosInstance.get(url);
 
       const data = response.data;
 
@@ -46,7 +74,7 @@ const FestivalList = () => {
       }
       setTotalPages(resultData.totalPages || 0);
       setTotalElements(resultData.totalElements || 0);
-    } catch (err) {
+    } catch {
       setError("행사 정보를 불러오는데 실패했습니다.");
       setFestivals([]);
     } finally {
@@ -81,7 +109,13 @@ const FestivalList = () => {
 
   useEffect(() => {
     fetchFestivals(currentPage);
-  }, [currentPage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, selectedRegion]);
+
+  const handleRegionClick = (region) => {
+    setSelectedRegion(region);
+    setCurrentPage(0);
+  };
 
   useEffect(() => {
     logUserEvent("page_view", { page_name: "festival" });
@@ -105,23 +139,74 @@ const FestivalList = () => {
           </h1>
 
           <p className="page-subtitle">
-            전국 반려동물 행사 정보를 한눈에 확인하세요.
+            {selectedRegion} 반려동물 행사 정보를 한눈에 확인하세요.
           </p>
 
           {/* ✅ SEO용 설명 영역 */}
           {isDesktop && (
             <div className="seo-description">
-            <p>
-              냥몽에서는 국내에서 열리는 반려동물 박람회, 펫페어, 반려동물 행사
-              정보를 최신 일정 기준으로 제공합니다.
-            </p>
+              <p>
+                냥몽에서는 {selectedRegion}에서 열리는 반려동물 박람회, 펫페어, 반려동물
+                행사 정보를 최신 일정 기준으로 제공합니다.
+              </p>
 
-            <p>
-              서울, 경기, 부산, 대구 등 전국 주요 지역의 반려동물 행사 일정과
-              위치, 참가 정보를 확인하고 반려동물과 함께 특별한 시간을
-              보내보세요.
-            </p>
-          </div>
+              <p>
+                {selectedRegion} 주요 지역의 반려동물 행사 일정과
+                위치, 참가 정보를 확인하고 반려동물과 함께 특별한 시간을
+                보내보세요.
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* 지역 선택: 버튼 1개 → 클릭 시 목록(모달)에서 선택 */}
+        <div className="festival-region-filter">
+          <span className="festival-region-label">지역: </span>
+          <button
+            type="button"
+            className="festival-region-picker-button"
+            onClick={() => setRegionModalOpen(true)}
+          >
+            {selectedRegion}
+          </button>
+
+          {regionModalOpen && (
+            <div
+              className="festival-region-modal-overlay"
+              onClick={() => setRegionModalOpen(false)}
+            >
+              <div
+                className="festival-region-modal"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  type="button"
+                  className="festival-region-modal-close"
+                  aria-label="지역 선택 닫기"
+                  onClick={() => setRegionModalOpen(false)}
+                >
+                  ×
+                </button>
+                <h3 className="festival-region-modal-title">지역 선택</h3>
+                <div className="festival-region-modal-list">
+                  {regionOptions.map((region) => (
+                    <button
+                      key={region}
+                      type="button"
+                      className={`festival-region-button ${
+                        selectedRegion === region ? "active" : ""
+                      }`}
+                      onClick={() => {
+                        handleRegionClick(region);
+                        setRegionModalOpen(false);
+                      }}
+                    >
+                      {region}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
           )}
         </div>
 
@@ -189,24 +274,28 @@ const FestivalList = () => {
             {/* 페이징 */}
             {totalPages > 1 && (
               <div className="pagination">
-                {!isMobile && (<button
-                  className="pagination-button"
-                  onClick={() => handlePageChange(Math.max(0, currentPage - 1))}
-                  disabled={currentPage === 0}
-                >
-                  이전
-                </button>)}
+                {!isMobile && (
+                  <button
+                    className="pagination-button"
+                    onClick={() =>
+                      handlePageChange(Math.max(0, currentPage - 1))
+                    }
+                    disabled={currentPage === 0}
+                  >
+                    이전
+                  </button>
+                )}
 
                 <div className="pagination-numbers">
                   {(() => {
                     const maxVisiblePages = 7;
                     const startPage = Math.max(
                       0,
-                      currentPage - Math.floor(maxVisiblePages / 2)
+                      currentPage - Math.floor(maxVisiblePages / 2),
                     );
                     const endPage = Math.min(
                       totalPages - 1,
-                      startPage + maxVisiblePages - 1
+                      startPage + maxVisiblePages - 1,
                     );
 
                     return (
@@ -229,7 +318,7 @@ const FestivalList = () => {
                         {/* 현재 페이지 범위 */}
                         {Array.from(
                           { length: endPage - startPage + 1 },
-                          (_, i) => startPage + i
+                          (_, i) => startPage + i,
                         ).map((page) => (
                           <button
                             key={page}
@@ -261,15 +350,19 @@ const FestivalList = () => {
                   })()}
                 </div>
 
-                  {!isMobile && (<button
-                  className="pagination-button"
-                  onClick={() =>
-                    handlePageChange(Math.min(totalPages - 1, currentPage + 1))
-                  }
-                  disabled={currentPage === totalPages - 1}
-                >
-                  다음
-                </button>)}
+                {!isMobile && (
+                  <button
+                    className="pagination-button"
+                    onClick={() =>
+                      handlePageChange(
+                        Math.min(totalPages - 1, currentPage + 1),
+                      )
+                    }
+                    disabled={currentPage === totalPages - 1}
+                  >
+                    다음
+                  </button>
+                )}
               </div>
             )}
           </>
