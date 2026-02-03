@@ -159,11 +159,10 @@ const StrayAnimalList = () => {
   const fetchStrayAnimalCount = async () => {
     try {
       const response = await axiosInstance.get(`${PET}/total`);
-      console.log(response);
       const data = response.data?.result || response.data;
       setTotalCount(data || 0);
     } catch (err) {
-      console.error("유기동물 총 수 조회 실패:", err);
+      setTotalCount(0);
     }
   };
 
