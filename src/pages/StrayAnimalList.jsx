@@ -15,6 +15,7 @@ const StrayAnimalList = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [totalCount, setTotalCount] = useState(0);
   useEffect(() => {
     if (!searchParams.has("region")) {
       setSearchParams(
@@ -23,7 +24,7 @@ const StrayAnimalList = () => {
           category: "개",
           page: 0,
         },
-        { replace: true },
+        { replace: true }
       );
     }
   }, [searchParams, setSearchParams]);
@@ -135,8 +136,8 @@ const StrayAnimalList = () => {
       selectedCategory === "개"
         ? "유기견"
         : selectedCategory === "고양이"
-          ? "유기묘"
-          : "유기동물";
+        ? "유기묘"
+        : "유기동물";
 
     const title = `${regionText} ${categoryText} 입양 정보 | 냥몽`;
 
@@ -153,6 +154,18 @@ const StrayAnimalList = () => {
   const seo = getSEOData();
 
   useSEO(seo);
+
+  // 유기동물의 총 수 조회 함수
+  const fetchStrayAnimalCount = async () => {
+    try {
+      const response = await axiosInstance.get(`${PET}/total`);
+      console.log(response);
+      const data = response.data?.result || response.data;
+      setTotalCount(data || 0);
+    } catch (err) {
+      console.error("유기동물 총 수 조회 실패:", err);
+    }
+  };
 
   // 유기동물 목록 조회 함수
   const fetchStrayAnimals = async () => {
@@ -179,7 +192,7 @@ const StrayAnimalList = () => {
           region: addressFilter,
           kind: kindFilter,
           device: safeDevice,
-        },
+        }
       );
 
       const data = response.data;
@@ -220,6 +233,7 @@ const StrayAnimalList = () => {
   };
 
   useEffect(() => {
+    fetchStrayAnimalCount();
     sessionStorage.removeItem("festival_page");
     fetchStrayAnimals();
   }, [selectedRegion, selectedCategory, currentPage]);
@@ -241,14 +255,14 @@ const StrayAnimalList = () => {
         animal.sexCd === "M"
           ? "수컷"
           : animal.sexCd === "F"
-            ? "암컷"
-            : animal.sexCd === "Q"
-              ? "미상"
-              : "성별 정보 없음",
+          ? "암컷"
+          : animal.sexCd === "Q"
+          ? "미상"
+          : "성별 정보 없음",
       rescueDate: animal.happenDt
         ? `${animal.happenDt.slice(0, 4)}-${animal.happenDt.slice(
             4,
-            6,
+            6
           )}-${animal.happenDt.slice(6, 8)}`
         : "날짜 정보 없음",
       kindNm: animal.kindNm,
@@ -266,7 +280,7 @@ const StrayAnimalList = () => {
   // 상세 페이지로 이동
   const handleDetailClick = (desertionNo) => {
     navigate(
-      `/stray/detail/${desertionNo}?region=${selectedRegion}&category=${selectedCategory}&page=${currentPage}`,
+      `/stray/detail/${desertionNo}?region=${selectedRegion}&category=${selectedCategory}&page=${currentPage}`
     );
   };
 
@@ -280,19 +294,24 @@ const StrayAnimalList = () => {
               {selectedCategory === "개"
                 ? "유기견"
                 : selectedCategory === "고양이"
-                  ? "유기묘"
-                  : "유기동물"}{" "}
+                ? "유기묘"
+                : "유기동물"}{" "}
               정보
             </h1>
+
             <p className="seo-desc">
               {selectedRegion === "전체" ? "전국" : selectedRegion} 지역의{" "}
               {selectedCategory === "개"
                 ? "유기견"
                 : selectedCategory === "고양이"
-                  ? "유기묘"
-                  : "유기동물"}{" "}
-              입양 정보를 제공합니다. 냥몽에서 새로운 가족을 기다리는 아이들을
-              만나보세요.
+                ? "유기묘"
+                : "유기동물"}{" "}
+              입양 정보를 제공합니다.{" "}
+            </p>
+
+            <p className="seo-desc-2">
+              전국의 {totalCount} 마리의 유기동물이 새로운 가족을 기다리고
+              있습니다.
             </p>
           </div>
 
@@ -576,11 +595,11 @@ const StrayAnimalList = () => {
                   const maxVisiblePages = isSmartphone ? 5 : 7;
                   const startPage = Math.max(
                     0,
-                    currentPage - Math.floor(maxVisiblePages / 2),
+                    currentPage - Math.floor(maxVisiblePages / 2)
                   );
                   const endPage = Math.min(
                     totalPages - 1,
-                    startPage + maxVisiblePages - 1,
+                    startPage + maxVisiblePages - 1
                   );
 
                   return (
@@ -616,7 +635,7 @@ const StrayAnimalList = () => {
                         {/* 현재 페이지 범위 */}
                         {Array.from(
                           { length: endPage - startPage + 1 },
-                          (_, i) => startPage + i,
+                          (_, i) => startPage + i
                         ).map((page) => (
                           <button
                             key={page}
@@ -650,7 +669,7 @@ const StrayAnimalList = () => {
                           className="pagination-button"
                           onClick={() =>
                             handlePageChange(
-                              Math.min(totalPages - 1, currentPage + 1),
+                              Math.min(totalPages - 1, currentPage + 1)
                             )
                           }
                           disabled={currentPage === totalPages - 1}

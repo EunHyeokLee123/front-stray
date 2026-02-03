@@ -25,6 +25,10 @@
   font-size: 1.2rem;
 }
 
+.seo-desc-2 {
+  font-size: 1.3rem;
+}
+
 .page-title {
   font-size: 2.75rem;
   font-weight: 600;
@@ -469,7 +473,6 @@
   align-items: start;
 }
 
-
 .detail-gallery {
   display: flex;
   flex-direction: column;
@@ -765,7 +768,6 @@
 }
 
 /* 좌우 레이아웃 */
-
 
 /* 왼쪽 영역 */
 
