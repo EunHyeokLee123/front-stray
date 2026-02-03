@@ -32,7 +32,10 @@ try {
 
     const apiMatch = trimmed.match(/^VITE_API_BASE_URL=(.+)$/);
     if (apiMatch) {
-      const v = apiMatch[1].trim().replace(/^["']|["']$/g, "").replace(/\/+$/, "");
+      const v = apiMatch[1]
+        .trim()
+        .replace(/^["']|["']$/g, "")
+        .replace(/\/+$/, "");
       if (v) process.env.VITE_API_BASE_URL = v;
     }
     const tokenMatch = trimmed.match(/^SITEMAP_TOKEN=(.+)$/);
@@ -56,12 +59,16 @@ try {
   console.warn("⚠️  .env file not found or error:", err.message);
 }
 
-const { API_BASE_URL, PET, FESTIVAL } = await import("../configs/host-config.js");
+const { API_BASE_URL, PET, FESTIVAL } = await import(
+  "../configs/host-config.js"
+);
 const { default: axiosInstance } = await import("../configs/axios-config.js");
 
 const API_BASE = API_BASE_URL.replace(/\/+$/, "");
 const SITE_BASE = "https://nyangmong.com";
-const MAX_PAGES = 100;
+const MAX_STRAY_DOGS = 800; // 개 800마리
+const MAX_STRAY_CATS = 200; // 고양이 200마리
+const MAX_PAGES_FESTIVAL = 100;
 const LASTMOD = new Date().toISOString().slice(0, 10);
 
 function escapeXml(str) {
@@ -73,15 +80,15 @@ function escapeXml(str) {
     .replace(/'/g, "&apos;");
 }
 
-async function fetchStrayIds() {
+async function fetchStrayIdsForKind(kind, maxCount) {
   const ids = new Set();
   let page = 0;
   let totalPages = 1;
 
-  while (page < totalPages && page < MAX_PAGES) {
+  while (ids.size < maxCount && page < totalPages) {
     const res = await axiosInstance.post(`${PET}/search/${page}`, {
       region: "전체",
-      kind: "개",
+      kind,
       device: 0,
     });
     const data = res.data?.result || res.data;
@@ -89,14 +96,24 @@ async function fetchStrayIds() {
     const total = data?.totalPages ?? 1;
 
     totalPages = typeof total === "number" ? total : 1;
-    content.forEach((item) => {
+    for (const item of content) {
+      if (ids.size >= maxCount) break;
       const id = item.desertionNo ?? item.id;
       if (id) ids.add(String(id));
-    });
+    }
     page++;
   }
 
-  return Array.from(ids);
+  return ids;
+}
+
+async function fetchStrayIds() {
+  const allIds = new Set();
+  const dogs = await fetchStrayIdsForKind("개", MAX_STRAY_DOGS);
+  const cats = await fetchStrayIdsForKind("고양이", MAX_STRAY_CATS);
+  dogs.forEach((id) => allIds.add(id));
+  cats.forEach((id) => allIds.add(id));
+  return Array.from(allIds);
 }
 
 async function fetchFestivalIds() {
@@ -104,7 +121,7 @@ async function fetchFestivalIds() {
   let page = 0;
   let totalPages = 1;
 
-  while (page < totalPages && page < MAX_PAGES) {
+  while (page < totalPages && page < MAX_PAGES_FESTIVAL) {
     const res = await axiosInstance.get(`${FESTIVAL}/list/${page}`);
     const data = res.data?.result || res.data;
     const content = data?.content || data?.data || data || [];
@@ -126,21 +143,29 @@ function buildSitemapXml(strayIds, festivalIds) {
 
   strayIds.forEach((id) => {
     urls.push(
-      `  <url>\n    <loc>${escapeXml(SITE_BASE + "/stray/detail/" + id)}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n    <priority>0.6</priority>\n  </url>`
+      `  <url>\n    <loc>${escapeXml(
+        SITE_BASE + "/stray/detail/" + id
+      )}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n    <priority>0.6</priority>\n  </url>`
     );
   });
 
   festivalIds.forEach((id) => {
     urls.push(
-      `  <url>\n    <loc>${escapeXml(SITE_BASE + "/festival/detail/" + id)}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n    <priority>0.6</priority>\n  </url>`
+      `  <url>\n    <loc>${escapeXml(
+        SITE_BASE + "/festival/detail/" + id
+      )}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n    <priority>0.6</priority>\n  </url>`
     );
   });
 
   // Sitemap 규격: 최소 1개의 <url> 필요. API 실패 시 빈 urlset이 되면 검색엔진 오류 발생
   if (urls.length === 0) {
     urls.push(
-      `  <url>\n    <loc>${escapeXml(SITE_BASE + "/stray/list")}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n    <priority>0.6</priority>\n  </url>`,
-      `  <url>\n    <loc>${escapeXml(SITE_BASE + "/festival/list")}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n    <priority>0.6</priority>\n  </url>`
+      `  <url>\n    <loc>${escapeXml(
+        SITE_BASE + "/stray/list"
+      )}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n    <priority>0.6</priority>\n  </url>`,
+      `  <url>\n    <loc>${escapeXml(
+        SITE_BASE + "/festival/list"
+      )}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n    <priority>0.6</priority>\n  </url>`
     );
   }
 
@@ -153,9 +178,15 @@ ${urls.join("\n")}
 
 async function main() {
   console.log("Sitemap detail: API_BASE =", API_BASE);
-  console.log("SITEMAP_TOKEN:", process.env.SITEMAP_TOKEN ? "✓ Set" : "✗ Not set");
-  console.log("SITEMAP_FINGERPRINT:", process.env.SITEMAP_FINGERPRINT ? "✓ Set" : "✗ Not set");
-  
+  console.log(
+    "SITEMAP_TOKEN:",
+    process.env.SITEMAP_TOKEN ? "✓ Set" : "✗ Not set"
+  );
+  console.log(
+    "SITEMAP_FINGERPRINT:",
+    process.env.SITEMAP_FINGERPRINT ? "✓ Set" : "✗ Not set"
+  );
+
   if (process.env.SITEMAP_TOKEN) {
     console.log("Using token authentication (axios-config)");
   } else {
