@@ -1,5 +1,4 @@
-import { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useCallback, useEffect } from "react";
 import axiosInstance from "../../configs/axios-config.js";
 import { PET } from "../../configs/host-config.js";
 import "./StrayAnimalList.css";
@@ -15,6 +14,7 @@ const StrayAnimalFind = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [fade, setFade] = useState(false);
   const [imgError, setImgError] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
 
   const transCd = (sexCd) => {
     if (sexCd === "M") return "수컷";
@@ -60,6 +60,24 @@ const StrayAnimalFind = () => {
     }
   }, [inputValue]);
 
+  // 유기동물의 총 수 조회 함수
+  const fetchStrayAnimalCount = async () => {
+    try {
+      const response = await axiosInstance.get(`${PET}/rfid`);
+      console.log(response);
+
+      const data = response.data?.result || response.data;
+      setTotalCount(data || 0);
+    } catch (err) {
+      console.log(err);
+      setTotalCount(0);
+    }
+  };
+
+  useEffect(() => {
+    fetchStrayAnimalCount();
+  }, []);
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter") handleSearch();
   };
@@ -86,7 +104,8 @@ const StrayAnimalFind = () => {
             <h1 className="detail-title">유기동물 찾기</h1>
           </div>
           <p className="detail-sub-title">
-            등록칩 번호로 반려동물의 현재 보호 정보를 확인해보세요.
+            등록칩 번호로 반려동물의 현재 보호 정보를 확인해보세요. 등록칩이
+            등록된 유기동물의 수는 {totalCount}마리입니다.
           </p>
 
           {/* 검색 폼 */}
