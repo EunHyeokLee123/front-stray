@@ -32,6 +32,8 @@ const StrayAnimalDetail = () => {
       setDetailError(null);
       try {
         const res = await axiosInstance.get(`${PET}/detail/${id}`);
+        //console.log(res);
+
         const data = res.data?.result || res.data;
         setDetailData(data);
       } catch {
@@ -256,16 +258,20 @@ const StrayAnimalDetail = () => {
                     ["중성화", transNe(detailData.neuterYn)],
                     ["발생일", detailData.happenDt],
                     ["장소", detailData.happenPlace],
+                    // ✅ rfid가 있을 때만 추가
+                    detailData.rfidCd && ["내장칩 번호", detailData.rfidCd],
                     ["보호소", detailData.careNm],
                     ["전화", detailData.careTel],
                     ["보호소 주소", detailData.careAddr],
                     ["특이사항", detailData.specialMark],
-                  ].map(([label, value], i) => (
-                    <div key={i} className="modal-row">
-                      <span>{label}</span>
-                      <span>{value || "-"}</span>
-                    </div>
-                  ))}
+                  ]
+                    .filter(Boolean) // ⭐ 핵심
+                    .map(([label, value], i) => (
+                      <div key={i} className="modal-row">
+                        <span>{label}</span>
+                        <span>{value || "-"}</span>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>
