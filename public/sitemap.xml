@@ -31,6 +31,13 @@
     <lastmod>2026-01-29</lastmod>
     <priority>0.8</priority>
   </url>
+  <!-- 유기동물 찾기 -->
+  <url>
+    <loc>https://nyangmong.com/stray/find</loc>
+    <lastmod>2026-02-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <!-- 유기동물 찾기 -->
 
   <!-- 반려동물 시설 지도: /map → /map/culture?cate=12&amp;region=1 리다이렉트 -->
   <!-- 카테고리: culture, hospital, style, cafe, shop, museum, art, literary, drug -->

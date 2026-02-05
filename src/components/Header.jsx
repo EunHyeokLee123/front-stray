@@ -13,13 +13,24 @@ const Header = () => {
       label: "유기동물 정보",
       path: "/stray/list?region=전체&category=개&page=0",
     },
+    { id: "stray-find", label: "유기동물 찾기", path: "/stray/find" },
     { id: "festival", label: "반려동물 행사정보", path: "/festival/list" },
-    { id: "facility", label: "반려동물 관련 시설 정보", path: "/map/culture?cate=12&region=1" },
+    {
+      id: "facility",
+      label: "반려동물 관련 시설 정보",
+      path: "/map/culture?cate=12&region=1",
+    },
   ];
 
   const isActive = (path) => {
+    if (path === "/stray/find") {
+      return location.pathname === "/stray/find";
+    }
     if (path === "/stray/list?region=전체&category=개&page=0") {
-      return location.pathname.startsWith("/stray");
+      return (
+        location.pathname.startsWith("/stray") &&
+        location.pathname !== "/stray/find"
+      );
     }
     if (path === "/festival/list") {
       return location.pathname.startsWith("/festival");
