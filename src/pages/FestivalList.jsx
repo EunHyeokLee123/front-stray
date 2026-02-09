@@ -56,7 +56,7 @@ const FestivalList = () => {
         const list = res.data?.result ?? res.data;
         const arr = Array.isArray(list) ? list : list ? [list] : [];
         setRegions(
-          arr.filter((r) => typeof r === "string" && r != null && r !== ""),
+          arr.filter((r) => typeof r === "string" && r != null && r !== "")
         );
       })
       .catch(() => setRegions([]));
@@ -72,7 +72,7 @@ const FestivalList = () => {
         selectedRegion === "전국"
           ? `${FESTIVAL}/list/${page}`
           : `${FESTIVAL}/region/list/${encodeURIComponent(
-              selectedRegion,
+              selectedRegion
             )}/${page}`;
       const response = await axiosInstance.get(url);
 
@@ -317,11 +317,11 @@ const FestivalList = () => {
                     const maxVisiblePages = 7;
                     const startPage = Math.max(
                       0,
-                      currentPage - Math.floor(maxVisiblePages / 2),
+                      currentPage - Math.floor(maxVisiblePages / 2)
                     );
                     const endPage = Math.min(
                       totalPages - 1,
-                      startPage + maxVisiblePages - 1,
+                      startPage + maxVisiblePages - 1
                     );
 
                     return (
@@ -344,7 +344,7 @@ const FestivalList = () => {
                         {/* 현재 페이지 범위 */}
                         {Array.from(
                           { length: endPage - startPage + 1 },
-                          (_, i) => startPage + i,
+                          (_, i) => startPage + i
                         ).map((page) => (
                           <button
                             key={page}
@@ -381,7 +381,7 @@ const FestivalList = () => {
                     className="pagination-button"
                     onClick={() =>
                       handlePageChange(
-                        Math.min(totalPages - 1, currentPage + 1),
+                        Math.min(totalPages - 1, currentPage + 1)
                       )
                     }
                     disabled={currentPage === totalPages - 1}
