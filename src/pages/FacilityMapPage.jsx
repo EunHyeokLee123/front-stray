@@ -13,7 +13,7 @@ const FacilityMapPage = () => {
   const navigate = useNavigate();
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(
-    category || "culture",
+    category || "culture"
   );
   const [showCultureSubCategories, setShowCultureSubCategories] =
     useState(true);
@@ -208,12 +208,12 @@ const FacilityMapPage = () => {
       setShowGroomingRegion(true);
       axiosInstance
         .get(
-          `${STYLE}/region/list/${selectedGroomingRegion}/${selectedCategory}`,
+          `${STYLE}/region/list/${selectedGroomingRegion}/${selectedCategory}`
         )
         .then((res) => {
           const districts = res.data?.result || [];
           const sortedDistricts = districts.sort((a, b) =>
-            a.localeCompare(b, "ko"),
+            a.localeCompare(b, "ko")
           );
           setGroomingDistrictOptions(sortedDistricts);
           setSelectedGroomingDistrict(sortedDistricts[0] || "");
@@ -238,7 +238,7 @@ const FacilityMapPage = () => {
     ) {
       axiosInstance
         .get(
-          `${STYLE}/list/${selectedGroomingRegion}/${selectedGroomingDistrict}/${selectedCategory}`,
+          `${STYLE}/list/${selectedGroomingRegion}/${selectedGroomingDistrict}/${selectedCategory}`
         )
         .then((res) => {
           const list = res.data?.result || [];
@@ -247,7 +247,7 @@ const FacilityMapPage = () => {
           if (list.length > 0) {
             const firstShop = list.find(
               (shop) =>
-                shop.facilityName && (shop.fullAddress || shop.roadAddress),
+                shop.facilityName && (shop.fullAddress || shop.roadAddress)
             );
             if (firstShop) {
               // selectedLocation 설정
@@ -294,7 +294,7 @@ const FacilityMapPage = () => {
           // 첫 번째 아이템을 기본 선택
           if (locations.length > 0) {
             const firstLocation = locations.find(
-              (location) => location.addr || location.addr1,
+              (location) => location.addr || location.addr1
             );
             if (firstLocation) {
               setSelectedLocation(firstLocation);
@@ -303,7 +303,7 @@ const FacilityMapPage = () => {
                 .get(`${MAP}/detail/${firstLocation.mapId}`)
                 .then((detailRes) => {
                   setSelectedCultureDetail(
-                    detailRes.data?.result || detailRes.data || null,
+                    detailRes.data?.result || detailRes.data || null
                   );
                 })
                 .catch(() => {
@@ -331,7 +331,7 @@ const FacilityMapPage = () => {
         .then((res) => {
           const categoryData = res.data?.result || res.data || [];
           const sortedCategoryData = categoryData.sort((a, b) =>
-            a.localeCompare(b, "ko"),
+            a.localeCompare(b, "ko")
           );
           setHospitalCategoryOptions(sortedCategoryData);
           if (sortedCategoryData.length > 0) {
@@ -351,7 +351,7 @@ const FacilityMapPage = () => {
       setIsHospitalLoading(true);
       axiosInstance
         .get(
-          `${HOSPITAL}/list/${selectedHospitalRegion}/${selectedHospitalCategory}`,
+          `${HOSPITAL}/list/${selectedHospitalRegion}/${selectedHospitalCategory}`
         )
         .then((res) => {
           const hospitalData = Array.isArray(res.data?.result)
@@ -361,7 +361,7 @@ const FacilityMapPage = () => {
           // 첫 번째 아이템을 기본 선택
           if (hospitalData.length > 0) {
             const firstHospital = hospitalData.find(
-              (h) => h.hospitalName && h.fullAddress,
+              (h) => h.hospitalName && h.fullAddress
             );
             if (firstHospital) {
               setSelectedLocation(firstHospital);
@@ -370,7 +370,7 @@ const FacilityMapPage = () => {
                 .get(`${HOSPITAL}/detail/${firstHospital.hospitalId}`)
                 .then((detailRes) => {
                   setSelectedHospitalInfo(
-                    detailRes.data?.result || detailRes.data || null,
+                    detailRes.data?.result || detailRes.data || null
                   );
                 })
                 .catch(() => {
@@ -436,7 +436,7 @@ const FacilityMapPage = () => {
   };
 
   const selectedCultureLabel = cultureSubCategories.find(
-    (cat) => cat.value === selectedCultureSubCategory,
+    (cat) => cat.value === selectedCultureSubCategory
   )?.name;
 
   const handleCultureLocationClick = async (location) => {
@@ -455,7 +455,7 @@ const FacilityMapPage = () => {
 
     try {
       const res = await axiosInstance.get(
-        `${HOSPITAL}/detail/${hospital.hospitalId}`,
+        `${HOSPITAL}/detail/${hospital.hospitalId}`
       );
       setSelectedHospitalInfo(res.data?.result || res.data || null);
     } catch {
@@ -494,12 +494,12 @@ const FacilityMapPage = () => {
       } else if (selectedCategory === "hospital") {
         // 동물병원
         response = await axiosInstance.get(
-          `${HOSPITAL}/detail/${location.hospitalId}`,
+          `${HOSPITAL}/detail/${location.hospitalId}`
         );
       } else {
         // 나머지 카테고리
         response = await axiosInstance.get(
-          `${STYLE}/detail/${selectedCategory}/${location.id}`,
+          `${STYLE}/detail/${selectedCategory}/${location.id}`
         );
       }
 
@@ -576,7 +576,7 @@ const FacilityMapPage = () => {
     if (selectedCategory === "culture") {
       const subCategoryName =
         cultureSubCategories.find(
-          (cat) => cat.value === selectedCultureSubCategory,
+          (cat) => cat.value === selectedCultureSubCategory
         )?.name || "문화시설";
 
       region = getRegionLabel(selectedCultureRegion);
@@ -814,7 +814,7 @@ const FacilityMapPage = () => {
                                   }`}
                                   onClick={() => {
                                     setSelectedCultureSubCategory(
-                                      subCategory.value,
+                                      subCategory.value
                                     );
                                     setCultureSubCategoryModalOpen(false);
                                   }}
@@ -1096,8 +1096,8 @@ const FacilityMapPage = () => {
                     {selectedCategory === "culture"
                       ? modalData.title || "문화시설 상세"
                       : selectedCategory === "hospital"
-                        ? modalData.businessName || "동물병원 상세"
-                        : modalData.facilityName || "시설 상세"}
+                      ? modalData.businessName || "동물병원 상세"
+                      : modalData.facilityName || "시설 상세"}
                   </h2>
                   <button className="detail-close" onClick={closeModal}>
                     ×
