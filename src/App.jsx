@@ -7,6 +7,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import StrayAnimalList from "./pages/StrayAnimalList";
 import StrayAnimalDetail from "./pages/StrayAnimalDetail";
 import StrayAnimalFind from "./pages/StrayAnimalFind";
+import StrayAnimalFavor from "./pages/StrayAnimalFavor";
 import FestivalList from "./pages/FestivalList";
 import FestivalDetail from "./pages/FestivalDetail";
 import FacilityMapPage from "./pages/FacilityMapPage";
@@ -36,6 +37,7 @@ function App() {
             />
             <Route path="/stray/list" element={<StrayAnimalList />} />
             <Route path="/stray/find" element={<StrayAnimalFind />} />
+            <Route path="/stray/favor" element={<StrayAnimalFavor />} />
             <Route path="/stray/detail/:id" element={<StrayAnimalDetail />} />
             <Route path="/festival/list" element={<FestivalList />} />
             <Route path="/festival/detail/:id" element={<FestivalDetail />} />

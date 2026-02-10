@@ -72,6 +72,59 @@
   margin-bottom: 0;
 }
 
+.filter-section-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+}
+
+.filter-group-favor {
+  margin-left: auto;
+}
+
+.favor-list-row {
+  margin-top: 2rem;
+}
+.favor-list-button {
+  background: linear-gradient(135deg, #ffd4a3 0%, #ffc896 100%) !important;
+  border-color: #ffb6c1 !important;
+}
+
+.favor-list-button:hover {
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.35) !important;
+}
+
+.favor-list-row-mobile {
+  margin-top: 0;
+}
+
+.favor-list-row-mobile .favor-list-button {
+  width: 100%;
+}
+
+.card-image-container {
+  position: relative;
+}
+
+.card-favor-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 193, 7, 0.95);
+  color: #6b5b4f;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  pointer-events: auto;
+  z-index: 10;
+}
+
 .filter-label {
   display: block;
   font-size: 1.15rem;
@@ -444,8 +497,41 @@
 .detail-page-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.detail-page-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.favor-button {
+  padding: 0.5rem 1rem;
+  border-radius: 14px;
+  border: 2px solid rgba(255, 182, 193, 0.5);
+  background: rgba(255, 255, 255, 0.9);
+  color: #6b5b4f;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: "Gowun Dodum", "Noto Sans KR", sans-serif;
+  font-size: 0.95rem;
+}
+
+.favor-button:hover {
+  border-color: #ffb6c1;
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.3);
+}
+
+.favor-button.favorited {
+  background: linear-gradient(135deg, #ffd4a3 0%, #ffc896 100%);
+  border-color: #ffb6c1;
+  color: #6b5b4f;
 }
 
 .back-button {
@@ -614,6 +700,23 @@
 
   .detail-right {
     margin-top: 1rem;
+  }
+
+  .favor-list-row {
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+  }
+
+  .favor-button {
+    padding: 0.5rem 0.5rem;
+  }
+
+  .detail-title {
+    font-size: ;
+  }
+
+  .back-button {
+    padding: 0.5rem 0.5rem;
   }
 }
 

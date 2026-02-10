@@ -4,6 +4,12 @@ import axiosInstance from "../../configs/axios-config.js";
 import "./StrayAnimalList.css";
 import { PET } from "../../configs/host-config.js";
 import { useSEO } from "../hooks/useSEO.jsx";
+import { useDeviceType } from "../hooks/use-device-type";
+import {
+  getStrayFavorites,
+  addStrayFavorite,
+  removeStrayFavorite,
+} from "../utils/stray-favor.js";
 
 const StrayAnimalDetail = () => {
   const { id } = useParams();
@@ -15,12 +21,17 @@ const StrayAnimalDetail = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [fade, setFade] = useState(false);
   const [imgError, setImgError] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
 
   const [searchParams] = useSearchParams();
+
+  const { deviceType } = useDeviceType();
+  const isSmartphone = deviceType === "mobile";
 
   const region = searchParams.get("region") || "전체";
   const category = searchParams.get("category") || "개";
   const page = searchParams.get("page") || 0;
+  const from = searchParams.get("from") || "list";
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -50,6 +61,16 @@ const StrayAnimalDetail = () => {
   useEffect(() => {
     setImgError(false);
   }, [currentImage]);
+
+  useEffect(() => {
+    if (id) setIsFavorited(getStrayFavorites().includes(String(id)));
+  }, [id]);
+
+  const toggleFavorite = () => {
+    if (!id) return;
+    const next = isFavorited ? removeStrayFavorite(id) : addStrayFavorite(id);
+    setIsFavorited(next.includes(String(id)));
+  };
 
   const transCd = (sexCd) => {
     if (sexCd === "M") {
@@ -120,20 +141,55 @@ const StrayAnimalDetail = () => {
       <div className="stray-animal-container">
         <div className="detail-page">
           <div className="detail-page-header">
+            <div className="detail-page-header-left">
+              {!isSmartphone && (
+                <button
+                  type="button"
+                  className="back-button"
+                  onClick={() => {
+                    if (from === "favor") {
+                      navigate("/stray/favor");
+                    } else {
+                      navigate(
+                        `/stray/list?region=${region}&category=${category}&page=${page}`
+                      );
+                    }
+                  }}
+                >
+                  ← 목록
+                </button>
+              )}
+              {isSmartphone && (
+                <button
+                  type="button"
+                  className="back-button"
+                  onClick={() => {
+                    if (from === "favor") {
+                      navigate("/stray/favor");
+                    } else {
+                      navigate(
+                        `/stray/list?region=${region}&category=${category}&page=${page}`
+                      );
+                    }
+                  }}
+                >
+                  ←
+                </button>
+              )}
+              <h1 className="detail-title">
+                {region !== "전체" && `${region} `}
+                {detailData?.kindNm || "유기동물"} 정보
+              </h1>
+            </div>
             <button
-              className="back-button"
-              onClick={() =>
-                navigate(
-                  `/stray/list?region=${region}&category=${category}&page=${page}`
-                )
-              }
+              type="button"
+              className={`favor-button ${isFavorited ? "favorited" : ""}`}
+              onClick={toggleFavorite}
+              aria-pressed={isFavorited}
+              title={isFavorited ? "즐겨찾기 해제" : "즐겨찾기"}
             >
-              ← 목록
+              {isFavorited ? "★" : "☆"}
             </button>
-            <h1 className="detail-title">
-              {region !== "전체" && `${region} `}
-              {detailData?.kindNm || "유기동물"} 정보
-            </h1>
           </div>
 
           {detailLoading && (
@@ -148,11 +204,15 @@ const StrayAnimalDetail = () => {
               <p className="error-text">{detailError}</p>
               <button
                 className="retry-button"
-                onClick={() =>
-                  navigate(
-                    `/stray/list?region=${region}&category=${category}&page=${page}`
-                  )
-                }
+                onClick={() => {
+                  if (from === "favor") {
+                    navigate("/stray/favor");
+                  } else {
+                    navigate(
+                      `/stray/list?region=${region}&category=${category}&page=${page}`
+                    );
+                  }
+                }}
               >
                 목록으로
               </button>
