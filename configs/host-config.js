@@ -16,8 +16,7 @@ let backendHostName;
 if (clientHostName === null) {
   // Node (예: scripts/generate-sitemap-detail.js)
   backendHostName = (
-    process.env.VITE_API_BASE_URL ||
-    "https://api.nyangmong.com"
+    process.env.VITE_API_BASE_URL || "https://api.nyangmong.com"
   ).replace(/\/+$/, "");
 } else if (clientHostName === "localhost" || clientHostName === "127.0.0.1") {
   // 개발 중 (로컬)
@@ -42,3 +41,4 @@ export const MAP = "/map-service/map";
 export const HOSPITAL = "/map-service/hospital";
 export const STYLE = "/map-service/culture";
 export const FESTIVAL = "/map-service/festival";
+export const SHELTER = "/map-service/shelter";

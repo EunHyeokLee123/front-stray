@@ -147,8 +147,12 @@ const MapComponent = ({
         map.setLevel(3);
       };
 
-      // culture와 hospital은 주소를 사용하여 좌표 변환
-      if (selectedCategory === "culture" || selectedCategory === "hospital") {
+      // culture / hospital / shelter 는 주소를 사용하여 좌표 변환
+      if (
+        selectedCategory === "culture" ||
+        selectedCategory === "hospital" ||
+        selectedCategory === "shelter"
+      ) {
         // services 라이브러리가 로드되었는지 확인
         if (!kakao.maps.services) {
           console.error("카카오맵 services 라이브러리가 로드되지 않았습니다.");
@@ -164,6 +168,9 @@ const MapComponent = ({
           // 동물병원일 때는 fullAddress 사용
           address =
             selectedLocation.fullAddress || selectedLocation.address || "";
+        } else if (selectedCategory === "shelter") {
+          // 보호소일 때는 careAddr 사용
+          address = selectedLocation.careAddr || selectedLocation.addr1 || "";
         }
 
         if (address) {

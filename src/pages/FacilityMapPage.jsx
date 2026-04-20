@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../configs/axios-config.js";
 import MapComponent from "../components/MapComponent.jsx";
 import "./FacilityMapPage.css";
-import { MAP, HOSPITAL, STYLE } from "../../configs/host-config.js";
+import { MAP, HOSPITAL, STYLE, SHELTER } from "../../configs/host-config.js";
 import { logUserEvent } from "../hooks/user-log-hook.jsx";
 import { useSEO } from "../hooks/useSEO.jsx";
 import { useDeviceType } from "../hooks/use-device-type";
@@ -30,6 +30,10 @@ const FacilityMapPage = () => {
   const [hospitalList, setHospitalList] = useState([]);
   const [isHospitalLoading, setIsHospitalLoading] = useState(false);
   const [selectedHospitalInfo, setSelectedHospitalInfo] = useState(null);
+  const [showShelterRegion, setShowShelterRegion] = useState(false);
+  const [selectedShelterRegion, setSelectedShelterRegion] = useState("1");
+  const [shelterList, setShelterList] = useState([]);
+  const [isShelterLoading, setIsShelterLoading] = useState(false);
   const [showGroomingRegion, setShowGroomingRegion] = useState(false);
   const [selectedGroomingRegion, setSelectedGroomingRegion] = useState("1");
   const [groomingDistrictOptions, setGroomingDistrictOptions] = useState([]);
@@ -81,6 +85,7 @@ const FacilityMapPage = () => {
   const categories = [
     { id: "culture", name: "반려동물 문화시설" },
     { id: "hospital", name: "동물병원" },
+    { id: "shelter", name: "보호소" },
     { id: "style", name: "반려동물 미용실" },
     { id: "cafe", name: "반려동물 카페" },
     { id: "shop", name: "반려동물 용품샵" },
@@ -119,6 +124,11 @@ const FacilityMapPage = () => {
         sub: selectedHospitalCategory || "",
       });
       navigate(`/map/hospital?${queryParams.toString()}`, { replace: true });
+    } else if (selectedCategory === "shelter") {
+      const queryParams = new URLSearchParams({
+        region: selectedShelterRegion,
+      });
+      navigate(`/map/shelter?${queryParams.toString()}`, { replace: true });
     } else if (isGroomingCategory) {
       const queryParams = new URLSearchParams({
         main: selectedGroomingRegion,
@@ -144,15 +154,23 @@ const FacilityMapPage = () => {
     if (category === "culture") {
       setShowCultureSubCategories(true);
       setShowHospitalRegion(false);
+      setShowShelterRegion(false);
       setShowGroomingRegion(false);
     } else if (category === "hospital") {
       setShowHospitalRegion(true);
       setShowCultureSubCategories(false);
+      setShowShelterRegion(false);
+      setShowGroomingRegion(false);
+    } else if (category === "shelter") {
+      setShowShelterRegion(true);
+      setShowCultureSubCategories(false);
+      setShowHospitalRegion(false);
       setShowGroomingRegion(false);
     } else {
       setShowGroomingRegion(true);
       setShowCultureSubCategories(false);
       setShowHospitalRegion(false);
+      setShowShelterRegion(false);
     }
 
     // URL과 state가 어긋난 경우에만 selectedCategory 및 하위 필터 리셋
@@ -165,6 +183,8 @@ const FacilityMapPage = () => {
       } else if (category === "hospital") {
         setSelectedHospitalRegion("1");
         setSelectedHospitalCategory("");
+      } else if (category === "shelter") {
+        setSelectedShelterRegion("1");
       } else {
         setSelectedGroomingRegion("1");
         setSelectedGroomingDistrict("");
@@ -188,6 +208,14 @@ const FacilityMapPage = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory, selectedHospitalRegion, selectedHospitalCategory]);
+
+  // shelter 필터 변경 시 URL 업데이트
+  useEffect(() => {
+    if (selectedCategory === "shelter") {
+      updateURL();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategory, selectedShelterRegion]);
 
   // grooming 필터 변경 시 URL 업데이트
   useEffect(() => {
@@ -390,6 +418,38 @@ const FacilityMapPage = () => {
     }
   }, [selectedCategory, selectedHospitalRegion, selectedHospitalCategory]);
 
+  // 보호소 지역 변경 시 list 요청
+  useEffect(() => {
+    if (selectedCategory === "shelter") {
+      setIsShelterLoading(true);
+      axiosInstance
+        .get(`${SHELTER}/list/${selectedShelterRegion}`)
+        .then((res) => {
+          const shelterData = Array.isArray(res.data?.data)
+            ? res.data.data
+            : Array.isArray(res.data?.result)
+            ? res.data.result
+            : [];
+          setShelterList(shelterData);
+          if (shelterData.length > 0) {
+            const firstShelter = shelterData.find(
+              (item) => item.careNm && item.careAddr
+            );
+            if (firstShelter) {
+              setSelectedLocation(firstShelter);
+            }
+          } else {
+            setSelectedLocation(null);
+          }
+        })
+        .catch(() => {
+          setShelterList([]);
+          setSelectedLocation(null);
+        })
+        .finally(() => setIsShelterLoading(false));
+    }
+  }, [selectedCategory, selectedShelterRegion]);
+
   const handleLocationClick = (location) => {
     setSelectedLocation(location);
   };
@@ -402,18 +462,29 @@ const FacilityMapPage = () => {
     if (categoryId === "culture") {
       setShowCultureSubCategories(true);
       setShowHospitalRegion(false);
+      setShowShelterRegion(false);
+      setShowGroomingRegion(false);
       // culture 기본값으로 리셋
       setSelectedCultureSubCategory("12");
       setSelectedCultureRegion("1");
     } else if (categoryId === "hospital") {
       setShowHospitalRegion(true);
       setShowCultureSubCategories(false);
+      setShowShelterRegion(false);
+      setShowGroomingRegion(false);
       // hospital 기본값으로 리셋
       setSelectedHospitalRegion("1");
       setSelectedHospitalCategory("");
+    } else if (categoryId === "shelter") {
+      setShowShelterRegion(true);
+      setShowCultureSubCategories(false);
+      setShowHospitalRegion(false);
+      setShowGroomingRegion(false);
+      setSelectedShelterRegion("1");
     } else {
       setShowCultureSubCategories(false);
       setShowHospitalRegion(false);
+      setShowShelterRegion(false);
       setShowGroomingRegion(true);
       // grooming 기본값으로 리셋
       setSelectedGroomingRegion("1");
@@ -463,6 +534,10 @@ const FacilityMapPage = () => {
     }
   };
 
+  const handleShelterLocationClick = (shelter) => {
+    setSelectedLocation(shelter);
+  };
+
   const handleGroomingCardClick = (shop) => {
     // selectedLocation 설정
     setSelectedLocation(shop);
@@ -496,6 +571,11 @@ const FacilityMapPage = () => {
         response = await axiosInstance.get(
           `${HOSPITAL}/detail/${location.hospitalId}`
         );
+      } else if (selectedCategory === "shelter") {
+        // 보호소
+        response = await axiosInstance.get(
+          `${SHELTER}/detail/${location.careRegNo}`
+        );
       } else {
         // 나머지 카테고리
         response = await axiosInstance.get(
@@ -503,7 +583,9 @@ const FacilityMapPage = () => {
         );
       }
 
-      setModalData(response.data?.result || response.data || null);
+      setModalData(
+        response.data?.data || response.data?.result || response.data || null
+      );
     } catch (err) {
       setModalError("상세 정보를 불러오는 중 오류가 발생했습니다.");
       console.error("상세 정보 로드 실패:", err);
@@ -534,6 +616,15 @@ const FacilityMapPage = () => {
         name: h.hospitalName,
         fullAddress: h.fullAddress,
         category: "hospital",
+      }));
+    } else if (selectedCategory === "shelter") {
+      // 보호소: careAddr 사용
+      return (Array.isArray(shelterList) ? shelterList : []).map((s) => ({
+        ...s,
+        id: s.careRegNo,
+        title: s.careNm,
+        addr1: s.careAddr,
+        category: "shelter",
       }));
     }
     return [];
@@ -567,6 +658,13 @@ const FacilityMapPage = () => {
 
       description = `${region} ${district} 지역 ${categoryName} 위치, 주소, 이용정보를 지도에서 한눈에 확인하세요.`;
 
+      return { title, description };
+    }
+
+    if (selectedCategory === "shelter") {
+      region = getRegionLabel(selectedShelterRegion);
+      title = `${region} 보호소 지도 정보`;
+      description = `${region} 지역 보호소 위치, 주소, 운영정보를 지도에서 한눈에 확인하세요.`;
       return { title, description };
     }
 
@@ -606,6 +704,7 @@ const FacilityMapPage = () => {
     selectedCultureRegion,
     selectedHospitalRegion,
     selectedHospitalCategory,
+    selectedShelterRegion,
     selectedGroomingRegion,
     selectedGroomingDistrict,
     isGroomingCategory,
@@ -622,6 +721,9 @@ const FacilityMapPage = () => {
     } else if (selectedCategory === "hospital") {
       region = getRegionLabel(selectedHospitalRegion);
       canonical = `https://nyangmong.com/map/hospital?main=${selectedHospitalRegion}&sub=${selectedHospitalCategory}`;
+    } else if (selectedCategory === "shelter") {
+      region = getRegionLabel(selectedShelterRegion);
+      canonical = `https://nyangmong.com/map/shelter?region=${selectedShelterRegion}`;
     } else if (isGroomingCategory) {
       region = getRegionLabel(selectedGroomingRegion);
       canonical = `https://nyangmong.com/map/${selectedCategory}?main=${selectedGroomingRegion}&sub=${selectedGroomingDistrict}`;
@@ -883,6 +985,24 @@ const FacilityMapPage = () => {
               </>
             )}
 
+            {/* 보호소 지역 선택 */}
+            {showShelterRegion && (
+              <div className="region-row">
+                <span className="region-label">지역 :</span>
+                <select
+                  className="region-select"
+                  value={selectedShelterRegion}
+                  onChange={(e) => setSelectedShelterRegion(e.target.value)}
+                >
+                  {cultureRegionOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
             {/* 미용실 지역 선택 */}
             {showGroomingRegion && (
               <>
@@ -998,6 +1118,39 @@ const FacilityMapPage = () => {
               </div>
             )}
 
+            {/* 보호소 목록 */}
+            {selectedCategory === "shelter" && (
+              <div className="list-section">
+                <h3 className="list-title">보호소 목록 ({shelterList.length}개)</h3>
+                {isShelterLoading ? (
+                  <div className="loading-text">불러오는 중...</div>
+                ) : shelterList.length === 0 ? (
+                  <div className="empty-text">보호소가 없습니다.</div>
+                ) : (
+                  <div className="card-list">
+                    {(Array.isArray(shelterList) ? shelterList : [])
+                      .filter((shelter) => shelter.careNm && shelter.careAddr)
+                      .map((shelter) => (
+                        <div
+                          key={shelter.careRegNo}
+                          className={`location-card ${
+                            selectedLocation?.careRegNo === shelter.careRegNo
+                              ? "active"
+                              : ""
+                          }`}
+                          onClick={() => handleShelterLocationClick(shelter)}
+                        >
+                          <div className="card-content">
+                            <h4 className="card-title">{shelter.careNm}</h4>
+                            <p className="card-address">{shelter.careAddr}</p>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* 미용실 목록 */}
             {isGroomingCategory && (
               <div className="list-section">
@@ -1097,6 +1250,8 @@ const FacilityMapPage = () => {
                       ? modalData.title || "문화시설 상세"
                       : selectedCategory === "hospital"
                       ? modalData.businessName || "동물병원 상세"
+                      : selectedCategory === "shelter"
+                      ? modalData.careNm || "보호소 상세"
                       : modalData.facilityName || "시설 상세"}
                   </h2>
                   <button className="detail-close" onClick={closeModal}>
@@ -1197,9 +1352,84 @@ const FacilityMapPage = () => {
                     </div>
                   )}
 
+                  {/* 보호소 */}
+                  {selectedCategory === "shelter" && (
+                    <div className="detail-info-grid">
+                      <div className="detail-info-item">
+                        <span className="detail-label">동물보호센터명</span>
+                        <span className="detail-value">{modalData.careNm || "-"}</span>
+                      </div>
+                      <div className="detail-info-item">
+                        <span className="detail-label">관리기관명</span>
+                        <span className="detail-value">{modalData.orgNm || "-"}</span>
+                      </div>
+                      <div className="detail-info-item">
+                        <span className="detail-label">소재지도로명주소</span>
+                        <span className="detail-value">{modalData.careAddr || "-"}</span>
+                      </div>
+                      <div className="detail-info-item">
+                        <span className="detail-label">평일운영시작시각</span>
+                        <span className="detail-value">
+                          {modalData.weekOprStime || "-"}
+                        </span>
+                      </div>
+                      <div className="detail-info-item">
+                        <span className="detail-label">평일운영종료시각</span>
+                        <span className="detail-value">
+                          {modalData.weekOprEtime || "-"}
+                        </span>
+                      </div>
+                      <div className="detail-info-item">
+                        <span className="detail-label">평일분양시작시각</span>
+                        <span className="detail-value">
+                          {modalData.weekCellStime || "-"}
+                        </span>
+                      </div>
+                      <div className="detail-info-item">
+                        <span className="detail-label">평일분양종료시각</span>
+                        <span className="detail-value">
+                          {modalData.weekCellEtime || "-"}
+                        </span>
+                      </div>
+                      <div className="detail-info-item">
+                        <span className="detail-label">주말운영시작시각</span>
+                        <span className="detail-value">
+                          {modalData.weekendOprStime || "-"}
+                        </span>
+                      </div>
+                      <div className="detail-info-item">
+                        <span className="detail-label">주말운영종료시각</span>
+                        <span className="detail-value">
+                          {modalData.weekendOprEtime || "-"}
+                        </span>
+                      </div>
+                      <div className="detail-info-item">
+                        <span className="detail-label">주말분양시작시각</span>
+                        <span className="detail-value">
+                          {modalData.weekendCellStime || "-"}
+                        </span>
+                      </div>
+                      <div className="detail-info-item">
+                        <span className="detail-label">주말분양종료시각</span>
+                        <span className="detail-value">
+                          {modalData.weekendCellEtime || "-"}
+                        </span>
+                      </div>
+                      <div className="detail-info-item">
+                        <span className="detail-label">휴무일</span>
+                        <span className="detail-value">{modalData.closeDay || "-"}</span>
+                      </div>
+                      <div className="detail-info-item">
+                        <span className="detail-label">전화번호</span>
+                        <span className="detail-value">{modalData.careTel || "-"}</span>
+                      </div>
+                    </div>
+                  )}
+
                   {/* 나머지 카테고리 */}
                   {selectedCategory !== "culture" &&
-                    selectedCategory !== "hospital" && (
+                    selectedCategory !== "hospital" &&
+                    selectedCategory !== "shelter" && (
                       <div className="detail-info-grid">
                         <div className="detail-info-item">
                           <span className="detail-label">시설명</span>
