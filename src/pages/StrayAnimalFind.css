@@ -150,6 +150,7 @@
 
   .stray-find-input {
     min-width: 0;
+    max-width: 100%;
   }
 
   .stray-find-btn {
