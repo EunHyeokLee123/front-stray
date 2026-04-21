@@ -1121,7 +1121,9 @@ const FacilityMapPage = () => {
             {/* 보호소 목록 */}
             {selectedCategory === "shelter" && (
               <div className="list-section">
-                <h3 className="list-title">보호소 목록 ({shelterList.length}개)</h3>
+                <h3 className="list-title">
+                  보호소 목록 ({shelterList.length}개)
+                </h3>
                 {isShelterLoading ? (
                   <div className="loading-text">불러오는 중...</div>
                 ) : shelterList.length === 0 ? (
@@ -1357,15 +1359,21 @@ const FacilityMapPage = () => {
                     <div className="detail-info-grid">
                       <div className="detail-info-item">
                         <span className="detail-label">동물보호센터명</span>
-                        <span className="detail-value">{modalData.careNm || "-"}</span>
+                        <span className="detail-value">
+                          {modalData.careNm || "-"}
+                        </span>
                       </div>
                       <div className="detail-info-item">
                         <span className="detail-label">관리기관명</span>
-                        <span className="detail-value">{modalData.orgNm || "-"}</span>
+                        <span className="detail-value">
+                          {modalData.orgNm || "-"}
+                        </span>
                       </div>
                       <div className="detail-info-item">
                         <span className="detail-label">소재지도로명주소</span>
-                        <span className="detail-value">{modalData.careAddr || "-"}</span>
+                        <span className="detail-value">
+                          {modalData.careAddr || "-"}
+                        </span>
                       </div>
                       <div className="detail-info-item">
                         <span className="detail-label">평일운영시작시각</span>
@@ -1417,12 +1425,18 @@ const FacilityMapPage = () => {
                       </div>
                       <div className="detail-info-item">
                         <span className="detail-label">휴무일</span>
-                        <span className="detail-value">{modalData.closeDay || "-"}</span>
+                        <span className="detail-value">
+                          {modalData.closeDay || "-"}
+                        </span>
                       </div>
-                      <div className="detail-info-item">
-                        <span className="detail-label">전화번호</span>
-                        <span className="detail-value">{modalData.careTel || "-"}</span>
-                      </div>
+                      {modalData.careTel.get(0) !== "*" && (
+                        <div className="detail-info-item">
+                          <span className="detail-label">전화번호</span>
+                          <span className="detail-value">
+                            {modalData.careTel || "-"}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   )}
 
