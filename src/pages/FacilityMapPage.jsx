@@ -1429,14 +1429,12 @@ const FacilityMapPage = () => {
                           {modalData.closeDay || "-"}
                         </span>
                       </div>
-                      {modalData.careTel.get(0) !== "*" && (
-                        <div className="detail-info-item">
-                          <span className="detail-label">전화번호</span>
-                          <span className="detail-value">
-                            {modalData.careTel || "-"}
-                          </span>
-                        </div>
-                      )}
+                      <div className="detail-info-item">
+                        <span className="detail-label">전화번호</span>
+                        <span className="detail-value">
+                          {modalData.careTel || "-"}
+                        </span>
+                      </div>
                     </div>
                   )}
 
