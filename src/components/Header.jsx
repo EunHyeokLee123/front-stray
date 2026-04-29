@@ -18,7 +18,7 @@ const Header = () => {
     {
       id: "facility",
       label: "반려동물 관련 시설 정보",
-      path: "/map/culture?cate=12&region=1",
+      path: "/map/shelter?region=1",
     },
   ];
 
@@ -35,7 +35,7 @@ const Header = () => {
     if (path === "/festival/list") {
       return location.pathname.startsWith("/festival");
     }
-    if (path === "/map/culture?cate=12&region=1") {
+    if (path === "/map/shelter?region=1") {
       return location.pathname.startsWith("/map");
     }
     return false;
